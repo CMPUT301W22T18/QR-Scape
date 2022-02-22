@@ -1,10 +1,21 @@
 package com.example.qr_scape;
 
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-public class QRCollectionActivity {
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+
+public class QRCollectionActivity extends AppCompatActivity {
+    public int currentlySelected = -1;
+    FirebaseFirestore db;
+    ArrayAdapter<QRCode> QRCollectionAdapter;
+    ArrayList<QRCode> QRCollectionDataList;
 
 
     public void deleteQRCodeClicked(View view) {
