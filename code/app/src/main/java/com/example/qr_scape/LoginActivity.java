@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +29,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.HashMap;
 
 /**
@@ -43,14 +43,17 @@ import java.util.HashMap;
  */
 public class LoginActivity extends AppCompatActivity {
     final String PROFILES = "Profiles";
+    final String USERNAME = "Username";
     LinearLayout buttonLayout;
     LinearLayout createProfileLayout;
     FirebaseFirestore db;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
 
         buttonLayout = findViewById(R.id.login_button_layout);
         createProfileLayout = findViewById(R.id.login_create_profile_layout);
@@ -133,7 +136,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkDeviceCredentials(){
-
+        String savedUserName = sharedPreferences.getString(USERNAME,null);
+        if (savedUserName != null) {
+            nextActivity();
+        }
     }
 
     /**
@@ -152,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         Log.d(null, "Successfully created user");
                         saveUserCredentials(username);
+                        nextActivity();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -163,14 +170,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveUserCredentials(String username){
-
+        SharedPreferences.Editor shEditor = sharedPreferences.edit();
+        shEditor.putString(USERNAME,username);
+        shEditor.commit();
     }
 
     /**
      * Starts the next activity
      */
     private void nextActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
