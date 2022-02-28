@@ -1,45 +1,34 @@
 package com.example.qr_scape;
 
+import com.google.common.hash.Hashing;
+
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 public class QRCode {
-    private String QRID;
+    private String QRHash;
     private String location;
     private int score;
-    private File imageQR;
 
     // Constructors
-    public QRCode(String QRID) { // Only QRID provided
-        this.QRID = QRID;
-        this.score = calculateScore(QRID);
-        this.imageQR = generateImageQR(QRID);
+    public QRCode(String QRText) { // Only QRText provided
+        this.QRHash = generateHash(QRText);
+        this.score = calculateScore(QRHash);
         this.location = null;
     }
-    public QRCode(String QRID, String location) { // QRID and location provided
-        this.QRID = QRID;
+    public QRCode(String QRText, String location) { // QRText and location provided
+        this.QRHash = generateHash(QRText);
         this.location = location;
-        this.score = calculateScore(QRID);
-        this.imageQR = generateImageQR(QRID);
-    }
-    public QRCode(File imageQR) { // Only imageQR provided
-        this.imageQR = imageQR;
-        this.QRID = generateQRID(imageQR);
-        this.score = calculateScore(QRID);
-        this.location = null;
-    }
-    public QRCode(String location, File imageQR) { // imageQR and location
-        this.location = location;
-        this.imageQR = imageQR;
-        this.QRID = generateQRID(imageQR);
-        this.score = calculateScore(QRID);
+        this.score = calculateScore(QRHash);
     }
 
-    public String getQRID() {
-        return QRID;
+
+    public String getQRHash() {
+        return QRHash;
     }
 
-    public void setQRID(String QRID) {
-        this.QRID = QRID;
+    public void setQRHash(String QRHash) {
+        this.QRHash = QRHash;
     }
 
     public String getLocation() {
@@ -58,30 +47,19 @@ public class QRCode {
         this.score = score;
     }
 
-    public File getImageQR() {
-        return imageQR;
-    }
 
-    public void setImageQR(File imageQR) {
-        this.imageQR = imageQR;
-    }
-
-    private int calculateScore(String QRID){
+    private int calculateScore(String QRHash){
         int score = -1;
-        // To do: Write the logic to calculate a QR codes score based on the QRID
+        // To do: Write the logic to calculate a QR codes score based on the QRHash
         return score;
     }
 
-    private String generateQRID(File imageQR){
-        String newQRID = null;
-        // To do: Write the logic to generate a QRID based on the imageQR
-        return newQRID;
-    }
-
-    private File generateImageQR(String QRID){
-        File newImageQR = null;
-        // To do: Write the logic to generate a imageQR based on the QRID
-        return newImageQR;
+    private String generateHash(String QRText){
+        final String QRTextHash = Hashing.sha256()
+                .hashString(QRText, StandardCharsets.UTF_8)
+                .toString();
+        // To do: Write the logic to generate the hash of the QR code text
+        return QRTextHash;
     }
 
 }
