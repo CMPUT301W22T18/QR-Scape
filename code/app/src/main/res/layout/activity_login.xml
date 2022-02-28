@@ -58,6 +58,9 @@
             android:hint="User Name"
             android:ems="15"
             android:inputType="textPersonName"
+            android:background="@drawable/edit_text_background"
+            android:padding="15dp"
+            android:textColor="@color/white"
             android:id="@+id/login_username_edittext">
 
         </EditText>

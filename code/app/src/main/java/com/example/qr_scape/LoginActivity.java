@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
-
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
         buttonLayout = findViewById(R.id.login_button_layout);
         createProfileLayout = findViewById(R.id.login_create_profile_layout);
         EditText usernameText = findViewById(R.id.login_username_edittext);
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
      * Starts the next activity
      */
     private void nextActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 
