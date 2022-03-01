@@ -10,6 +10,7 @@
         android:textColor="@color/white"
         android:background="@drawable/edit_text_background"
         android:layout_margin="8dp"
+        android:textSize="30dp"
         android:id="@+id/profile_username_text">
 
     </TextView>
@@ -21,6 +22,8 @@
         android:textColor="@color/white"
         android:background="@drawable/edit_text_background"
         android:layout_margin="8dp"
+        android:textSize="20dp"
+        android:inputType="textPersonName"
         android:id="@+id/profile_contact_info_edittext">
 
     </EditText>
