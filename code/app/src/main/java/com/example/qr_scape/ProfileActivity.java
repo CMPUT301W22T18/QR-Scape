@@ -11,10 +11,13 @@ package com.example.qr_scape;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -46,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
     final String CONTACTINFO = "Contact info";
     TextView usernameText;
     EditText contactInfoText;
+    Button confirmButton;
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
 
@@ -85,43 +89,47 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Set intractable contact info text
         contactInfoText = findViewById(R.id.profile_contact_info_edittext);
-        contactInfoText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        contactInfoText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b) {
-                    HashMap data = new HashMap<>();
-                    String infoText = contactInfoText.getText().toString();
-                    data.put(CONTACTINFO, infoText);
-                    documentReference.update(data)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d(null, "Successfully updated contact info");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(null, "Failed to update contact info");
-                                }
-                            });
-                }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                confirmButton.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
-        // When user is finished inputting text, remove focus
-        contactInfoText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        // Add confirm button functionality
+        confirmButton = findViewById(R.id.profile_confirm_button);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                switch (i){
-                    case EditorInfo.IME_ACTION_DONE:
-                    case EditorInfo.IME_ACTION_NEXT:
-                    case EditorInfo.IME_ACTION_PREVIOUS:
-                        contactInfoText.clearFocus();
-                }
-                return true;
+            public void onClick(View view) {
+                HashMap data = new HashMap<>();
+                String infoText = contactInfoText.getText().toString();
+                data.put(CONTACTINFO, infoText);
+                documentReference.update(data)
+                        .addOnSuccessListener(new OnSuccessListener() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                Log.d(null, "Successfully updated contact info");
+                                confirmButton.setVisibility(view.INVISIBLE);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(null, "Failed to update contact info");
+                            }
+                        });
             }
         });
+
     }
 
 }
