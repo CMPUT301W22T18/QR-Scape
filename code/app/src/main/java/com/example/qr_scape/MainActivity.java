@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        QRCode qrCode = new QRCode("MyText");
+        QRCode qrCode = new QRCode("MyText", "TyGreve");
 
         TextView text = (TextView)findViewById(R.id.textView1);
         text.setText(qrCode.getQRHash());

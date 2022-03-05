@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class QRCode {
     private String QRHash;
@@ -11,15 +12,15 @@ public class QRCode {
     private int score;
 
     // Constructors
-    public QRCode(String QRText) { // Only QRText provided
-        this.QRHash = generateHash(QRText);
-        this.score = calculateScore(QRHash);
+    public QRCode(String QRText, String user) { // Only QRText provided
+        this.QRHash = generateHash((QRText + user)); // QRHash is salted with the username
+        this.score = calculateScore(QRText);
         this.location = null;
     }
-    public QRCode(String QRText, String location) { // QRText and location provided
-        this.QRHash = generateHash(QRText);
+    public QRCode(String QRText, String user, String location) { // QRText and location provided
+        this.QRHash = generateHash((QRText + user)); // QRHash is salted with the username
         this.location = location;
-        this.score = calculateScore(QRHash);
+        this.score = calculateScore(QRText);
     }
 
 
@@ -48,13 +49,18 @@ public class QRCode {
     }
 
 
-    private int calculateScore(String QRHash){
+    private int calculateScore(String QRText){
         int score = -1;
+        String normalizedQRHash = generateHash(QRText);
         // To do: Write the logic to calculate a QR codes score based on the QRHash
         return score;
     }
 
     private String generateHash(String QRText){
+        // From: https://stackoverflow.com/
+        // Link: https://stackoverflow.com/a/18340262
+        // Author: https://stackoverflow.com/users/69875/jonathan
+        // License: https://creativecommons.org/licenses/by-sa/3.0/
         final String QRTextHash = Hashing.sha256()
                 .hashString(QRText, StandardCharsets.UTF_8)
                 .toString();
