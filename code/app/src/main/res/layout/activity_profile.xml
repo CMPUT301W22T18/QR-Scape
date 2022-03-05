@@ -4,28 +4,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:background="@drawable/edit_text_background"
         android:layout_margin="8dp"
-        android:textSize="30dp"
-        android:id="@+id/profile_username_text">
+        android:background="@drawable/edit_text_background"
+        >
 
-    </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_margin="8dp"
+            android:textSize="30dp"
+            android:id="@+id/profile_username_text">
 
-    <EditText
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Contact Info Here"
-        android:textColor="@color/white"
-        android:background="@drawable/edit_text_background"
         android:layout_margin="8dp"
-        android:textSize="20dp"
-        android:inputType="textPersonName"
-        android:id="@+id/profile_contact_info_edittext">
+        android:background="@drawable/edit_text_background">
 
-    </EditText>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Contact Info Here"
+            android:textColor="@color/white"
+            android:background="@drawable/edit_text_background"
+            android:layout_margin="8dp"
+            android:textSize="20dp"
+            android:inputType="textPersonName"
+            android:id="@+id/profile_contact_info_edittext">
+
+        </EditText>
+
+    </LinearLayout>
+
 
 </LinearLayout>

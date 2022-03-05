@@ -1,7 +1,7 @@
 /*
  * ProfileActivity
  *
- * Version 1
+ * Version 2
  *
  * Feb 17 2022
  *
@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,7 +38,7 @@ import java.util.HashMap;
  * Activity meant to display user profile
  * also allows setting profile contact info
  * @author Dallin Dmytryk
- * @version 1
+ * @version 2
  */
 public class ProfileActivity extends AppCompatActivity {
     final String USERNAME = "Username";
@@ -53,6 +54,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
         // Check shared preferences for username
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
@@ -105,6 +108,8 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // When user is finished inputting text, remove focus
         contactInfoText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
