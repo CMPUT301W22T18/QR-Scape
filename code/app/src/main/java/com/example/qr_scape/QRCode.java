@@ -67,8 +67,26 @@ public class QRCode {
     }
 
     private int calculateScore(String QRID){
-        int score = -1;
-        // To do: Write the logic to calculate a QR codes score based on the QRID
+        /**
+         * Given the hash of a QR CODE (the QRID), we compute its score
+         * Inputs: String QRID
+         * Outputs: int score
+         */
+        int num_repeats = 0;
+        int current_index = 1;
+        int score = 0;
+
+        for (int i = 1; i < QRID.length(); i++){
+            char c = QRID.charAt(i);
+            if (QRID.charAt(i) == QRID.charAt(i - 1)) {
+                num_repeats += 1;
+            } else if (num_repeats > 0) {
+                int hexVal = Integer.parseInt(Character.toString(QRID.charAt(i - 1)), 16);
+                score += Math.pow(hexVal, num_repeats);
+                num_repeats = 0;
+            }
+
+        }
         return score;
     }
 
