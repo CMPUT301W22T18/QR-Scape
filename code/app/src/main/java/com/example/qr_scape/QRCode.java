@@ -66,7 +66,7 @@ public class QRCode {
         this.imageQR = imageQR;
     }
 
-    private int calculateScore(String QRID){
+    private static int calculateScore(String QRID){
         /**
          * Given the hash of a QR CODE (the QRID), we compute its score
          * Inputs: String QRID
