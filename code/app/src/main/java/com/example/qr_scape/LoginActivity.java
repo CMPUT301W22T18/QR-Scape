@@ -37,7 +37,7 @@ import java.util.HashMap;
  * Will first check for stored credentials on device
  * Presents user with option to create account
  * or scan a QR code to login
- * Upon successfully doing any of the above moves user to home screen
+ * Upon successfully doing any of the above moves user to profile screen
  * @author Dallin Dmytryk
  * @version 3
  */
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
      * Starts the next activity
      */
     private void nextActivity() {
-        Intent intent = new Intent(this, ProfileActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 

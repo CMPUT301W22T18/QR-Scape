@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class QRCollectionActivity extends AppCompatActivity {
     ListView qrList;
     ArrayAdapter<String> qrListAdapter;
@@ -33,4 +36,6 @@ public class QRCollectionActivity extends AppCompatActivity {
         qrListAdapter = new ArrayAdapter<>(this, R.layout.qr_list_content,qrDataList);
         qrList.setAdapter(qrListAdapter);
     }
-}
+
+
+
