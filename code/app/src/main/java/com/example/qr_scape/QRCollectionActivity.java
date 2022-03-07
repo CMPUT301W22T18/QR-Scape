@@ -28,14 +28,15 @@ public class QRCollectionActivity extends AppCompatActivity {
         qrList = findViewById(R.id.qrList);
 
         // qrHashes: This will store all the hash codes of the QR codes which are added.
-        String []qrHashes = {"Hello", "You", "Are", "Amazing"};
+        String[] qrHashes = {"Hello", "You", "Are", "Amazing"};
 
         qrDataList = new ArrayList<>();
         qrDataList.addAll(Arrays.asList(qrHashes));
 
-        qrListAdapter = new ArrayAdapter<>(this, R.layout.qr_list_content,qrDataList);
+        qrListAdapter = new ArrayAdapter<>(this, R.layout.qr_list_content, qrDataList);
         qrList.setAdapter(qrListAdapter);
     }
+}
 
 
 
