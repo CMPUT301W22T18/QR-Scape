@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">QR-Scape</string>
+    <string name="invalid_username_warning">Username is invalid</string>
+    <string name="username_taken_warning">Username is taken</string>
+</resources>
