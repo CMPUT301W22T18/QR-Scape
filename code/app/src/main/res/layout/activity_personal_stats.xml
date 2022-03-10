@@ -25,7 +25,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/colorgradient"
         app:itemIconTint="@color/white"
-        app:itemRippleColor="@color/black" />
+        app:itemRippleColor="@color/black"
+        app:menu="@menu/bottom_navigation" />
 
     <ImageView
         android:id="@+id/imageView2"
