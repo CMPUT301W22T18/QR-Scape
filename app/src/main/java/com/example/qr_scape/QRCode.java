@@ -127,32 +127,27 @@ public class QRCode {
     }
 
     /**
-     * This method calculates the score of the QRCode text
-     * @param QRText
+     * This method calculates the score of the QRCode object based on the hash
+     * of the QRCodeText
+     * @param QRID
      * @return score
      * Returns the score of the QRCode text
      */
     public static int calculateScore(String QRText){
-        /**
-         * Given the hash of a QR CODE (the QRID), we compute its score
-         * Inputs: String QRID
-         * Outputs: int score
-         */
-        int num_repeats = 0;
-        int current_index = 1;
-        int score = 0;
-
-        for (int i = 1; i < QRText.length(); i++){
-            char c = QRText.charAt(i);
-            System.out.println(QRText.charAt(i));
-
-            if (QRText.charAt(i) == QRText.charAt(i - 1)) {
-                num_repeats += 1;
-            } else if (num_repeats > 0) {
-                int hexVal = Integer.parseInt(Character.toString(QRText.charAt(i - 1)), 16);
-                System.out.println(hexVal);
-                score += Math.pow(hexVal, num_repeats);
-                num_repeats = 0;
+            int num_repeats = 0;
+            int current_index = 1;
+            int score = 0;
+    
+            for (int i = 1; i < QRText.length(); i++){
+                char c = QRText.charAt(i);
+                
+                if (QRText.charAt(i) == QRText.charAt(i - 1)) {
+                    num_repeats += 1;
+                } else if (num_repeats > 0) {
+                    int hexVal = Integer.parseInt(Character.toString(QRText.charAt(i - 1)), 16);
+                    score += Math.pow(hexVal, num_repeats);
+                    num_repeats = 0;
+                }
             }
         }
         return score;
