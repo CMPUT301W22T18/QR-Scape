@@ -43,6 +43,7 @@ public class QRCode {
      * @param user
      * @param location
      */
+
     public QRCode(String QRText, String user, String location, Bitmap photo) { // QRText and location provided
         this.QRHash = generateHash(QRText); // Generate QRHash
         this.QRHashSalted = generateHash((QRText + user)); // QRHash is salted with the username
@@ -108,7 +109,6 @@ public class QRCode {
     public void setLocation(String location) {
         this.location = location;
     }
-
     /**
      * This method gets the score of the QRCode object
      * @return score
@@ -133,10 +133,10 @@ public class QRCode {
      * Returns the score of the QRCode text
      */
     public static int calculateScore(String QRText){
+
             int num_repeats = 0;
             int current_index = 1;
             int score = 0;
-    
             for (int i = 1; i < QRText.length(); i++){
                 char c = QRText.charAt(i);
                 
@@ -148,8 +148,9 @@ public class QRCode {
                     num_repeats = 0;
                 }
             }
-        }
-        return score;
+    
+            // To do: Write the logic to calculate a QR codes score based on the QRID
+            return score;
     }
 
     /**
@@ -169,5 +170,6 @@ public class QRCode {
         // To do: Write the logic to generate the hash of the QR code text
         return QRTextHash;
     }
+
 }
 
