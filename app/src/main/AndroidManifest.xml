@@ -16,6 +16,9 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".PersonalStats"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity

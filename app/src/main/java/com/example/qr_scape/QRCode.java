@@ -90,11 +90,11 @@ public class QRCode {
     /**
      * This method calculates the score of the QRCode object based on the hash
      * of the QRCodeText
-     * @param QRText
+     * @param QRID
      * @return score
      * Returns the score of the QRCode object
      */
-    public static int calculateScore(String QRID){
+    public static int calculateScore(String QRText){
             /**
              * Given the hash of a QR CODE (the QRID), we compute its score
              * Inputs: String QRID
@@ -104,15 +104,13 @@ public class QRCode {
             int current_index = 1;
             int score = 0;
     
-            for (int i = 1; i < QRID.length(); i++){
-                char c = QRID.charAt(i);
-                System.out.println(QRID.charAt(i));
+            for (int i = 1; i < QRText.length(); i++){
+                char c = QRText.charAt(i);
                 
-                if (QRID.charAt(i) == QRID.charAt(i - 1)) {
+                if (QRText.charAt(i) == QRText.charAt(i - 1)) {
                     num_repeats += 1;
                 } else if (num_repeats > 0) {
-                    int hexVal = Integer.parseInt(Character.toString(QRID.charAt(i - 1)), 16);
-                    System.out.println(hexVal);
+                    int hexVal = Integer.parseInt(Character.toString(QRText.charAt(i - 1)), 16);
                     score += Math.pow(hexVal, num_repeats);
                     num_repeats = 0;
                 }
