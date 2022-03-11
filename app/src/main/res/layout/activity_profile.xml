@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/edit_text_background"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_margin="8dp"
+            android:textSize="30dp"
+            android:id="@+id/profile_username_text">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/edit_text_background">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Contact Info Here"
+            android:textColor="@color/white"
+            android:background="@drawable/edit_text_background"
+            android:layout_margin="8dp"
+            android:textSize="20dp"
+            android:inputType="textMultiLine"
+            android:maxLength="200"
+            android:maxLines="10"
+            android:id="@+id/profile_contact_info_edittext">
+
+        </EditText>
+
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="invisible"
+        android:text="Confirm"
+        android:id="@+id/profile_confirm_button">
+
+    </Button>
+
+    <EditText
+        android:id="@+id/edittext"
+        android:layout_width="185dp"
+        android:layout_height="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="6dp"
+        android:hint="Text" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="200dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="6dp"
+        android:text="Generate" />
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="200dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/colorgradient"
+        app:itemTextColor="@drawable/selector"
+        app:itemIconTint="@color/white"
+        app:itemRippleColor="@color/black"
+        app:menu="@menu/bottom_navigation"
+        android:layout_alignParentBottom="true"/>
+
+
+
+</LinearLayout>
