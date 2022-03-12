@@ -13,10 +13,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 
-/**
- * This class is used to update a user's stats.
- * @author Kiran Deol
- */
+
 public class ScoreActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference profilesRef = db.collection("Profiles");
@@ -26,21 +23,18 @@ public class ScoreActivity {
     String qrHash;
     int score;
 
-    /**
-     * This class is used to initialize a Score instance
-     * @param currentProfile - the username of the current user we wish to update
-     * @param QRHash - the hash of the new code that the user has added
-     */
     public ScoreActivity(String currentProfile, String QRHash) {
         this.profile = currentProfile;
         this.qrHash = QRHash;
         this.score = QRCode.calculateScore(qrHash);
     }
 
-    /**
-     * Updates a user's total number of scans
-     */
     public void updateNumberOfScans() {
+        /**
+         * Updates a user's total number of scans
+         * Inputs: none
+         * Outputs: int - new total number of scans
+         */
         final Object[] currentNumberOfScans = new Object[1];
         Task<DocumentSnapshot> userRef = profilesRef.document(profile).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -71,11 +65,12 @@ public class ScoreActivity {
             }
         });
     }
-
-    /**
-     * Updates a user's highest score
-     */
     public void updateHighestScore() {
+        /**
+         * Updates a user's highest score
+         * Inputs: none
+         * Outputs: int - new total number of scans
+         */
         final Object[] highestScores = new Object[1];
         Task<DocumentSnapshot> userRef = profilesRef.document(profile).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -109,47 +104,12 @@ public class ScoreActivity {
             }
         });
     }
-    /**
-     * Updates a user's lowest score
-     */
-    public void updateLowestScore() {
-        final Object[] lowestScores = new Object[1];
-        Task<DocumentSnapshot> userRef = profilesRef.document(profile).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.get("Lowest Score"));
-                        lowestScores[0] = document.get("Lowest Score");
-                        if (lowestScores[0]  == null) {
-                            Log.d(TAG, "DocumentSnapshot data: " + "it is NULL");
-                            HashMap<String, Integer> data = new HashMap<>();
-                            data.put("Lowest Score", score);
-                            profilesRef.document(profile).set(data, SetOptions.merge());
-                        } else {
-                            Log.d(TAG, "DocumentSnapshot data: " + "it is not null");
-                            if (score < Integer.parseInt(lowestScores[0].toString())) {
-                                HashMap<String, Integer> data = new HashMap<>();
-                                data.put("Lowest Score", score);
-                                profilesRef.document(profile).set(data, SetOptions.merge());
-                            }
-
-                        }
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    /**
-     * Updates a user's total score
-     */
     public void updateTotalScore() {
+        /**
+         * Updates a user's total score
+         * Inputs: none
+         * Outputs: none
+         */
         final Object[] totalScore = new Object[1];
         Task<DocumentSnapshot> userRef = profilesRef.document(profile).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -182,3 +142,4 @@ public class ScoreActivity {
     }
 
 }
+
