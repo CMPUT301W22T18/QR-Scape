@@ -33,9 +33,9 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        editText = (EditText)findViewById(R.id.edittext);
-        button = (Button)findViewById(R.id.button);
-        imageView = (ImageView)findViewById(R.id.imageview);
+        //editText = (EditText)findViewById(R.id.edittext);
+        //button = (Button)findViewById(R.id.button);
+        //imageView = (ImageView)findViewById(R.id.imageview);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -22,6 +22,7 @@
 package com.example.qr_scape;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +47,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.HashMap;
 
@@ -61,7 +67,10 @@ public class ProfileActivity extends AppCompatActivity {
     final String CONTACTINFO = "Contact info";
     TextView usernameText;
     EditText contactInfoText;
+    EditText codeEditText;
     Button confirmButton;
+    Button codeButton;
+    ImageView imageView;
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
 
@@ -139,6 +148,26 @@ public class ProfileActivity extends AppCompatActivity {
                                 Log.d(null, "Failed to update contact info");
                             }
                         });
+            }
+        });
+
+        // set create QR code functionality
+        imageView = findViewById(R.id.profile_imageview);
+        codeEditText = findViewById(R.id.profile_code_edittext);
+        codeButton = findViewById(R.id.profile_generate_button);
+        codeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+                try{
+                    BitMatrix bitMatrix = multiFormatWriter.encode(codeEditText.getText().toString(), BarcodeFormat.QR_CODE,500,500);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                    imageView.setImageBitmap(bitmap);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
