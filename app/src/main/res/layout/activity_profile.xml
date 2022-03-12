@@ -70,6 +70,7 @@
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="6dp"
+        android:textColorHint="@color/white"
         android:hint="Text" />
 
     <Button
