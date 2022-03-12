@@ -58,7 +58,7 @@ public class QRCode {
         this.QRHashSalted = generateHash((QRText + user)); // QRHash is salted with the username
         this.longitude = longitude;
         this.latitude = latitude;
-        this.score = calculateScore(QRText);
+        this.score = calculateScore(QRHash);
         this.username = user;
         this.photo = photo;
     }

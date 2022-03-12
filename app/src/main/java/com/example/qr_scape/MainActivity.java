@@ -43,37 +43,37 @@ public class MainActivity extends AppCompatActivity {
         //Intent intent = new Intent(this,LoginActivity.class);
         //startActivity(intent);
 
-        //addQRCode("QRText1", "Brick", , null);
+        addQRCode("QRText12", "Bob", 1.23, 2.34, null);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference QRRef = db.collection("QRCodeInstance");
 
         qrDataList = new ArrayList<QRCode>();
 
-        QRRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                    FirebaseFirestoreException error) {
-                // Clear the old list
-                qrDataList.clear();
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-                {
-                    Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
-                    String saltedHash = doc.getId();
-                    String realHash = (String) doc.getData().get("realHash");
-                    Bitmap photo = (Bitmap) doc.getData().get("Photo");
-                    double latitude = (double) doc.getData().get("Latitude");
-                    double longitude = (double) doc.getData().get("Longitude");
-                    int score = (int) doc.getData().get("Score");
-                    String username = (String) doc.getData().get("Username");
-                    qrDataList.add(new QRCode(realHash, saltedHash, username, latitude, longitude, photo, score)); // Adding the cities and provinces from FireStore
-                }
-                qrListAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-            }
-        });
+//        QRRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+//                    FirebaseFirestoreException error) {
+//                // Clear the old list
+//                qrDataList.clear();
+//                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+//                {
+//                    Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
+//                    String saltedHash = doc.getId();
+//                    String realHash = (String) doc.getData().get("realHash");
+//                    Bitmap photo = (Bitmap) doc.getData().get("Photo");
+//                    double latitude = (double) doc.getData().get("Latitude");
+//                    double longitude = (double) doc.getData().get("Longitude");
+//                    int score = (int) doc.getData().get("Score");
+//                    String username = (String) doc.getData().get("Username");
+//                    qrDataList.add(new QRCode(realHash, saltedHash, username, latitude, longitude, photo, score)); // Adding the cities and provinces from FireStore
+//                }
+//                qrListAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+//            }
+//        });
+////
 //
-
-        deleteQRCode(qrDataList.get(1));
+//        deleteQRCode(qrDataList.get(1));
     }
 
     /**
