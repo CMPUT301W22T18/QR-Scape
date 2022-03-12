@@ -1,16 +1,3 @@
-//Copyright 2022, Harsh Shah
-//
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
 package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
@@ -27,13 +14,20 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
@@ -51,6 +45,9 @@ public class QR_Scan extends AppCompatActivity  {
     Button scanbtn;
     ImageView imageView;
     Button btOpen;
+    private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
+    private TextView textLatLong;
+    private ProgressBar progressBar;
     public static TextView scantext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +58,25 @@ public class QR_Scan extends AppCompatActivity  {
 
         imageView = findViewById(R.id.image_view);
         btOpen = findViewById(R.id.bt_open);
-
+        // get latitude and longitude
+        textLatLong = findViewById(R.id.textLatLong);
+        progressBar = findViewById(R.id.progressBar);
+        findViewById(R.id.buttonCurrentLocation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            QR_Scan.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_CODE_LOCATION_PERMISSION
+                    );
+                } else {
+                    getCurrentLocation();
+                }
+            }
+        });
         //Request For Camera Permission
         if(ContextCompat.checkSelfPermission(QR_Scan.this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -106,7 +121,7 @@ public class QR_Scan extends AppCompatActivity  {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.nav_profile:
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        startActivity(new Intent(getApplicationContext(), Profile.class));
                         overridePendingTransition(0,0);
                         return true;
 
@@ -118,12 +133,67 @@ public class QR_Scan extends AppCompatActivity  {
                 return false;
             }
         });
-   }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
+            getCurrentLocation();
+        } else {
+            Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void getCurrentLocation() {
+        progressBar.setVisibility(View.VISIBLE);
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.getFusedLocationProviderClient(QR_Scan.this)
+                .requestLocationUpdates(locationRequest, new LocationCallback() {
+
+                    @Override
+                    public void onLocationResult(@NonNull LocationResult locationResult) {
+                        super.onLocationResult(locationResult);
+                        LocationServices.getFusedLocationProviderClient(QR_Scan.this)
+                                .removeLocationUpdates(this);
+                        if (locationResult != null && locationResult.getLocations().size() >0){
+                            int latestLocationIndex = locationResult.getLocations().size() -1;
+                            double latitude =
+                                    locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                            double longitude =
+                                    locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                            textLatLong.setText(
+                                    String.format(
+                                            "Latitude: %s\nLongitude: %s",
+                                            latitude,
+                                            longitude
+                                    )
+                            );
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+
+                    }
+                }, Looper.getMainLooper());
+    }
+    // capture image and show it
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 100){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
             // get capture Image
-            Bitmap captureImage = (Bitmap)  data.getExtras().get("data");
+            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             // Set Capture Image to ImageView
             imageView.setImageBitmap(captureImage);
         }
