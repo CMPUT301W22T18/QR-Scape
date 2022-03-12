@@ -16,9 +16,6 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.QRScape">
         <activity
-            android:name=".Leaderboard"
-            android:exported="false" />
-        <activity
             android:name=".PersonalStats"
             android:exported="false" />
         <activity
