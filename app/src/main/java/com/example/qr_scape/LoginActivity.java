@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks device shared prefrences for a saved username
+     * Checks device shared preferences for a saved username
      * on finding one, next activity is opened
      */
     private void checkDeviceCredentials(){

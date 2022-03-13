@@ -5,7 +5,7 @@
  *
  * Feb 17 2022
  *
- * Copyright 2022 Dallin Dmytryk
+ * Copyright 2022 Dallin Dmytryk, Harsh Shah
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,9 @@ import java.util.HashMap;
  * ProfileActivity
  * Activity meant to display user profile
  * also allows setting profile contact info
+ * It has QR Code which can be generated to view game status
  * @author Dallin Dmytryk
+ * @author Harsh Shah
  * @version 2
  */
 public class ProfileActivity extends AppCompatActivity {

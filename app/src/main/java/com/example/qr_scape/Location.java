@@ -34,7 +34,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+/**
+ * Location Activity allows the user to find QR Codes current location
+ * it shows a map which can be zoomed in, out based on the lat/long which is feed into
+ * The navigation bar is allowed to browse it and switch between different
+ * activities
+ * @Author Harsh Shah
+ */
 public class Location extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     SupportMapFragment supportMapFragment;
@@ -86,19 +92,14 @@ public class Location extends AppCompatActivity {
                 return false;
             }
         });
-//        scantext=(TextView)findViewById(R.id.scantext);
-//        scanbtn=(Button) findViewById(R.id.scanbtn);
-//
-//        scanbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(),QR_Scan.class));
-//            }
-//        });
 
 
 
-
+     /**
+      * getCurrentLocation allows the user to check
+      * QR Codes current location once the user grants the permission
+      * Getting location of multiple QR Codes will be implemented in the next version
+      */
     }
     private void getCurrentLocation() {
         // Initialize task location
@@ -125,7 +126,7 @@ public class Location extends AppCompatActivity {
 
                             //create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
-                                    .title("I am there ");
+                                    .title("QR Code");
                             //zoom map
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             // Add marker on map
@@ -137,6 +138,10 @@ public class Location extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * checks permission from the user considering their privacy
+      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
