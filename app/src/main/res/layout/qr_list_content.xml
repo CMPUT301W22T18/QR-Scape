@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:padding="20dp"
     android:text=""
-    android:textSize="40sp">
+    android:background="#272C5E"
+    android:textColor="#000000"
+    android:textSize="20sp">
 
 </TextView>

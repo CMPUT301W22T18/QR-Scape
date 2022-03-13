@@ -228,6 +228,3 @@ public class QRCollectionActivity extends AppCompatActivity {
                 });
     }//end ownerDeleteQRCode
 }
-
-
-

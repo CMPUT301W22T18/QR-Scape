@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.qr_scape">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,17 +15,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRScape">
         <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
+            android:name=".Leaderboard"
             android:exported="false" />
         <activity
             android:name=".PersonalStats"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".LoginActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA00zq922dgbzYW0lqmkt7JM1FKBp4BO2Q" />
+
+        <activity
+            android:name=".ScanView"
+            android:exported="false" />
+        <activity
+            android:name=".Home"
+            android:exported="false" />
+        <activity
+            android:name=".Location"
+            android:exported="false" />
+        <activity
+            android:name=".Search"
+            android:exported="false" />
+        <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".QR_Scan"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
