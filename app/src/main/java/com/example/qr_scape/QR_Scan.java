@@ -13,11 +13,14 @@
 //limitations under the License.
 package com.example.qr_scape;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +45,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -49,6 +56,8 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+
+import java.util.HashMap;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
@@ -62,6 +71,10 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  *
  */
 public class QR_Scan extends AppCompatActivity  {
+    Bitmap scanPhoto;
+    double scanLatitude;
+    double scanLongitude;
+    String scanQRText;
 
     BottomNavigationView bottomNavigationView;
     Button scanbtn;
@@ -155,6 +168,8 @@ public class QR_Scan extends AppCompatActivity  {
                 return false;
             }
         });
+        scanQRText = scantext.getText().toString();
+        addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
     }
     /**
      * Asks user for the permission for tracking the location
@@ -214,6 +229,9 @@ public class QR_Scan extends AppCompatActivity  {
                                             longitude
                                     )
                             );
+                            // Set global variables
+                            scanLatitude = latitude;
+                            scanLongitude = longitude;
                         }
 
                         progressBar.setVisibility(View.GONE);
@@ -237,6 +255,89 @@ public class QR_Scan extends AppCompatActivity  {
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             // Set Capture Image to ImageView
             imageView.setImageBitmap(captureImage);
+            // Set global variable
+            scanPhoto = captureImage;
         }
     }
+
+    /**
+     * Add QR codes to database
+     * @param QRText
+     * @param latitude
+     * @param longitude
+     * @param photo
+     * @author Ty Greve
+     * @version 2
+     */
+    // Add QRCode Method (To be nest in the scanner class)
+    public void addQRCode(String QRText, double latitude, double longitude, Bitmap photo) {
+        final String USERNAME = "Username";
+
+        // Check shared preferences for username
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+        String username = sharedPreferences.getString(USERNAME,null);
+
+        // Validate user input
+        if ((QRText.equals(null)) || (username.equals(null))) {
+            Toast.makeText(QR_Scan.this, "Must fill-in both fields", Toast.LENGTH_SHORT).show();
+        }
+
+        // Create QRCode Instance object
+        QRCode qrCode = new QRCode(QRText, username, latitude, longitude, photo);
+
+
+        if (QRText.length() > 0 && username.length() > 0) {
+
+            // Access a Cloud Firestore instance from your Activity
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // Create HashMap for QRCodeInstance and put fields from the qrCode object into it
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("Latitude", qrCode.getLatitude());
+            data.put("Longitude", qrCode.getLongitude());
+            data.put("Photo", null);
+            data.put("Score", qrCode.getScore());
+            data.put("Username", username);
+            data.put("RealHash", qrCode.getQRHash());
+
+            // Create HashMap for QRCodes (real/physical) and put fields into it
+            HashMap<String, Object> data1 = new HashMap<>();
+            data1.put("Score", qrCode.getScore());
+
+            // Store to Firestore the QRCodeInstance
+            // Get reference to Firestore collection and Document ID
+            db.collection("QRCodeInstance").document(qrCode.getQRHashSalted())
+                    .set(data) // Set fields in the Firestore database
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "Data has been added successfully!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Data could not be added!" + e.toString());
+                        }
+                    });
+
+            // Store to Firestore the QRCode (real/physical)
+            db.collection("QRCodes").document(qrCode.getQRHash())
+                    .set(data1) // Set fields in the Firestore database
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "Data has been added successfully!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Data could not be added!" + e.toString());
+                        }
+                    });
+        }
+    }//end addQRCode
+
 }
