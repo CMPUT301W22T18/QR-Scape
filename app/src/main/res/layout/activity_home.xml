@@ -29,5 +29,16 @@
         app:itemRippleColor="@color/black"
         app:menu="@menu/bottom_navigation"
         android:layout_alignParentBottom="true"/>
+    
+    <Button
+        android:id="@+id/leaderboard_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="254dp"
+        android:onClick="openLeaderboard"
+        android:text="LEADERBOARD"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>
