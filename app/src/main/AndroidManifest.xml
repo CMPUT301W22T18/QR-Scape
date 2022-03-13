@@ -24,10 +24,6 @@
             android:name=".LoginActivity"
             android:exported="false" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA00zq922dgbzYW0lqmkt7JM1FKBp4BO2Q" />
-
         <activity
             android:name=".ScanView"
             android:exported="false" />
