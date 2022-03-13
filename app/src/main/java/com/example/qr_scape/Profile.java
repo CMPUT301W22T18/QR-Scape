@@ -39,7 +39,11 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-
+/**
+ * Profile opens profile activity
+ * allowing user to check their profile
+ * browse between activities
+ */
 
 public class Profile extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;

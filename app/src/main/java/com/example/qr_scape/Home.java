@@ -21,7 +21,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+/**
+ * Home activity is the base activity
+ * which brings the user when successfully logged in
+ *
+ */
 public class Home extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     @Override
@@ -59,15 +63,6 @@ public class Home extends AppCompatActivity {
                 return false;
             }
         });
-//        scantext=(TextView)findViewById(R.id.scantext);
-//        scanbtn=(Button) findViewById(R.id.scanbtn);
-//
-//        scanbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(),QR_Scan.class));
-//            }
-//        });
 
 
 

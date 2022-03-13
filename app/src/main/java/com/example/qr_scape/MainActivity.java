@@ -27,6 +27,10 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * Main activity sets on the home activity
+ */
+
 public class MainActivity extends AppCompatActivity {
       BottomNavigationView bottomNavigationView;
 

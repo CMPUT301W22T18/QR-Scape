@@ -61,7 +61,9 @@ import java.util.HashMap;
  * ProfileActivity
  * Activity meant to display user profile
  * also allows setting profile contact info
+ * It has QR Code which can be generated to view game status
  * @author Dallin Dmytryk
+ * @author Harsh Shah
  * @version 2
  */
 public class ProfileActivity extends AppCompatActivity {

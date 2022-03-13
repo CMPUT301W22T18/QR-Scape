@@ -1,3 +1,16 @@
+//Copyright 2022, Harsh Shah
+//
+//Licensed under the Apache License, Version 2.0 (the "License");
+//you may not use this file except in compliance with the License.
+//You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//Unless required by applicable law or agreed to in writing, software
+//distributed under the License is distributed on an "AS IS" BASIS,
+//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//See the License for the specific language governing permissions and
+//limitations under the License.
 package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
@@ -38,7 +51,16 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
+/**
+ * QR Scan Activity is for scanning the QR code
+ * allows user to get the score of the scanned QR code
+ * Capture the object/ location
+ * Allows users to get the geo location as Latitude, Longitude and record it
+ * Through the navigation bar, the user can browse different activities
+ * such as if on QR can activity, it can switch to home, profile etc.
+ * @author Harsh Shah
+ *
+ */
 public class QR_Scan extends AppCompatActivity  {
 
     BottomNavigationView bottomNavigationView;
@@ -134,6 +156,13 @@ public class QR_Scan extends AppCompatActivity  {
             }
         });
     }
+    /**
+     * Asks user for the permission for tracking the location
+     * for privacy reasons
+     * If denied, it sends a toast message for permission denied
+     * @param requestCode Requests for permission
+     */
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -143,6 +172,11 @@ public class QR_Scan extends AppCompatActivity  {
             Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * Gets the current location once the user grants the permission
+     * required lat and longitude is captured
+     */
     private void getCurrentLocation() {
         progressBar.setVisibility(View.VISIBLE);
         LocationRequest locationRequest = new LocationRequest();
@@ -187,6 +221,13 @@ public class QR_Scan extends AppCompatActivity  {
                     }
                 }, Looper.getMainLooper());
     }
+    /**
+     * Captures the image via camera and gets image using bitmap
+     * Imageview is used to set the image which was captured
+     * @param requestCode requests for permission
+     * @param resultCode checks the status
+     *
+     */
     // capture image and show it
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
