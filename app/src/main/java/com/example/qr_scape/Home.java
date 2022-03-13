@@ -73,4 +73,7 @@ public class Home extends AppCompatActivity {
 
 
     }
+    public void openLeaderboard(View view) {
+        startActivity(new Intent(Home.this, LeaderboardActivity.class));
+    }
 }
