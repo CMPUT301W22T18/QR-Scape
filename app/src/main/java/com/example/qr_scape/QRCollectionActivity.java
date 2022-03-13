@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,12 +28,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class QRCollectionActivity extends AppCompatActivity {
     ListView qrList;
     ArrayAdapter<String> qrListAdapter;
-    ArrayList<QRCode> qrDataList;
+    ArrayList<String> qrDataList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +44,32 @@ public class QRCollectionActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference QRRef = db.collection("QRCodeInstance");
 
-        qrDataList = new ArrayList<QRCode>();
+        //qrDataList = new ArrayList<String>();
+
+        qrList = findViewById(R.id.qrList);
+
+        // qrHashes: This will store all the hash codes of the QR codes which are added.
+        //String[] qrHashes = {"Hello", "You", "Are", "Amazing"};
+
+        qrDataList = new ArrayList<>();
+        //qrDataList.addAll(Arrays.asList(qrHashes));
+
+        qrListAdapter = new ArrayAdapter<>(this, R.layout.qr_list_content, qrDataList);
+        qrList.setAdapter(qrListAdapter);
+
+        Task<QuerySnapshot> qrRef = db.collection("QRCodeInstance").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        Map<String, Object> hash_obj = document.getData();
+                        String hash_value = (String) hash_obj.toString();
+                        qrDataList.add(hash_value);
+                        qrListAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
 
 //        QRRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
 //            @Override
