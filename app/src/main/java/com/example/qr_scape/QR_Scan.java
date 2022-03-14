@@ -84,6 +84,7 @@ public class QR_Scan extends AppCompatActivity  {
 
     BottomNavigationView bottomNavigationView;
     Button scanbtn;
+    Button location;
     ImageView imageView;
     Button btOpen;
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
@@ -96,6 +97,7 @@ public class QR_Scan extends AppCompatActivity  {
         setContentView(R.layout.activity_qr_scan);
         scantext=(TextView)findViewById(R.id.scantext);
         scanbtn=(Button) findViewById(R.id.scanbtn);
+        location = (Button) findViewById(R.id.buttonCurrentLocation);
 
         imageView = findViewById(R.id.image_view);
         btOpen = findViewById(R.id.bt_open);
@@ -148,6 +150,8 @@ public class QR_Scan extends AppCompatActivity  {
 
                 scanQRText = scantext.getText().toString();
                 final String USERNAME = "Username";
+                btOpen.setVisibility(View.VISIBLE);
+                location.setVisibility(View.VISIBLE);
                 if (!scanQRText.equals("Score")){
                     // Check shared preferences for username
                     SharedPreferences sharedPreferences;
@@ -161,6 +165,7 @@ public class QR_Scan extends AppCompatActivity  {
                     scoreUpdater.updateLowestScore();
                     scoreUpdater.updateTotalScore();
                     addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
+
                 }
 
             }
