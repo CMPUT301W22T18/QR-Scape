@@ -19,6 +19,9 @@
             android:name=".PersonalStats"
             android:exported="false" />
         <activity
+            android:name=".LeaderboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
 
