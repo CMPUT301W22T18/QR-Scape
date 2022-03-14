@@ -46,8 +46,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-/*
- * Displays the leaderboard with the three stats
+/**
+ * Displays the leaderboard with the option of sorting by the three main stats
+ * Does not rank users who are not on the board yet
  * @author Kiran Deol
  */
 
