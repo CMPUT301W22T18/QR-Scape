@@ -32,7 +32,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-/*
+/**
  * Displays a user's 4 main personal stats: highest/lowest score, total score, sum scans
  * @author Kiran Deol
  */
