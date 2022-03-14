@@ -57,8 +57,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.io.ByteArrayOutputStream;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -138,6 +138,7 @@ public class QR_Scan extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
+
                 scanQRText = scantext.getText().toString();
                 final String USERNAME = "Username";
 
@@ -275,14 +276,16 @@ public class QR_Scan extends AppCompatActivity  {
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             // Set Capture Image to ImageView
             imageView.setImageBitmap(captureImage);
+
+            // Set global variable
+            //scanPhoto = captureImage;
+            //addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
+
 //            captureImage.compress(Bitmap.CompressFormat.PNG, 100, bao);
 //            captureImage.recycle();
 //            byte[] byteArray = bao.toByteArray();
 //            String imageB64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
 //            scanPhoto = imageB64;
-
-
-
 
         }
     }
@@ -365,7 +368,6 @@ public class QR_Scan extends AppCompatActivity  {
                         }
                     });
         }
-    }
-    //end addQRCode
+    }//end addQRCode
 
 }

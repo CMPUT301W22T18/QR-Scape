@@ -32,7 +32,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 
 public class MainActivity extends AppCompatActivity {
-      BottomNavigationView bottomNavigationView;
+    BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
-       // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.cardview_shadow_end_color)));
+        // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.cardview_shadow_end_color)));
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_scan);
