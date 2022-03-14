@@ -19,7 +19,7 @@ public class QRCode {
     private double longitude;
     private int score;
     private String username;
-    private Bitmap photo;
+    private String photo;
 
     // Constructors
     /**
@@ -33,7 +33,7 @@ public class QRCode {
      * @param score
      * @param user
      */
-    public QRCode(String realHash, String saltedHash,String user, double latitude, double longitude, Bitmap photo, int score) { // Only QRText provided
+    public QRCode(String realHash, String saltedHash,String user, double latitude, double longitude, String photo, int score) { // Only QRText provided
         this.QRHash = realHash; // Generate QRHash
         this.QRHashSalted = saltedHash; // QRHash is salted with the username
         this.score = score;
@@ -53,7 +53,7 @@ public class QRCode {
      * @param photo
      */
 
-    public QRCode(String QRText, String user, double latitude, double longitude, Bitmap photo) { // QRText and location provided
+    public QRCode(String QRText, String user, double latitude, double longitude, String photo) { // QRText and location provided
         this.QRHash = generateHash(QRText); // Generate QRHash
         this.QRHashSalted = generateHash((QRText + user)); // QRHash is salted with the username
         this.longitude = longitude;
@@ -103,34 +103,18 @@ public class QRCode {
         this.QRHash = QRHash;
     }
 
-    /**
-     * This method gets the latitude of the QRCode object
-     * @return latitude
-     */
     public double getLatitude() {
         return latitude;
     }
 
-    /**
-     * This method sets the latitude of the QRCode object
-     * @param latitude
-     */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    /**
-     * This method gets the longitude of the QRCode object
-     * @return longitude
-     */
     public double getLongitude() {
         return longitude;
     }
 
-    /**
-     * This method sets the longitude of the QRCode object
-     * @param longitude
-     */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
@@ -152,19 +136,11 @@ public class QRCode {
         this.score = score;
     }
 
-    /**
-     * This method gets the photo of the QRCode object
-     * @return photo
-     */
-    public Bitmap getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    /**
-     * This method sets the photo of the QRCode object
-     * @param photo
-     */
-    public void setPhoto(Bitmap photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 
@@ -176,23 +152,23 @@ public class QRCode {
      */
     public static int calculateScore(String QRText){
 
-            int num_repeats = 0;
-            int current_index = 1;
-            int score = 0;
-            for (int i = 1; i < QRText.length(); i++){
-                char c = QRText.charAt(i);
-                
-                if (QRText.charAt(i) == QRText.charAt(i - 1)) {
-                    num_repeats += 1;
-                } else if (num_repeats > 0) {
-                    int hexVal = Integer.parseInt(Character.toString(QRText.charAt(i - 1)), 16);
-                    score += Math.pow(hexVal, num_repeats);
-                    num_repeats = 0;
-                }
+        int num_repeats = 0;
+        int current_index = 1;
+        int score = 0;
+        for (int i = 1; i < QRText.length(); i++){
+            char c = QRText.charAt(i);
+
+            if (QRText.charAt(i) == QRText.charAt(i - 1)) {
+                num_repeats += 1;
+            } else if (num_repeats > 0) {
+                int hexVal = Integer.parseInt(Character.toString(QRText.charAt(i - 1)), 16);
+                score += Math.pow(hexVal, num_repeats);
+                num_repeats = 0;
             }
-    
-            // To do: Write the logic to calculate a QR codes score based on the QRID
-            return score;
+        }
+
+        // To do: Write the logic to calculate a QR codes score based on the QRID
+        return score;
     }
 
     /**

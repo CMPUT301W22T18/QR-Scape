@@ -122,6 +122,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
+    
+    <Button
+        android:id="@+id/personal_stats_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STATS"
+        android:onClick="openStats"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.921"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_code_edittext" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

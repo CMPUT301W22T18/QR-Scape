@@ -3,6 +3,7 @@ package com.example.qr_scape;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;

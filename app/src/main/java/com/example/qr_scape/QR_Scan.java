@@ -40,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.util.Base64;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -57,6 +57,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -71,7 +73,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  *
  */
 public class QR_Scan extends AppCompatActivity  {
-    Bitmap scanPhoto;
+    String scanPhoto;
     double scanLatitude;
     double scanLongitude;
     String scanQRText;
@@ -128,6 +130,7 @@ public class QR_Scan extends AppCompatActivity  {
                 // Open Camera
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 100);
+
             }
         });
 
@@ -135,8 +138,21 @@ public class QR_Scan extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
-                // Update Firestore with QRText
+
                 scanQRText = scantext.getText().toString();
+                final String USERNAME = "Username";
+
+                // Check shared preferences for username
+                SharedPreferences sharedPreferences;
+                sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+                String username = sharedPreferences.getString(USERNAME,null);
+                QRCode qrCode = new QRCode(scanQRText, username, scanLatitude, scanLongitude, scanPhoto);
+                // Update user's scores
+                ScoreActivity scoreUpdater = new ScoreActivity(username, qrCode.getQRHash());
+                scoreUpdater.updateHighestScore();
+                scoreUpdater.updateNumberOfScans();
+                scoreUpdater.updateLowestScore();
+                scoreUpdater.updateTotalScore();
                 addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
             }
         });
@@ -171,6 +187,7 @@ public class QR_Scan extends AppCompatActivity  {
                 return false;
             }
         });
+
     }
     /**
      * Asks user for the permission for tracking the location
@@ -231,8 +248,8 @@ public class QR_Scan extends AppCompatActivity  {
                                     )
                             );
                             // Set global variables
-                            scanLatitude = latitude;
-                            scanLongitude = longitude;
+                            scanLatitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();;
+                            scanLongitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();;
                             addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
                         }
 
@@ -254,12 +271,22 @@ public class QR_Scan extends AppCompatActivity  {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
             // get capture Image
+            //ByteArrayOutputStream bao = new ByteArrayOutputStream();
+
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             // Set Capture Image to ImageView
             imageView.setImageBitmap(captureImage);
+
             // Set global variable
             //scanPhoto = captureImage;
             //addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
+
+//            captureImage.compress(Bitmap.CompressFormat.PNG, 100, bao);
+//            captureImage.recycle();
+//            byte[] byteArray = bao.toByteArray();
+//            String imageB64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+//            scanPhoto = imageB64;
+
         }
     }
 
@@ -273,7 +300,7 @@ public class QR_Scan extends AppCompatActivity  {
      * @version 2
      */
     // Add QRCode Method (To be nest in the scanner class)
-    public void addQRCode(String QRText, double latitude, double longitude, Bitmap photo) {
+    public void addQRCode(String QRText, double latitude, double longitude, String photo) {
         final String USERNAME = "Username";
 
         // Check shared preferences for username

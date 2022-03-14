@@ -39,7 +39,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * it shows a map which can be zoomed in, out based on the lat/long which is feed into
  * The navigation bar is allowed to browse it and switch between different
  * activities
- * @Author Harsh Shah
+ * @author Harsh Shah
  */
 public class Location extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;

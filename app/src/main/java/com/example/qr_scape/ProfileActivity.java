@@ -209,5 +209,13 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
     }
+    
+    public void openStats(View view) {
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+        String savedUserName = sharedPreferences.getString(USERNAME,null);
+        Intent openStatsIntent = new Intent(this, PersonalStats.class);
+        openStatsIntent.putExtra("Profile", savedUserName);
+        startActivity(openStatsIntent);
+    }
 
 }
