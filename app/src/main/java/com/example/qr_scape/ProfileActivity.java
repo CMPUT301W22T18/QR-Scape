@@ -210,6 +210,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
     
+    /**
+     * Opens the stats page for the user
+     * @author Kiran Deol
+     */
     public void openStats(View view) {
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         String savedUserName = sharedPreferences.getString(USERNAME,null);
