@@ -68,11 +68,11 @@ public class Home extends AppCompatActivity {
                 return false;
             }
         });
-
-
-
-
     }
+    /**
+     * Called to open the leaderboard activity
+     * @param view
+     */
     public void openLeaderboard(View view) {
         startActivity(new Intent(Home.this, LeaderboardActivity.class));
     }
