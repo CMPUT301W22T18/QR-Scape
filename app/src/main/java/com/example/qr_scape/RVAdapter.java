@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * Adapater for recycler view of leaderboard
- * {@link https://developer.android.com/guide/topics/ui/layout/recyclerview
+ * @link https://developer.android.com/guide/topics/ui/layout/recyclerview
  * @author Kiran Deol
  */
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PlayerViewHolder>{
