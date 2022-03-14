@@ -28,7 +28,8 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
- * Main activity sets on the home activity
+ * Main activity
+ * @author Harsh Shah
  */
 // From: https://www.youtube.com
 // Link: https://www.youtube.com/watch?v=lOTIedfP1OA

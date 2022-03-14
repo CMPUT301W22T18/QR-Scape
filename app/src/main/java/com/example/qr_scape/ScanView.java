@@ -17,7 +17,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
  * Scan View Activity opens when scan button is pressed
  * It allows the user to scan a QR code and get a textvalue of it
- *
+ * @author Harsh Shah
   */
 // From: https://www.youtube.com
 // Link: https://www.youtube.com/watch?v=Sb4avOp7D_k

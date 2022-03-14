@@ -5,7 +5,7 @@
  *
  * Feb 17 2022
  *
- * Copyright 2022 Dallin Dmytryk, Harsh Shah
+ * Copyright 2022 Dallin Dmytryk, Harsh Shah, Kiran Deol
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -1,4 +1,4 @@
-//Copyright 2022, Harsh Shah
+//Copyright 2022, Harsh Shah, Kiran Deol
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -24,8 +24,10 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 /**
  * Home activity is the base activity
- * which brings the user when successfully logged in
- *
+ * which brings the user to it, when successfully logged in
+ * It has a leaderboard button which allows users to check the high score, low score,
+ * total scans, etc.
+ * @author  Harsh Shah, Kiren Deol
  */
 // From: https://www.youtube.com
 // Link: https://www.youtube.com/watch?v=lOTIedfP1OA
