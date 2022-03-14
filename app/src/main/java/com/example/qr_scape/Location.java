@@ -41,6 +41,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * activities
  * @author Harsh Shah
  */
+// From: https://www.youtube.com
+// Link: https://www.youtube.com/watch?v=p0PoKEPI65o
+// Author: https://www.youtube.com/channel/UCUIF5MImktJLDWDKe5oTdJQ
+// License: https://creativecommons.org/licenses/by-sa/3.0/
 public class Location extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     SupportMapFragment supportMapFragment;

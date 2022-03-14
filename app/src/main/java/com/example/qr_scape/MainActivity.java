@@ -30,7 +30,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 /**
  * Main activity sets on the home activity
  */
-
+// From: https://www.youtube.com
+// Link: https://www.youtube.com/watch?v=lOTIedfP1OA
+// Author: https://www.youtube.com/channel/UC2Dn1EkW8zglMgNkddhRVhg
+// License: https://creativecommons.org/licenses/by-sa/3.0/
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 

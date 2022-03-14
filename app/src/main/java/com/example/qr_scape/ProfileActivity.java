@@ -156,7 +156,10 @@ public class ProfileActivity extends AppCompatActivity {
                         });
             }
         });
-
+        // From: https://www.youtube.com
+        // Link: https://www.youtube.com/watch?v=yJh22Wk74V8&t=425s
+        // Author: https://www.youtube.com/channel/UCklYpZX_-QqHOeSUH4GVQpA
+        // License: https://creativecommons.org/licenses/by-sa/3.0/
         // set create QR code functionality
         imageView = findViewById(R.id.profile_imageview);
         codeEditText = findViewById(R.id.profile_code_edittext);

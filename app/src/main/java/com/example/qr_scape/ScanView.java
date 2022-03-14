@@ -14,7 +14,15 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
+/**
+ * Scan View Activity opens when scan button is pressed
+ * It allows the user to scan a QR code and get a textvalue of it
+ *
+  */
+// From: https://www.youtube.com
+// Link: https://www.youtube.com/watch?v=Sb4avOp7D_k
+// Author: https://www.youtube.com/channel/UCfqdbTgV61qlbEgJNw5FpiA
+// License: https://creativecommons.org/licenses/by-sa/3.0/
 public class ScanView extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     ZXingScannerView ScanView;
     @Override
