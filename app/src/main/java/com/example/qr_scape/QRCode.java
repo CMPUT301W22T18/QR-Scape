@@ -15,25 +15,32 @@ import java.util.ArrayList;
 public class QRCode {
     private String QRHashSalted;
     private String QRHash;
-    private String location;
+    private double latitude;
+    private double longitude;
     private int score;
     private String username;
-    private Bitmap photo;
+    private String photo;
 
     // Constructors
     /**
      * This method is the constructor method which creates an object
      * of type QRCode, without location
-     * @param QRText
+     * @param realHash
+     * @param saltedHash
+     * @param latitude
+     * @param longitude
+     * @param photo
+     * @param score
      * @param user
      */
-    public QRCode(String QRText, String user) { // Only QRText provided
-        this.QRHash = generateHash(QRText); // Generate QRHash
-        this.QRHashSalted = generateHash((QRText + user)); // QRHash is salted with the username
-        this.score = calculateScore(QRText);
-        this.location = null;
+    public QRCode(String realHash, String saltedHash,String user, double latitude, double longitude, String photo, int score) { // Only QRText provided
+        this.QRHash = realHash; // Generate QRHash
+        this.QRHashSalted = saltedHash; // QRHash is salted with the username
+        this.score = score;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.username = user;
-        this.photo = null;
+        this.photo = photo;
     }
 
     /**
@@ -41,14 +48,17 @@ public class QRCode {
      * of type QRCode, with location
      * @param QRText
      * @param user
-     * @param location
+     * @param latitude
+     * @param longitude
+     * @param photo
      */
 
-    public QRCode(String QRText, String user, String location, Bitmap photo) { // QRText and location provided
+    public QRCode(String QRText, String user, double latitude, double longitude, String photo) { // QRText and location provided
         this.QRHash = generateHash(QRText); // Generate QRHash
         this.QRHashSalted = generateHash((QRText + user)); // QRHash is salted with the username
-        this.location = location;
-        this.score = calculateScore(QRText);
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.score = calculateScore(QRHash);
         this.username = user;
         this.photo = photo;
     }
@@ -93,22 +103,22 @@ public class QRCode {
         this.QRHash = QRHash;
     }
 
-    /**
-     * This method gets the location of the QRCode object
-     * @return location
-     * Returns the location of the QRCode object
-     */
-    public String getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    /**
-     * This method sets the location of the QRCode object
-     * @param location
-     */
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     /**
      * This method gets the score of the QRCode object
      * @return score
@@ -124,6 +134,14 @@ public class QRCode {
      */
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     /**
@@ -172,4 +190,3 @@ public class QRCode {
     }
 
 }
-
