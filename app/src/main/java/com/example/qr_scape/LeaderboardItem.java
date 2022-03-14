@@ -12,7 +12,7 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 package com.example.qr_scape;
-/*
+/**
  * Used for creating the recycler view of the leaderboard
  * @author Kiran Deol
  */
