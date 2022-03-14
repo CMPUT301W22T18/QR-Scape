@@ -148,19 +148,21 @@ public class QR_Scan extends AppCompatActivity  {
 
                 scanQRText = scantext.getText().toString();
                 final String USERNAME = "Username";
+                if (!scanQRText.equals("Score")){
+                    // Check shared preferences for username
+                    SharedPreferences sharedPreferences;
+                    sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+                    String username = sharedPreferences.getString(USERNAME,null);
+                    QRCode qrCode = new QRCode(scanQRText, username, scanLatitude, scanLongitude, scanPhoto);
+                    // Update user's scores
+                    ScoreActivity scoreUpdater = new ScoreActivity(username, qrCode.getQRHash());
+                    scoreUpdater.updateHighestScore();
+                    scoreUpdater.updateNumberOfScans();
+                    scoreUpdater.updateLowestScore();
+                    scoreUpdater.updateTotalScore();
+                    addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
+                }
 
-                // Check shared preferences for username
-                SharedPreferences sharedPreferences;
-                sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
-                String username = sharedPreferences.getString(USERNAME,null);
-                QRCode qrCode = new QRCode(scanQRText, username, scanLatitude, scanLongitude, scanPhoto);
-                // Update user's scores
-                ScoreActivity scoreUpdater = new ScoreActivity(username, qrCode.getQRHash());
-                scoreUpdater.updateHighestScore();
-                scoreUpdater.updateNumberOfScans();
-                scoreUpdater.updateLowestScore();
-                scoreUpdater.updateTotalScore();
-                addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
             }
         });
         // From: https://www.youtube.com
