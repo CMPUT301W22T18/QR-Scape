@@ -5,7 +5,7 @@
  *
  * Feb 17 2022
  *
- * Copyright 2022 Dallin Dmytryk, Harsh Shah
+ * Copyright 2022 Dallin Dmytryk, Harsh Shah, Kiran Deol
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,7 +156,10 @@ public class ProfileActivity extends AppCompatActivity {
                         });
             }
         });
-
+        // From: https://www.youtube.com
+        // Link: https://www.youtube.com/watch?v=yJh22Wk74V8&t=425s
+        // Author: https://www.youtube.com/channel/UCklYpZX_-QqHOeSUH4GVQpA
+        // License: https://creativecommons.org/licenses/by-sa/3.0/
         // set create QR code functionality
         imageView = findViewById(R.id.profile_imageview);
         codeEditText = findViewById(R.id.profile_code_edittext);
@@ -210,6 +213,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
     
+    /**
+     * Opens the stats page for the user
+     * @author Kiran Deol
+     */
     public void openStats(View view) {
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         String savedUserName = sharedPreferences.getString(USERNAME,null);

@@ -65,10 +65,14 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
  * QR Scan Activity is for scanning the QR code
  * allows user to get the score of the scanned QR code
- * Capture the object/ location
+ * Record the image of the object/location
  * Allows users to get the geo location as Latitude, Longitude and record it
  * Through the navigation bar, the user can browse different activities
- * such as if on QR can activity, it can switch to home, profile etc.
+ * such as, if on QR can activity, it can switch to home, profile etc.
+ * While the user scans a QR code and gets the location, it gets updated to firestore real time
+ * Photos captured are in progress as we cant update it in firestore for now
+ * We have score being updated on scanned QR code into the player stats, which is on profile
+ * (latest update on photos is, bitmap is encoded to base64-string and we saw an instance of string in firebase as image)
  * @author Harsh Shah
  *
  */
@@ -133,7 +137,10 @@ public class QR_Scan extends AppCompatActivity  {
 
             }
         });
-
+        // From: https://www.youtube.com
+        // Link: https://www.youtube.com/watch?v=Sb4avOp7D_k
+        // Author: https://www.youtube.com/channel/UCfqdbTgV61qlbEgJNw5FpiA
+        // License: https://creativecommons.org/licenses/by-sa/3.0/
         scanbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,6 +163,10 @@ public class QR_Scan extends AppCompatActivity  {
                 addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
             }
         });
+        // From: https://www.youtube.com
+        // Link: https://www.youtube.com/watch?v=lOTIedfP1OA
+        // Author: https://www.youtube.com/channel/UC2Dn1EkW8zglMgNkddhRVhg
+        // License: https://creativecommons.org/licenses/by-sa/3.0/
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_scan);
 
@@ -210,6 +221,10 @@ public class QR_Scan extends AppCompatActivity  {
      * Gets the current location once the user grants the permission
      * required lat and longitude is captured
      */
+    // From: https://www.youtube.com
+    // Link: https://www.youtube.com/watch?v=ari3iD-3q8c
+    // Author: https://www.youtube.com/channel/UCmL5TAblHHgh1xhabmPjYgw
+    // License: https://creativecommons.org/licenses/by-sa/3.0/
     private void getCurrentLocation() {
         progressBar.setVisibility(View.VISIBLE);
         LocationRequest locationRequest = new LocationRequest();
@@ -265,6 +280,10 @@ public class QR_Scan extends AppCompatActivity  {
      * @param resultCode checks the status
      *
      */
+    // From: https://www.youtube.com
+    // Link: https://www.youtube.com/watch?v=RaOyw84625w
+    // Author: https://www.youtube.com/channel/UCUIF5MImktJLDWDKe5oTdJQ
+    // License: https://creativecommons.org/licenses/by-sa/3.0/
     // capture image and show it
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
