@@ -26,7 +26,10 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 
-
+/**
+ * This class will update the stats of a given user
+ * @author Kiran Deol
+ */
 public class ScoreActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference profilesRef = db.collection("Profiles");
