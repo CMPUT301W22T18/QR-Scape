@@ -135,6 +135,9 @@ public class QR_Scan extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
+                // Update Firestore with QRText
+                scanQRText = scantext.getText().toString();
+                addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
             }
         });
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -168,8 +171,6 @@ public class QR_Scan extends AppCompatActivity  {
                 return false;
             }
         });
-        scanQRText = scantext.getText().toString();
-        addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
     }
     /**
      * Asks user for the permission for tracking the location
@@ -232,6 +233,7 @@ public class QR_Scan extends AppCompatActivity  {
                             // Set global variables
                             scanLatitude = latitude;
                             scanLongitude = longitude;
+                            addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
                         }
 
                         progressBar.setVisibility(View.GONE);
@@ -256,7 +258,8 @@ public class QR_Scan extends AppCompatActivity  {
             // Set Capture Image to ImageView
             imageView.setImageBitmap(captureImage);
             // Set global variable
-            scanPhoto = captureImage;
+            //scanPhoto = captureImage;
+            //addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
         }
     }
 
@@ -296,7 +299,7 @@ public class QR_Scan extends AppCompatActivity  {
             HashMap<String, Object> data = new HashMap<>();
             data.put("Latitude", qrCode.getLatitude());
             data.put("Longitude", qrCode.getLongitude());
-            data.put("Photo", null);
+            data.put("Photo", qrCode.getPhoto());
             data.put("Score", qrCode.getScore());
             data.put("Username", username);
             data.put("RealHash", qrCode.getQRHash());

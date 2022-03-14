@@ -103,18 +103,34 @@ public class QRCode {
         this.QRHash = QRHash;
     }
 
+    /**
+     * This method gets the latitude of the QRCode object
+     * @return latitude
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * This method sets the latitude of the QRCode object
+     * @param latitude
+     */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
+    /**
+     * This method gets the longitude of the QRCode object
+     * @return longitude
+     */
     public double getLongitude() {
         return longitude;
     }
 
+    /**
+     * This method sets the longitude of the QRCode object
+     * @param longitude
+     */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
@@ -134,6 +150,22 @@ public class QRCode {
      */
     public void setScore(int score) {
         this.score = score;
+    }
+
+    /**
+     * This method gets the photo of the QRCode object
+     * @return photo
+     */
+    public Bitmap getPhoto() {
+        return photo;
+    }
+
+    /**
+     * This method sets the photo of the QRCode object
+     * @param photo
+     */
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
     }
 
     /**
