@@ -17,6 +17,12 @@ android {
 
     }
 
+    testOptions{
+        unitTests.all{
+            useJUnitPlatform()
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
