@@ -44,10 +44,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-/**
- * Handles the user's collection of QR codes (displaying, deleting, adding, etc.)
- */
-
 public class QRCollectionActivity extends AppCompatActivity {
     ListView qrList;
     ArrayAdapter<String> qrListAdapter;
