@@ -50,16 +50,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:textColor="@color/white"
         android:layout_marginBottom="80dp"
-        android:text="open camera" />
+        android:text="open camera"
+        android:textColor="@color/white"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonCurrentLocation"
         android:layout_width="wrap_content"
-        android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:text="current location"/>
+        android:text="current location"
+        android:textColor="@color/white"
+        android:visibility="invisible" />
 
     <ProgressBar
         android:layout_width="30dp"

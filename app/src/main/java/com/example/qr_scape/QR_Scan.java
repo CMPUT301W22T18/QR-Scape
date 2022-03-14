@@ -86,6 +86,7 @@ public class QR_Scan extends AppCompatActivity  {
     Button scanbtn;
     ImageView imageView;
     Button btOpen;
+    Button buttonCurrentLocation;
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private TextView textLatLong;
     private ProgressBar progressBar;
@@ -96,6 +97,7 @@ public class QR_Scan extends AppCompatActivity  {
         setContentView(R.layout.activity_qr_scan);
         scantext=(TextView)findViewById(R.id.scantext);
         scanbtn=(Button) findViewById(R.id.scanbtn);
+        buttonCurrentLocation=(Button) findViewById(R.id.buttonCurrentLocation);
 
         imageView = findViewById(R.id.image_view);
         btOpen = findViewById(R.id.bt_open);
@@ -146,6 +148,7 @@ public class QR_Scan extends AppCompatActivity  {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
 
+
                 scanQRText = scantext.getText().toString();
                 final String USERNAME = "Username";
 
@@ -161,7 +164,10 @@ public class QR_Scan extends AppCompatActivity  {
                 scoreUpdater.updateLowestScore();
                 scoreUpdater.updateTotalScore();
                 addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
+                btOpen.setVisibility(View.VISIBLE);
+                buttonCurrentLocation .setVisibility(View.VISIBLE);
             }
+
         });
         // From: https://www.youtube.com
         // Link: https://www.youtube.com/watch?v=lOTIedfP1OA
