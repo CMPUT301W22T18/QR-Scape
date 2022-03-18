@@ -27,12 +27,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * Search
@@ -43,11 +50,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * @version 1
  */
 public class Search extends AppCompatActivity {
+    String PLAYERS = "PLAYERS";
+    String PROFILES = "Profiles";
+    String CODES = "CODES";
     BottomNavigationView bottomNavigationView;
     EditText searchField;
     Button modeSelector;
     Button searchButton;
     ListView playerList;
+    ListView codeList;
+    String mode = PLAYERS;
+    FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +70,9 @@ public class Search extends AppCompatActivity {
         getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
+
+        // Set database
+        db = FirebaseFirestore.getInstance();
 
         // Set bottom navigation
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -94,12 +111,102 @@ public class Search extends AppCompatActivity {
 
         // Set mode button
         modeSelector = findViewById(R.id.search_setting_button);
+        modeSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchMode();
+            }
+        });
 
         // Set search button
         searchButton = findViewById(R.id.search_search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                executeSearch();
+            }
+        });
 
         // Set player list
         playerList = findViewById(R.id.search_player_result_listview);
+
+        // Set code list
+        codeList = findViewById(R.id.search_code_result_listview);
+
+    }
+
+    /**
+     * switches the search mode
+     * will switch between players and codes
+     * sets listview visibility and mode button text
+     */
+    private void switchMode() {
+        if (mode == PLAYERS) {
+            mode = CODES;
+            modeSelector.setText(CODES);
+            playerList.setVisibility(View.GONE);
+            codeList.setVisibility(View.VISIBLE);
+        } else {
+            mode = PLAYERS;
+            modeSelector.setText(PLAYERS);
+            playerList.setVisibility(View.VISIBLE);
+            codeList.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * executeSearch
+     * executes a search dependant on search mode
+     * will only execute if search field is filled
+     */
+    private void executeSearch() {
+        String searchTerms = searchField.getText().toString();
+        if (searchTerms.length() > 0) {
+            if (mode == PLAYERS) {
+                playerSearch(searchTerms);
+            } else {
+                codeSearch(searchTerms);
+            }
+        }
+    }
+
+    // Code modified from TVAC Studio
+    // https://www.youtube.com/watch?v=2z0HlIY7M9s
+    /**
+     * Searches for players
+     * will search the database for Profiles with searchTerms
+     * in the document ID
+     * @param searchTerms String term to be searched
+     */
+    private void playerSearch(String searchTerms) {
+        db.collection(PROFILES)
+                .orderBy(FieldPath.documentId())
+                .startAt(searchTerms)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        Log.d(null,"Successfully searched for players");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(null,"Failed to search for players");
+                    }
+                });
+    }
+
+    // Code modified from TVAC Studio
+    // https://www.youtube.com/watch?v=2z0HlIY7M9s
+    /**
+     * Searches for codes
+     * will search the database for QRCodes with searchTerms
+     * in the document ID
+     * @param searchTerms String term to be searched
+     */
+    private void codeSearch(String searchTerms) {
 
     }
 }
