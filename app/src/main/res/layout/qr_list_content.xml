@@ -1,12 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/qr_content_view"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:text=""
-    android:background="#272C5E"
-    android:textColor="#000000"
-    android:textSize="20sp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    android:elevation="4dp"
+    app:cardUseCompatPadding="true">
 
-</TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/qr_user"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:textColor="#000"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/qr_score"
+            android:text="Score"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_below="@+id/qr_user"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/qr_hash"
+            android:text="Hash"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_below="@+id/qr_score"
+            android:textColor="#000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/qr_long"
+            android:text="Longitude"
+            android:textSize="23dp"
+            android:layout_below="@+id/qr_hash"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/qr_lat"
+            android:text="Latitude"
+            android:textSize="23dp"
+            android:layout_below="@+id/qr_long"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
