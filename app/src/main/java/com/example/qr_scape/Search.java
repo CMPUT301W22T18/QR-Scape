@@ -34,12 +34,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 /**
  * Search
@@ -58,6 +63,7 @@ public class Search extends AppCompatActivity {
     Button modeSelector;
     Button searchButton;
     ListView playerList;
+    UserAdapter userAdapter;
     ListView codeList;
     String mode = PLAYERS;
     FirebaseFirestore db;
@@ -130,6 +136,10 @@ public class Search extends AppCompatActivity {
         // Set player list
         playerList = findViewById(R.id.search_player_result_listview);
 
+        // Set userAdapter
+        userAdapter = new UserAdapter(this,new ArrayList<User>());
+        playerList.setAdapter(userAdapter);
+
         // Set code list
         codeList = findViewById(R.id.search_code_result_listview);
 
@@ -179,21 +189,24 @@ public class Search extends AppCompatActivity {
      * @param searchTerms String term to be searched
      */
     private void playerSearch(String searchTerms) {
+        userAdapter.clear();
         db.collection(PROFILES)
                 .orderBy(FieldPath.documentId())
                 .startAt(searchTerms)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Log.d(null,"Successfully searched for players");
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(null,"Failed to search for players");
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            Log.d(null,"Successfully searched for users");
+                            // populate
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                User user = new User(document.getId(), "");
+                                userAdapter.add(user);
+                            }
+                        } else {
+                            Log.d(null,"Failed to search for users");
+                        }
                     }
                 });
     }
