@@ -5,7 +5,7 @@
  *
  * Version 1
  *
- * Copyright 2022 Dallin Dmytryk, Harsh Shah, Kiran Deol
+ * Copyright 2022 Dallin Dmytryk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ import java.util.ArrayList;
  * allows text entry
  * then lists results
  * @author Dallin Dmytryk
- * @version 1
+ * @version 3
  */
 public class Search extends AppCompatActivity {
     String PLAYERS = "PLAYERS";
