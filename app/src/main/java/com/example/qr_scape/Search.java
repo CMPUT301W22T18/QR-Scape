@@ -45,6 +45,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Search
@@ -170,7 +171,7 @@ public class Search extends AppCompatActivity {
      * will only execute if search field is filled
      */
     private void executeSearch() {
-        String searchTerms = searchField.getText().toString();
+        String searchTerms = searchField.getText().toString().toLowerCase(Locale.ROOT);
         if (searchTerms.length() > 0) {
             if (mode == PLAYERS) {
                 playerSearch(searchTerms);
