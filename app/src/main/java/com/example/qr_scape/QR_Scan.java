@@ -107,7 +107,13 @@ public class QR_Scan extends AppCompatActivity  {
 
     // instance for firebase storage and StorageReference
     FirebaseStorage storage;
-    StorageReference storageReference;
+    //StorageReference storageReference;
+    StorageReference storageReference = storage.getReferenceFromUrl("gs://qr-scape.appspot.com");
+    // Other resources for image upload:
+    // https://www.thecrazyprogrammer.com/2017/02/android-upload-image-firebase-storage-tutorial.html
+    // https://firebase.google.com/docs/storage/android/upload-files
+    // https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
+    // ^ may need to change Firebase Storage rules
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +131,7 @@ public class QR_Scan extends AppCompatActivity  {
 
         // get the Firebase  storage reference
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        //storageReference = storage.getReference();
 
         findViewById(R.id.buttonCurrentLocation).setOnClickListener(new View.OnClickListener() {
             @Override
