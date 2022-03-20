@@ -19,10 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -49,6 +51,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -60,6 +66,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.UUID;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
@@ -91,6 +98,17 @@ public class QR_Scan extends AppCompatActivity  {
     private TextView textLatLong;
     private ProgressBar progressBar;
     public static TextView scantext;
+
+    // Uri indicates, where the image will be picked from
+    private Uri filePath;
+
+    // request code
+    private final int PICK_IMAGE_REQUEST = 22;
+
+    // instance for firebase storage and StorageReference
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +122,11 @@ public class QR_Scan extends AppCompatActivity  {
         // get latitude and longitude
         textLatLong = findViewById(R.id.textLatLong);
         progressBar = findViewById(R.id.progressBar);
+
+        // get the Firebase  storage reference
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         findViewById(R.id.buttonCurrentLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -299,6 +322,9 @@ public class QR_Scan extends AppCompatActivity  {
             // get capture Image
             //ByteArrayOutputStream bao = new ByteArrayOutputStream();
 
+            // Get the Uri of data
+            filePath = data.getData();
+
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             // Set Capture Image to ImageView
             imageView.setImageBitmap(captureImage);
@@ -352,10 +378,12 @@ public class QR_Scan extends AppCompatActivity  {
             HashMap<String, Object> data = new HashMap<>();
             data.put("Latitude", qrCode.getLatitude());
             data.put("Longitude", qrCode.getLongitude());
-            data.put("Photo", qrCode.getPhoto());
+            data.put("Photo", qrCode.getPhoto()); // **** Remove after image upload works ****
             data.put("Score", qrCode.getScore());
             data.put("Username", username);
             data.put("RealHash", qrCode.getQRHash());
+
+            uploadImage(); // Store image to Firebase storage
 
             // Create HashMap for QRCodes (real/physical) and put fields into it
             HashMap<String, Object> data1 = new HashMap<>();
@@ -395,5 +423,85 @@ public class QR_Scan extends AppCompatActivity  {
                     });
         }
     }//end addQRCode
+
+
+    // From: https://www.geeksforgeeks.org
+    // Link: https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/
+    // Author: https://auth.geeksforgeeks.org/user/Rishabh007/articles
+    // License: https://creativecommons.org/licenses/by-sa/3.0/
+    // UploadImage method
+    private void uploadImage()
+    {
+        if (filePath != null) {
+
+            // Code for showing progressDialog while uploading
+            ProgressDialog progressDialog
+                    = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            // Defining the child of storageReference
+            StorageReference ref
+                    = storageReference
+                    .child(
+                            "images/"
+                                    + UUID.randomUUID().toString());
+
+            // adding listeners on upload
+            // or failure of image
+            ref.putFile(filePath)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                @Override
+                                public void onSuccess(
+                                        UploadTask.TaskSnapshot taskSnapshot)
+                                {
+
+                                    // Image uploaded successfully
+                                    // Dismiss dialog
+                                    progressDialog.dismiss();
+                                    Toast
+                                            .makeText(QR_Scan.this,
+                                                    "Image Uploaded!!",
+                                                    Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            })
+
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+
+                            // Error, Image not uploaded
+                            progressDialog.dismiss();
+                            Toast
+                                    .makeText(QR_Scan.this,
+                                            "Failed " + e.getMessage(),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    })
+                    .addOnProgressListener(
+                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                // Progress Listener for loading
+                                // percentage on the dialog box
+                                @Override
+                                public void onProgress(
+                                        UploadTask.TaskSnapshot taskSnapshot)
+                                {
+                                    double progress
+                                            = (100.0
+                                            * taskSnapshot.getBytesTransferred()
+                                            / taskSnapshot.getTotalByteCount());
+                                    progressDialog.setMessage(
+                                            "Uploaded "
+                                                    + (int)progress + "%");
+                                }
+                            });
+        }
+    }
 
 }
