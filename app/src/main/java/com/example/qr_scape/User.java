@@ -18,6 +18,7 @@ package com.example.qr_scape;
 public class User {
     private String name;
     private String contactInfo;
+    private Boolean owner;
 
     /**
      * Create a user object with assigned name and contact info
@@ -28,6 +29,19 @@ public class User {
     public User(String name, String contactInfo) {
         this.name = name;
         this.contactInfo = contactInfo;
+    }
+
+    /**
+     * Create a user object with assigned name and contact info
+     * For other users a user may encounter
+     * @param name
+     * @param contactInfo
+     * @param owner
+     */
+    public User(String name, String contactInfo, Boolean owner) {
+        this.name = name;
+        this.contactInfo = contactInfo;
+        this.owner = owner;
     }
 
     /**
