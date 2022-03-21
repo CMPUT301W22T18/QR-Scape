@@ -16,12 +16,17 @@ package com.example.qr_scape;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.SearchView;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,11 +34,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Location Activity allows the user to find QR Codes current location
  * it shows a map which can be zoomed in, out based on the lat/long which is feed into
@@ -45,14 +56,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 // Link: https://www.youtube.com/watch?v=p0PoKEPI65o
 // Author: https://www.youtube.com/channel/UCUIF5MImktJLDWDKe5oTdJQ
 // License: https://creativecommons.org/licenses/by-sa/3.0/
-public class Location extends AppCompatActivity {
+public class Location extends FragmentActivity implements OnMapReadyCallback {
     BottomNavigationView bottomNavigationView;
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
+    GoogleMap map;
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+        searchView =  findViewById(R.id.sv_location);
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.google_map);
         client = LocationServices.getFusedLocationProviderClient(this);
@@ -96,6 +110,38 @@ public class Location extends AppCompatActivity {
                 return false;
             }
         });
+        // search view implemented for searching
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if(location !=null || !location.equals("")){
+                    Geocoder geocoder = new Geocoder(Location.this);
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1 );
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Address address = addressList.get(0);
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    MarkerOptions options = new MarkerOptions().position(latLng)
+                            .title(location);
+                    //zoom map
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    // Add marker on map
+                    map.addMarker(options);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        supportMapFragment.getMapAsync(this);
 
 
 
@@ -131,10 +177,20 @@ public class Location extends AppCompatActivity {
                             //create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
                                     .title("QR Code");
+                            ArrayList<LatLng>arrayList = new ArrayList<LatLng>();
+                            LatLng Calgary = new LatLng(  51.049999,  -114.066666 );
+                            MarkerOptions option1 = new MarkerOptions().position(Calgary);
+                            LatLng RedDeer = new LatLng(52.268112,-113.811241 );
+                            MarkerOptions option2 = new MarkerOptions().position(RedDeer);
+                            LatLng StAlbert = new LatLng(53.630280, -113.625832 );
+                            MarkerOptions option3 = new MarkerOptions().position(StAlbert);
                             //zoom map
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             // Add marker on map
                             googleMap.addMarker(options);
+                            googleMap.addMarker(option1);
+                            googleMap.addMarker(option2);
+                            googleMap.addMarker(option3);
 
                         }
                     });
@@ -158,4 +214,8 @@ public class Location extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        map = googleMap;
+    }
 }
