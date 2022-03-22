@@ -14,54 +14,109 @@
 
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/USERNAME"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/qr_user"
-            android:text="Name"
-            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Username: "
+            android:textColor="@color/black"
             android:textSize="25dp"
-            android:textColor="#000"/>
-
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/qr_user"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/qr_score"
-            android:text="Score"
-            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/USERNAME"
+            android:text="Name"
+            android:textColor="#000"
             android:textSize="25dp"
-            android:layout_below="@+id/qr_user"
             />
 
         <TextView
+            android:id="@+id/SCORE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/USERNAME"
+            android:text="Score: "
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/qr_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/SCORE"
+            android:layout_below="@+id/qr_user"
+            android:layout_centerHorizontal="true"
+            android:text="Score"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/HASH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/SCORE"
+            android:text="Hash: "
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/HASH"
             android:id="@+id/qr_hash"
             android:text="Hash"
-            android:textStyle="bold"
             android:textSize="25dp"
             android:layout_below="@+id/qr_score"
             android:textColor="#000"/>
 
         <TextView
+            android:id="@+id/LONGITUDE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/qr_hash"
+            android:text="Longitude: "
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/qr_long"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/qr_long"
-            android:text="Longitude"
-            android:textSize="23dp"
             android:layout_below="@+id/qr_hash"
-            />
+            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/LONGITUDE"
+            android:text="Longitude"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/LATITUDE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/qr_long"
+            android:text="Latitude: "
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/LATITUDE"
             android:id="@+id/qr_lat"
             android:text="Latitude"
-            android:textSize="23dp"
+            android:textSize="25dp"
             android:layout_below="@+id/qr_long"
             />
 

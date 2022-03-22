@@ -1,5 +1,6 @@
 package com.example.qr_scape;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapter.myviewholder>{
-
+public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapter.myviewholder> {
     ArrayList<QRCode> qrDataList;
 
     public QRCollectionAdapter(ArrayList<QRCode> qrDataList) {
@@ -21,7 +21,7 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
     @NonNull
     @Override
     public myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.qr_list_content,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.qr_list_content, parent, false);
         return new myviewholder(view);
     }
 
@@ -45,6 +45,20 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), Expanded_QR_View.class);
+                    intent.putExtra("username",qrDataList.get(getAdapterPosition()).getUsername());
+                    intent.putExtra("score",String.valueOf(qrDataList.get(getAdapterPosition()).getScore()));
+                    intent.putExtra("hash",qrDataList.get(getAdapterPosition()).getQRHash());
+                    intent.putExtra("long",String.valueOf(qrDataList.get(getAdapterPosition()).getLongitude()));
+                    intent.putExtra("lat",String.valueOf(qrDataList.get(getAdapterPosition()).getLatitude()));
+                    view.getContext().startActivity(intent);
+                }
+            });
+
             qr_user = itemView.findViewById(R.id.qr_user);
             qr_score = itemView.findViewById(R.id.qr_score);
             qr_hash = itemView.findViewById(R.id.qr_hash);

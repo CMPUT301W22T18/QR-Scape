@@ -56,10 +56,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class QRCollectionActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    ArrayList<QRCode> qrDataList;
+    private RecyclerView recyclerView;
+    private ArrayList<QRCode> qrDataList;
     private FirebaseFirestore db;
-    QRCollectionAdapter qrCollectionAdapter;
+    private QRCollectionAdapter qrCollectionAdapter;
     //ListView qrList;
 
     @Override
