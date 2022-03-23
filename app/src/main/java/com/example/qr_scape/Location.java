@@ -110,6 +110,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                 return false;
             }
         });
+        //https://www.youtube.com/watch?v=iWYsBDCGhGw
         // search view implemented for searching
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
