@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.2677083333333333" />
         <entry key="..\:/Users/Dallin Dmytryk/Desktop/Git/QR-Scape/app/src/main/res/layout/activity_personal_stats.xml" value="0.20531526836894215" />
         <entry key="..\:/Users/Dallin Dmytryk/Desktop/Git/QR-Scape/app/src/main/res/layout/activity_profile.xml" value="0.5" />
         <entry key="..\:/Users/Dallin Dmytryk/Desktop/Git/QR-Scape/app/src/main/res/layout/activity_search.xml" value="0.5" />
@@ -29,6 +30,10 @@
         <entry key="..\:/Users/harsh/QR-Scape/app/src/main/res/layout/leaderboard_item.xml" value="0.30833333333333335" />
         <entry key="..\:/Users/harsh/QR-Scape/app/src/main/res/layout/qr_collections_layout.xml" value="0.12454710144927536" />
         <entry key="..\:/Users/harsh/QR-Scape/app/src/main/res/layout/qr_list_content.xml" value="0.12454710144927536" />
+        <entry key="app/src/main/res/layout/activity_expanded_qr_view.xml" value="0.2994791666666667" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.3104166666666667" />
+        <entry key="app/src/main/res/layout/expanded_qr_activity.xml" value="0.3104166666666667" />
+        <entry key="app/src/main/res/layout/leaderboard_item.xml" value="0.30625" />
         <entry key="app/src/main/res/layout/qr_collections_layout.xml" value="0.11851851851851852" />
         <entry key="app/src/main/res/layout/qr_list_content.xml" value="0.27037037037037037" />
       </map>
@@ -38,7 +43,7 @@
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/QR-Scape/doc" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

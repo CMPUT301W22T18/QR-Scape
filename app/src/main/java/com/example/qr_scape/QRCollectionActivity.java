@@ -15,7 +15,9 @@ package com.example.qr_scape;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +27,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,70 +55,49 @@ import com.google.firebase.firestore.QuerySnapshot;
  */
 
 public class QRCollectionActivity extends AppCompatActivity {
-    ListView qrList;
-    ArrayAdapter<String> qrListAdapter;
-    ArrayList<String> qrDataList;
+
+    private RecyclerView recyclerView;
+    private ArrayList<QRCode> qrDataList;
+    private FirebaseFirestore db;
+    private QRCollectionAdapter qrCollectionAdapter;
+    //ListView qrList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_collections_layout);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final CollectionReference QRRef = db.collection("QRCodeInstance");
-
-        //qrDataList = new ArrayList<String>();
-
-        qrList = findViewById(R.id.qrList);
-
-        // qrHashes: This will store all the hash codes of the QR codes which are added.
-        //String[] qrHashes = {"Hello", "You", "Are", "Amazing"};
-
+        recyclerView=(RecyclerView)findViewById(R.id.qr_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         qrDataList = new ArrayList<>();
-        //qrDataList.addAll(Arrays.asList(qrHashes));
+        qrCollectionAdapter = new QRCollectionAdapter(qrDataList);
+        recyclerView.setAdapter(qrCollectionAdapter);
 
-        qrListAdapter = new ArrayAdapter<>(this, R.layout.qr_list_content, qrDataList);
-        qrList.setAdapter(qrListAdapter);
+        db = FirebaseFirestore.getInstance();
 
-        Task<QuerySnapshot> qrRef = db.collection("QRCodeInstance").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
-                        Map<String, Object> hash_obj = document.getData();
-                        String hash_value = (String) hash_obj.toString();
-                        qrDataList.add(hash_value);
-                        qrListAdapter.notifyDataSetChanged();
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                    for (DocumentSnapshot d : list){
+
+                        QRCode qr = d.toObject(QRCode.class);
+                        String qr_username = d.getString("Username");
+                        Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                        String qr_realHash = d.getString("RealHash");
+                        //String qr_Photo = d.getString("Photo");
+                        Double qr_Longitude = d.getDouble("Longitude");
+                        Double qr_Latitude = d.getDouble("Latitude");
+                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                        qrDataList.add(qrCode);
                     }
+                    qrCollectionAdapter.notifyDataSetChanged();
                 }
             }
         });
-
-//        QRRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-//                    FirebaseFirestoreException error) {
-//                // Clear the old list
-//                qrDataList.clear();
-//                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-//                {
-//                    Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
-//                    String saltedHash = doc.getId();
-//                    String realHash = (String) doc.getData().get("realHash");
-//                    Bitmap photo = (Bitmap) doc.getData().get("Photo");
-//                    double latitude = (double) doc.getData().get("Latitude");
-//                    double longitude = (double) doc.getData().get("Longitude");
-//                    int score = (int) doc.getData().get("Score");
-//                    String username = (String) doc.getData().get("Username");
-//                    qrDataList.add(new QRCode(realHash, saltedHash, username, latitude, longitude, photo, score)); // Adding the cities and provinces from FireStore
-//                }
-//                qrListAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-//            }
-//        });
-////
-//
-//        deleteQRCode(qrDataList.get(1));
-
     }
 
 
