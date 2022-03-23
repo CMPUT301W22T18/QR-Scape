@@ -67,6 +67,18 @@
 
         </EditText>
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Owner Key (optional)"
+            android:ems="15"
+            android:inputType="textPassword"
+            android:background="@drawable/edit_text_background"
+            android:padding="15dp"
+            android:textColor="@color/white"
+            android:id="@+id/login_owner_key_edittext">
+        </EditText>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
