@@ -42,6 +42,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * LoginActivity
@@ -164,16 +165,17 @@ public class LoginActivity extends AppCompatActivity {
      * @param username String for profiles username
      */
     private void createProfile(String username) {
+        String lUsername = username.toLowerCase(Locale.ROOT);
         HashMap<String, String> data = new HashMap<>();
         data.put("Contact info", "");
         db.collection(PROFILES)
-                .document(username)
+                .document(lUsername)
                 .set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(null, "Successfully created user");
-                        saveUserCredentials(username);
+                        saveUserCredentials(lUsername);
                         nextActivity();
                     }
                 })
