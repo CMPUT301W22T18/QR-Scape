@@ -5,7 +5,7 @@
  *
  * Feb 17 2022
  *
- * Copyright [yyyy] [name of copyright owner]
+ * Copyright 2022 Dallin Dmytryk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * LoginActivity
@@ -57,11 +58,11 @@ import java.util.Locale;
 public class LoginActivity extends AppCompatActivity {
     final String PROFILES = "Profiles";
     final String USERNAME = "Username";
+    final String OWNER = "Owner";
     LinearLayout buttonLayout;
     LinearLayout createProfileLayout;
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         buttonLayout = findViewById(R.id.login_button_layout);
         createProfileLayout = findViewById(R.id.login_create_profile_layout);
         EditText usernameText = findViewById(R.id.login_username_edittext);
+        EditText userOwnerKey = findViewById(R.id.login_owner_key_edittext);
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection(PROFILES);
 
@@ -104,12 +106,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String username = usernameText.getText().toString();
+                String ownerKey = userOwnerKey.getText().toString();
                 // validate username
                 if (username.length() == 0) {
                     // warn user that input is incorrect
                     Snackbar.make(usernameText,R.string.invalid_username_warning,Snackbar.LENGTH_SHORT)
                             .show();
                     return;
+                }
+
+                if (!ownerKey.equals("A3DEACA823EJDC9S9DP2")) {
+                    // warn user that owner key is incorrect
+                    // account will be made, but without owner privileges
+                    Snackbar.make(userOwnerKey, R.string.incorrect_owner_key_warning, Snackbar.LENGTH_LONG)
+                            .show();
                 }
 
                 // check if username already exists
@@ -126,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                                     return;
                                 } else {
                                     createProfile(username);
+                                    validateOwner(username, ownerKey);
                                 }
                             }
                         })
@@ -165,17 +176,16 @@ public class LoginActivity extends AppCompatActivity {
      * @param username String for profiles username
      */
     private void createProfile(String username) {
-        String lUsername = username.toLowerCase(Locale.ROOT);
         HashMap<String, String> data = new HashMap<>();
         data.put("Contact info", "");
         db.collection(PROFILES)
-                .document(lUsername)
+                .document(username)
                 .set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(null, "Successfully created user");
-                        saveUserCredentials(lUsername);
+                        saveUserCredentials(username);
                         nextActivity();
                     }
                 })
@@ -185,6 +195,35 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(null,"Failed to create user");
                     }
                 });
+    }
+
+    /**
+     * Adds Owner flag to firestore database
+     * On success saves credentials
+     * @param username String for profiles username
+     * @param ownerKey String for user's inputted owner key
+     */
+    private void validateOwner(String username, String ownerKey) {
+        if (ownerKey.equals("A3DEACA823EJDC9S9DP2")) {
+            // activate owner status in firebase
+            HashMap<String, String> ownerBool = new HashMap<>();
+            ownerBool.put("Owner", "True");
+            db.collection(PROFILES)
+                    .document(username)
+                    .set(ownerBool, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d(null, "Successfully created owner");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(null,"Failed to create owner");
+                        }
+                    });
+        }
     }
 
     /**
