@@ -144,4 +144,8 @@ public class Profile extends AppCompatActivity {
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
     }
+
+    public void qrCollectionButtonClicked(View view) {
+        startActivity(new Intent(Profile.this, QRCollectionActivity.class));
+    }
 }

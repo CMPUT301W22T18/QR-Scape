@@ -135,5 +135,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_code_edittext" />
 
+    <Button
+        android:id="@+id/qrCollectionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:onClick="qrCollectionButtonClicked"
+        android:text="See My QR Codes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_code_edittext" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
