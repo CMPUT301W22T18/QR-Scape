@@ -4,7 +4,7 @@
  * Version 1
  *
  * March 22 2022
- * Copyright 2022 Dallin Dmytryk
+ * Copyright 2022 Dallin Dmytryk, Kiran Deol
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,22 @@
 package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 /**
  * OtherProfileActivity
@@ -40,9 +47,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * @version 1
  */
 public class OtherProfileActivity extends AppCompatActivity {
+    final String USERNAME = "USERNAME";
+    final String PROFILES = "Profiles";
+    final String CONTACTINFO = "Contact info";
     BottomNavigationView bottomNavigationView;
     TextView usernameText;
     TextView contactInfoText;
+    TextView highestText;
+    TextView lowestText;
+    TextView totalScoreText;
+    TextView totalScansText;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +98,67 @@ public class OtherProfileActivity extends AppCompatActivity {
             }
         });
 
-        // set username text
         usernameText = findViewById(R.id.otherprofile_username_text);
-
-        // set contact info text
         contactInfoText = findViewById(R.id.otherprofile_contact_info_text);
+        highestText = findViewById(R.id.otherprofile_highest_text);
+        lowestText = findViewById(R.id.otherprofile_lowest_text);
+        totalScoreText = findViewById(R.id.otherprofile_totalscore_text);
+        totalScansText = findViewById(R.id.otherprofile_totalscans_text);
+
+        // Get user from intent
+        Intent intent = getIntent();
+        String username = intent.getStringExtra(USERNAME);
+
+        // Set database
+        db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection(PROFILES).document(username);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.exists()) {
+                    Log.d(null, "Successfully loaded profile");
+                    // set username
+                    usernameText.setText(username);
+                    // set contact info text
+                    String infoText = value.getString(CONTACTINFO);
+                    contactInfoText.setText(infoText);
+                    final Object[] currentNumberOfScans = new Object[1];
+                    final Object[] highestScore = new Object[1];
+                    final Object[] lowestScore = new Object[1];
+                    final Object[] totalScore = new Object[1];
+                    currentNumberOfScans[0] = value.get("Total Scans");
+                    highestScore[0] = value.get("Highest Score");
+                    lowestScore[0] = value.get("Lowest Score");
+                    totalScore[0] = value.get("Total Score");
+                    if (currentNumberOfScans[0]  == null) {
+                        totalScansText.setText(String.valueOf(0));
+                    } else {
+                        totalScansText.setText(String.valueOf(currentNumberOfScans[0]));
+                    }
+
+                    if (highestScore[0]  == null) {
+                        highestText.setText(String.valueOf(0));
+                    } else {
+                        highestText.setText(String.valueOf(highestScore[0]));
+                    }
+
+                    if (lowestScore[0]  == null) {
+                        lowestText.setText(String.valueOf(0));
+                    } else {
+                        lowestText.setText(String.valueOf(highestScore[0]));
+                    }
+
+                    if (totalScore[0]  == null) {
+                        totalScoreText.setText(String.valueOf(0));
+                    } else {
+                        totalScoreText.setText(String.valueOf(totalScore[0]));
+                    }
+                } else {
+                    Log.d(null, "Failed to load profile");
+                }
+            }
+        });
+
 
     }
 

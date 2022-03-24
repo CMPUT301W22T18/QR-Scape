@@ -9,7 +9,6 @@
     tools:context=".Profile">
 
 
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -39,15 +38,15 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/colorgradient"
+        app:itemIconTint="@color/white"
+        app:itemRippleColor="@color/black"
+        app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/colorgradient"
-        app:itemTextColor="@drawable/selector"
-        app:itemIconTint="@color/white"
-        app:itemRippleColor="@color/black"
-        app:menu="@menu/bottom_navigation"
-        android:layout_alignParentBottom="true"/>
+        app:menu="@menu/bottom_navigation" />
 
     <TextView
         android:id="@+id/otherprofile_username_text"
@@ -62,6 +61,125 @@
 
     </TextView>
 
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Highest Score"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/otherprofile_highest_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Lowest Score"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/otherprofile_lowest_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Total Scans"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/otherprofile_totalscans_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Total Score"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/otherprofile_totalscore_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="@color/white"
+                android:textSize="20dp">
+
+            </TextView>
+
+        </TableRow>
+
+
+    </TableLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
