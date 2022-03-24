@@ -78,8 +78,8 @@ public class QRCollectionActivity extends AppCompatActivity {
         Task<QuerySnapshot> qrRef = db.collection("QRCodeInstance").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> hash_obj = document.getData();
                         String hash_value = (String) hash_obj.toString();
                         qrDataList.add(hash_value);
@@ -119,11 +119,12 @@ public class QRCollectionActivity extends AppCompatActivity {
 
     /**
      * Deletes an instance of a user QR code from the database
+     *
      * @param qrCode
      * @author Ty Greve
      * @version 1
      */
-    public void deleteQRCode(QRCode qrCode){
+    public void deleteQRCode(QRCode qrCode) {
         // Deletes an instance (scan by a user) of a QR code. QRCode (real/physical) remains in the database
 
         // Access a Cloud Firestore instance from your Activity
@@ -150,11 +151,12 @@ public class QRCollectionActivity extends AppCompatActivity {
     /**
      * Delete every instance of user QR codes (scanned instances) and the
      * real/physical QR code from the database
+     *
      * @param qrCode
      * @author Ty Greve
      * @version 1
      */
-    public void ownerDeleteQRCode(QRCode qrCode){
+    public void ownerDeleteQRCode(QRCode qrCode) {
         // Deletes a QRCode (real/physical) and EVERY user instances (scans) of that QR code
 
         // Access a Cloud Firestore instance from your Activity
@@ -202,10 +204,7 @@ public class QRCollectionActivity extends AppCompatActivity {
 
     /**
      * Add comment on QR code to database
-     * @param QRText
-     * @param latitude
-     * @param longitude
-     * @param photo
+     *
      * @author Ty Greve
      * @version 2
      */
@@ -215,8 +214,8 @@ public class QRCollectionActivity extends AppCompatActivity {
 
         // Check shared preferences for username of the user that is making the comment
         SharedPreferences sharedPreferences;
-        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
-        String username = sharedPreferences.getString(USERNAME,null);
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+        String username = sharedPreferences.getString(USERNAME, null);
 
         // Validate user input
         if ((comment.equals(null)) || (username.equals(null))) {
@@ -238,7 +237,7 @@ public class QRCollectionActivity extends AppCompatActivity {
 
             // Store to Firestore the QRCodeInstance
             // Get reference to Firestore collection and Document ID
-            db.collection("Comments").document(qrCode.getQRHashSalted())
+            db.collection("Comments").document()
                     .set(data) // Set fields in the Firestore database
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -254,4 +253,5 @@ public class QRCollectionActivity extends AppCompatActivity {
                     });
         }
 
+    }
 }
