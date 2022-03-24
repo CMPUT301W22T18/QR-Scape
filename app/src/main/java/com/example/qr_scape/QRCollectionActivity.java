@@ -15,6 +15,7 @@ package com.example.qr_scape;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -198,4 +199,59 @@ public class QRCollectionActivity extends AppCompatActivity {
                     }
                 });
     }//end ownerDeleteQRCode
+
+    /**
+     * Add comment on QR code to database
+     * @param QRText
+     * @param latitude
+     * @param longitude
+     * @param photo
+     * @author Ty Greve
+     * @version 2
+     */
+    // Add QRCode Method (To be nest in the scanner class)
+    public void addComment(String comment, String QRHashSalted) {
+        final String USERNAME = "Username";
+
+        // Check shared preferences for username of the user that is making the comment
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+        String username = sharedPreferences.getString(USERNAME,null);
+
+        // Validate user input
+        if ((comment.equals(null)) || (username.equals(null))) {
+            Toast.makeText(QRCollectionActivity.this, "Must fill-in a comment.", Toast.LENGTH_SHORT).show();
+        }
+
+
+        if (comment.length() > 0 && username.length() > 0) {
+
+            // Access a Cloud Firestore instance from your Activity
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // Create HashMap for QRCodeInstance and put fields from the qrCode object into it
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("commentText", comment);
+            data.put("qrInstance", QRHashSalted);
+            data.put("user", username);
+            data.put("timestamp", "time_stamp");
+
+            // Store to Firestore the QRCodeInstance
+            // Get reference to Firestore collection and Document ID
+            db.collection("Comments").document(qrCode.getQRHashSalted())
+                    .set(data) // Set fields in the Firestore database
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "Data has been added successfully!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Data could not be added!" + e.toString());
+                        }
+                    });
+        }
+
 }
