@@ -143,6 +143,7 @@
         android:layout_marginTop="8dp"
         android:onClick="qrCollectionButtonClicked"
         android:text="See My QR Codes"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_code_edittext" />
 
