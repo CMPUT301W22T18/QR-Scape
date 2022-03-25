@@ -226,35 +226,4 @@ public class ProfileActivity extends AppCompatActivity {
         openStatsIntent.putExtra("Profile", savedUserName);
         startActivity(openStatsIntent);
     }
-
-    /**
-     * Deletes the Profile of a user from the database
-     * @param username
-     * @author Ty Greve
-     * @version 1
-     */
-    public void deleteProfile(String username){
-        // Deletes an profile document in the database
-
-        // Access a Cloud Firestore instance from your Activity
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Delete the document from the Firestore Profiles Collection
-        // Get reference to Firestore collection and Document ID
-        db.collection("Profiles").document(username)
-                .delete() // delete document in the Firestore database
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Document has been deleted successfully!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
-                    }
-                });
-    }//end deleteProfile
-
 }
