@@ -15,11 +15,9 @@ package com.example.qr_scape;
 
 import static android.content.ContentValues.TAG;
 
-<<<<<<< HEAD
+
 import android.content.SharedPreferences;
-=======
 import android.content.Intent;
->>>>>>> 78e592bd8ecfe66c3a1c3ffba9133f1096b16eb1
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -82,15 +80,6 @@ public class QRCollectionActivity extends AppCompatActivity {
         db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-<<<<<<< HEAD
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Map<String, Object> hash_obj = document.getData();
-                        String hash_value = (String) hash_obj.toString();
-                        qrDataList.add(hash_value);
-                        qrListAdapter.notifyDataSetChanged();
-=======
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if(!queryDocumentSnapshots.isEmpty()){
                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
@@ -106,7 +95,6 @@ public class QRCollectionActivity extends AppCompatActivity {
                         Double qr_Latitude = d.getDouble("Latitude");
                         QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
                         qrDataList.add(qrCode);
->>>>>>> 78e592bd8ecfe66c3a1c3ffba9133f1096b16eb1
                     }
                     qrCollectionAdapter.notifyDataSetChanged();
                 }
