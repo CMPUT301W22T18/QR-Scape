@@ -28,6 +28,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -63,6 +64,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     TextView lowestText;
     TextView totalScoreText;
     TextView totalScansText;
+    Button deleteProfileButton;
     FirebaseFirestore db;
 
     @Override
@@ -72,6 +74,21 @@ public class OtherProfileActivity extends AppCompatActivity {
         getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
+        // Set deleteProfile button to invisible
+        deleteProfileButton = findViewById(R.id.deleteProfileButton);
+        deleteProfileButton.setVisibility(View.INVISIBLE);
+        final String ISOWNER = "False";
+        // Check shared preferences for username
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+        String isOwner = sharedPreferences.getString(ISOWNER,null);
+        if (isOwner == "True"){
+            deleteProfileButton.setVisibility(View.VISIBLE);
+        } else if (isOwner == "False"){
+
+        }else{
+
+        }
 
         // set bottom navigation view
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -165,7 +182,10 @@ public class OtherProfileActivity extends AppCompatActivity {
             }
         });
 
-        Button deleteProfileButton = findViewById(R.id.deleteProfileButton);
+
+
+
+
         deleteProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
