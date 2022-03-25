@@ -87,12 +87,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.google_map);
 
         client = LocationServices.getFusedLocationProviderClient(this);
-        //recyclerView=(RecyclerView)findViewById(R.id.qr_recyclerView);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<>();
-//        qrCollectionAdapter = new QRCollectionAdapter(qrDataList);
-//        recyclerView.setAdapter(qrCollectionAdapter);
-
         db = FirebaseFirestore.getInstance();
 
         db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -168,64 +163,6 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                 return false;
             }
         });
-        // search view implemented for searching
-
-//        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull GoogleMap googleMap) {
-//                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//                    @Override
-//                    public boolean onQueryTextSubmit(String query) {
-//                        String searchlocation = searchView.getQuery().toString();
-//                        List<Address> addressList = null;
-//
-//                        if(searchlocation !=null || !searchlocation.equals("")){
-//                            Geocoder geocoder = new Geocoder(Location.this);
-//                            try {
-//                                addressList = geocoder.getFromLocationName(searchlocation, 1 );
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                            Address address = addressList.get(0);
-//                            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-//                            MarkerOptions options = new MarkerOptions().position(latLng)
-//                                    .title(searchlocation);
-//                            //zoom map
-//                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-//                            // Add marker on map
-//                            googleMap.addMarker(options);
-//                            //current location
-////                            LatLng latLngCurrent = new LatLng(location.getLatitude(),location.getLongitude());
-////
-////                            //create marker options
-////                            MarkerOptions options7 = new MarkerOptions().position(latLngCurrent)
-////                                    .title("CurrentLocation");
-////                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-////                            googleMap.addMarker(options7);
-//                            for ( int i = 0; i<arrayList.size(); i++){
-//                                MarkerOptions options87 = new MarkerOptions().position(arrayList.get(i))
-//                                        .title("QR Code");
-//                                // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
-//                                googleMap.addMarker(options87);
-//
-//                            }
-//
-//
-//                        }
-//                        return false;
-//                    }
-//
-//                    @Override
-//                    public boolean onQueryTextChange(String newText) {
-//                        return false;
-//                    }
-//                });
-//            }
-//        });
-
-
-
-
 
 
         /**
@@ -305,12 +242,6 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                 }
                             });
 
-
-
-
-
-
-
                         }
                     });
                 }
@@ -336,9 +267,6 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-
-
-
     }
 
 }
