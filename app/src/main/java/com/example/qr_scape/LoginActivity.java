@@ -34,8 +34,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -136,7 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                                     return;
                                 } else {
                                     createProfile(username);
-                                    validateOwner(username, ownerKey);
+                                    addOwner(username, ownerKey);
+                                    saveUserStatus(username);
                                 }
                             }
                         })
@@ -203,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param username String for profiles username
      * @param ownerKey String for user's inputted owner key
      */
-    private void validateOwner(String username, String ownerKey) {
+    private void addOwner(String username, String ownerKey) {
         if (ownerKey.equals("A3DEACA823EJDC9S9DP2")) {
             // activate owner status in firebase
             HashMap<String, String> ownerBool = new HashMap<>();
@@ -214,13 +217,32 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Log.d(null, "Successfully created owner");
+                            Log.d(null, "Successfully set them to owner");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(null,"Failed to create owner");
+                            Log.d(null,"Failed to set their status on firebase");
+                        }
+                    });
+        } else {
+            // activate owner status in firebase
+            HashMap<String, String> ownerBool = new HashMap<>();
+            ownerBool.put("Owner", "False");
+            db.collection(PROFILES)
+                    .document(username)
+                    .set(ownerBool, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d(null, "Successfully set them to not an owner");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(null,"Failed to set their status on firebase");
                         }
                     });
         }
@@ -244,4 +266,37 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Saves username's status as owner or not
+     * @param username string Profile username
+     */
+    private void saveUserStatus(String username) {
+        final Object[] ownerStatus = new Object[1];
+        Task<DocumentSnapshot> userRef = db.collection("Profiles").document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ownerStatus[0] = document.get("Owner");
+                        if (ownerStatus[0]  == null | String.valueOf(ownerStatus[0]).equals("False")) {
+                            SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                            shEditor.putString(OWNER, "False");
+                            shEditor.commit();
+                            Log.d("LoginActivity: Is owner?", "They are NOT owner on sharedprefs");
+                        } else {
+                            SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                            shEditor.putString(OWNER, "True");
+                            shEditor.commit();
+                            Log.d("LoginActivity: Is owner?", "They are an owner on sharedprefs");
+                        }
+                    } else {
+                        Log.d("LoginActivity", "No such document");
+                    }
+                } else {
+                    Log.d("LoginActivity", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 }
