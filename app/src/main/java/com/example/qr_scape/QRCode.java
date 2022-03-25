@@ -34,6 +34,17 @@ public class QRCode {
     private String username;
     private String photo;
 
+    public QRCode() {
+    }
+
+    public QRCode(String QRHash, double latitude, double longitude, int score, String username) {
+        this.QRHash = QRHash;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.score = score;
+        this.username = username;
+    }
+
     // Constructors
     /**
      * This method is the constructor method which creates an object
@@ -77,6 +88,15 @@ public class QRCode {
     }
 
     // Getters and Setters
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     /**
      * This method gets the QR code hash (salted with the username) that
