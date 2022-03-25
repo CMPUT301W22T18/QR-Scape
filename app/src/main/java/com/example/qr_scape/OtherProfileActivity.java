@@ -74,20 +74,17 @@ public class OtherProfileActivity extends AppCompatActivity {
         getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
+
         // Set deleteProfile button to invisible
         deleteProfileButton = findViewById(R.id.deleteProfileButton);
         deleteProfileButton.setVisibility(View.INVISIBLE);
-        final String ISOWNER = "False";
-        // Check shared preferences for username
+        final String ISOWNER = "Owner";
+        // Check shared preferences for isOwner
         SharedPreferences sharedPreferences;
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         String isOwner = sharedPreferences.getString(ISOWNER,null);
-        if (isOwner == "True"){
+        if (isOwner.equalsIgnoreCase("true")){
             deleteProfileButton.setVisibility(View.VISIBLE);
-        } else if (isOwner == "False"){
-
-        }else{
-
         }
 
         // set bottom navigation view
