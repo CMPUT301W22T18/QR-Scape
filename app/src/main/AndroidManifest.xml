@@ -16,9 +16,12 @@
         android:theme="@style/Theme.QRScape"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Expanded_QR_View"
-            android:parentActivityName=".QRCollectionActivity"
+            android:name=".OtherProfileActivity"
             android:exported="false" />
+        <activity
+            android:name=".Expanded_QR_View"
+            android:exported="false"
+            android:parentActivityName=".QRCollectionActivity" />
         <activity
             android:name=".QRCollectionActivity"
             android:exported="false" />
