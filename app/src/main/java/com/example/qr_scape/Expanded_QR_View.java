@@ -5,6 +5,8 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,7 @@ public class Expanded_QR_View extends AppCompatActivity {
         TextView qr_score = findViewById(R.id.tv_score);
         TextView qr_longitude = findViewById(R.id.tv_longitude);
         TextView qr_latitude = findViewById(R.id.tv_latitude);
+        Button deleteScan = findViewById(R.id.deleteScanButton);
 
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
@@ -41,16 +44,23 @@ public class Expanded_QR_View extends AppCompatActivity {
         qr_longitude.setText(longitude);
         qr_latitude.setText(latitude);
 
+        deleteScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteQRCode(hash);
+                startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
+            }
+        });
 
     }
 
     /**
      * Deletes an instance of a user QR code from the database
-     * @param qrCode
+     * @param hashSalted
      * @author Ty Greve
      * @version 1
      */
-    public void deleteQRCode(QRCode qrCode){
+    public void deleteQRCode(String hashSalted){
         // Deletes an instance (scan by a user) of a QR code. QRCode (real/physical) remains in the database
 
         // Access a Cloud Firestore instance from your Activity
@@ -58,7 +68,7 @@ public class Expanded_QR_View extends AppCompatActivity {
 
         // Delete the document from the Firestore QRCodeInstance Collection
         // Get reference to Firestore collection and Document ID
-        db.collection("QRCodeInstance").document(qrCode.getQRHashSalted())
+        db.collection("QRCodeInstance").document(hashSalted)
                 .delete() // delete document in the Firestore database
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
