@@ -14,16 +14,21 @@
 package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
@@ -40,6 +45,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,9 +67,17 @@ import java.util.List;
 public class Location extends FragmentActivity implements OnMapReadyCallback {
     BottomNavigationView bottomNavigationView;
     SupportMapFragment supportMapFragment;
+    SupportMapFragment mapFragment;
     FusedLocationProviderClient client;
     GoogleMap map;
+    RecyclerView recyclerView;
+    FirebaseFirestore db;
+    ArrayList<LatLng> arrayList;
+    ArrayList<QRCode> qrDataList;
     SearchView searchView;
+
+    //QRCollectionAdapter qrCollectionAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,10 +85,47 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
         searchView =  findViewById(R.id.sv_location);
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.google_map);
+
         client = LocationServices.getFusedLocationProviderClient(this);
+        arrayList = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                    for (DocumentSnapshot d : list){
+
+                        QRCode qr = d.toObject(QRCode.class);
+                        String qr_username = d.getString("Username");
+                        Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                        String qr_realHash = d.getString("RealHash");
+                        //String qr_Photo = d.getString("Photo");
+                        Double qr_Longitude = d.getDouble("Longitude");
+                        Double qr_Latitude = d.getDouble("Latitude");
+                        Log.i("location", String.valueOf(qr_Latitude));
+                        Log.i("location", String.valueOf(qr_Longitude));
+                        LatLng latLngfire = new LatLng(qr_Latitude, qr_Longitude);
+                        arrayList.add(latLngfire);
+                        Log.d("firelocation", String.valueOf(arrayList));
+//                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+//                        qrDataList.add(qrCode);
+                    }
+
+                }
+            }
+        });
+
+
+
+
         if (ActivityCompat.checkSelfPermission(Location.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //when permission granted
             //call
+
             getCurrentLocation();
         }else{
             // when persmission denied
@@ -110,48 +163,15 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                 return false;
             }
         });
-        // search view implemented for searching
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                String location = searchView.getQuery().toString();
-                List<Address> addressList = null;
-
-                if(location !=null || !location.equals("")){
-                    Geocoder geocoder = new Geocoder(Location.this);
-                    try {
-                        addressList = geocoder.getFromLocationName(location, 1 );
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Address address = addressList.get(0);
-                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    MarkerOptions options = new MarkerOptions().position(latLng)
-                            .title(location);
-                    //zoom map
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                    // Add marker on map
-                    map.addMarker(options);
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        supportMapFragment.getMapAsync(this);
 
 
-
-     /**
-      * getCurrentLocation allows the user to check
-      * QR Codes current location once the user grants the permission
-      * Getting location of multiple QR Codes will be implemented in the next version
-      */
+        /**
+         * getCurrentLocation allows the user to check
+         * QR Codes current location once the user grants the permission
+         * Getting location of multiple QR Codes will be implemented in the next version
+         */
     }
-    private void getCurrentLocation() {
+    public void getCurrentLocation() {
         // Initialize task location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -163,6 +183,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
         Task<android.location.Location> task = client.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<android.location.Location>() {
             @Override
@@ -173,24 +194,53 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                         public void onMapReady(@NonNull GoogleMap googleMap) {
                             // initialize lat lng
                             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-
+                            Log.i("currentLocation", String.valueOf(latLng));
                             //create marker options
-                            MarkerOptions options = new MarkerOptions().position(latLng)
-                                    .title("QR Code");
-                            ArrayList<LatLng>arrayList = new ArrayList<LatLng>();
-                            LatLng Calgary = new LatLng(  51.049999,  -114.066666 );
-                            MarkerOptions option1 = new MarkerOptions().position(Calgary);
-                            LatLng RedDeer = new LatLng(52.268112,-113.811241 );
-                            MarkerOptions option2 = new MarkerOptions().position(RedDeer);
-                            LatLng StAlbert = new LatLng(53.630280, -113.625832 );
-                            MarkerOptions option3 = new MarkerOptions().position(StAlbert);
-                            //zoom map
+                            MarkerOptions options7 = new MarkerOptions().position(latLng)
+                                    .title("CurrentLocation");
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                            // Add marker on map
-                            googleMap.addMarker(options);
-                            googleMap.addMarker(option1);
-                            googleMap.addMarker(option2);
-                            googleMap.addMarker(option3);
+                            googleMap.addMarker(options7);
+                            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                                @Override
+                                public boolean onQueryTextSubmit(String query) {
+                                    String searchlocation = searchView.getQuery().toString();
+                                    List<Address> addressList = null;
+
+                                    if(searchlocation !=null || !searchlocation.equals("")){
+                                        Geocoder geocoder = new Geocoder(Location.this);
+                                        try {
+                                            addressList = geocoder.getFromLocationName(searchlocation, 1 );
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        Address address = addressList.get(0);
+                                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                                        MarkerOptions options = new MarkerOptions().position(latLng)
+                                                .title(searchlocation);
+                                        //zoom map
+                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                                        // Add marker on map
+                                        googleMap.addMarker(options);
+
+
+                                        for ( int i = 0; i<arrayList.size(); i++){
+                                            MarkerOptions options87 = new MarkerOptions().position(arrayList.get(i))
+                                                    .title("QR Code");
+                                            // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
+                                            googleMap.addMarker(options87);
+
+                                        }
+
+
+                                    }
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onQueryTextChange(String newText) {
+                                    return false;
+                                }
+                            });
 
                         }
                     });
@@ -201,7 +251,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
 
     /**
      * checks permission from the user considering their privacy
-      */
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -218,4 +268,5 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
     }
+
 }
