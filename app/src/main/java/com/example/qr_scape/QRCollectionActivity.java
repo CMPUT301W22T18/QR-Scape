@@ -87,7 +87,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                         QRCode qr = d.toObject(QRCode.class);
                         String qr_username = d.getString("Username");
                         Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
-                        String qr_realHash = d.toString();
+                        String qr_realHash = d.getId().toString();
                         //String qr_Photo = d.getString("Photo");
                         Double qr_Longitude = d.getDouble("Longitude");
                         Double qr_Latitude = d.getDouble("Latitude");
