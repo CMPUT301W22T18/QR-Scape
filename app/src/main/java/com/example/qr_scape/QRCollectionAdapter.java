@@ -1,6 +1,7 @@
 package com.example.qr_scape;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
                     Intent intent = new Intent(view.getContext(), Expanded_QR_View.class);
                     intent.putExtra("username",qrDataList.get(getAdapterPosition()).getUsername());
                     intent.putExtra("score",String.valueOf(qrDataList.get(getAdapterPosition()).getScore()));
-                    intent.putExtra("hash",qrDataList.get(getAdapterPosition()).getQRHashSalted());
+                    intent.putExtra("hash",qrDataList.get(getAdapterPosition()).getQRHash());
                     intent.putExtra("long",String.valueOf(qrDataList.get(getAdapterPosition()).getLongitude()));
                     intent.putExtra("lat",String.valueOf(qrDataList.get(getAdapterPosition()).getLatitude()));
                     view.getContext().startActivity(intent);
