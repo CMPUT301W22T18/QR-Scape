@@ -225,4 +225,8 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(openStatsIntent);
     }
 
+    public void qrCollectionButtonClicked(View view) {
+        startActivity(new Intent(ProfileActivity.this, QRCollectionActivity.class));
+    }
+
 }
