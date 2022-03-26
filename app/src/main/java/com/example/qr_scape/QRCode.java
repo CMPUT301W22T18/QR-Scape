@@ -37,9 +37,6 @@ public class QRCode {
     public QRCode() {
     }
 
-//    public QRCode(String qr_realHash, String qr_saltedHash, Double qr_Latitude, Double qr_Longitude, Integer qr_scoreLong, String qr_username) {
-//    }
-
     public QRCode(String QRHash, double latitude, double longitude, int score, String username) {
         this.QRHash = QRHash;
         this.latitude = latitude;
@@ -56,18 +53,18 @@ public class QRCode {
      * @param saltedHash
      * @param latitude
      * @param longitude
-//     * @param photo
+     * @param photo
      * @param score
      * @param user
      */
-    public QRCode(String realHash, String saltedHash,String user, double latitude, double longitude, int score) { // Only QRText provided
+    public QRCode(String realHash, String saltedHash,String user, double latitude, double longitude, String photo, int score) { // Only QRText provided
         this.QRHash = realHash; // Generate QRHash
         this.QRHashSalted = saltedHash; // QRHash is salted with the username
         this.score = score;
         this.longitude = longitude;
         this.latitude = latitude;
         this.username = user;
-        //this.photo = photo;
+        this.photo = photo;
     }
 
     /**
