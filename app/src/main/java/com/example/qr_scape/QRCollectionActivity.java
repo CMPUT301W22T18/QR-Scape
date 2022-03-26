@@ -83,15 +83,15 @@ public class QRCollectionActivity extends AppCompatActivity {
                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                     Log.d("list", queryDocumentSnapshots.getDocuments().toString());
                     for (DocumentSnapshot d : list){
+
                         QRCode qr = d.toObject(QRCode.class);
                         String qr_username = d.getString("Username");
                         Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
                         String qr_realHash = d.getString("RealHash");
-                        String qr_saltedHash = d.getId().toString();
                         //String qr_Photo = d.getString("Photo");
                         Double qr_Longitude = d.getDouble("Longitude");
                         Double qr_Latitude = d.getDouble("Latitude");
-                        QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash,qr_username, qr_Latitude, qr_Longitude, qr_scoreLong);
+                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
                         qrDataList.add(qrCode);
                     }
                     qrCollectionAdapter.notifyDataSetChanged();
@@ -99,6 +99,37 @@ public class QRCollectionActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    /**
+     * Deletes an instance of a user QR code from the database
+     * @param qrCode
+     * @author Ty Greve
+     * @version 1
+     */
+    public void deleteQRCode(QRCode qrCode){
+        // Deletes an instance (scan by a user) of a QR code. QRCode (real/physical) remains in the database
+
+        // Access a Cloud Firestore instance from your Activity
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Delete the document from the Firestore QRCodeInstance Collection
+        // Get reference to Firestore collection and Document ID
+        db.collection("QRCodeInstance").document(qrCode.getQRHashSalted())
+                .delete() // delete document in the Firestore database
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Document has been deleted successfully!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                    }
+                });
+    }//end deleteQRCode
 
     /**
      * Delete every instance of user QR codes (scanned instances) and the
