@@ -47,7 +47,8 @@ public class Expanded_QR_View extends AppCompatActivity {
         deleteScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteQRCode(hash);
+                String saltedHash = qr_hash.getText().toString();
+                deleteQRCode(saltedHash);
                 startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
             }
         });
