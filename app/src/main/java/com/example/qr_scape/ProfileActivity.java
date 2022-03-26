@@ -55,6 +55,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 /**
@@ -72,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
     final String CONTACTINFO = "Contact info";
     TextView usernameText;
     EditText contactInfoText;
-    EditText codeEditText;
+    TextView codeEditText;
     Button confirmButton;
     Button codeButton;
     BottomNavigationView bottomNavigationView;
@@ -161,8 +163,10 @@ public class ProfileActivity extends AppCompatActivity {
         // Author: https://www.youtube.com/channel/UCklYpZX_-QqHOeSUH4GVQpA
         // License: https://creativecommons.org/licenses/by-sa/3.0/
         // set create QR code functionality
+        // it takes in username and generates the QR code with username!
         imageView = findViewById(R.id.profile_imageview);
-        codeEditText = findViewById(R.id.profile_code_edittext);
+        codeEditText= findViewById(R.id.profile_code_edittext);
+        codeEditText.setText(savedUserName);
         codeButton = findViewById(R.id.profile_generate_button);
         codeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +178,7 @@ public class ProfileActivity extends AppCompatActivity {
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                     Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                     imageView.setImageBitmap(bitmap);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
