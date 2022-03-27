@@ -1,4 +1,4 @@
-//Copyright 2022, Ty Greve, Kash Sansanwal
+//Copyright 2022, Ty Greve
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -17,9 +17,14 @@ import static android.content.ContentValues.TAG;
 
 
 import android.content.SharedPreferences;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,45 +35,49 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
- * Handles the user's collection of QR codes (displaying, deleting, adding, etc.)
+ * Handle the collection of comments on QR codes (displaying, adding, etc.)
  */
 
-public class QRCollectionActivity extends AppCompatActivity {
+public class CommentActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<QRCode> qrDataList;
+    private ArrayList<Comment> qrDataList;
     private FirebaseFirestore db;
-    private QRCollectionAdapter qrCollectionAdapter;
+    private CommentAdapter commentAdapter;
     //ListView qrList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.qr_collections_layout);
+        setContentView(R.layout.comments_layout);
 
         recyclerView=(RecyclerView)findViewById(R.id.comment_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         qrDataList = new ArrayList<>();
-        qrCollectionAdapter = new QRCollectionAdapter(qrDataList);
-        recyclerView.setAdapter(qrCollectionAdapter);
+        commentAdapter = new CommentAdapter(qrDataList);
+        recyclerView.setAdapter(commentAdapter);
 
         db = FirebaseFirestore.getInstance();
 
-        db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("Comments").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -77,17 +86,15 @@ public class QRCollectionActivity extends AppCompatActivity {
                     Log.d("list", queryDocumentSnapshots.getDocuments().toString());
                     for (DocumentSnapshot d : list){
 
-                        QRCode qr = d.toObject(QRCode.class);
-                        String qr_username = d.getString("Username");
-                        Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
-                        String qr_realHash = d.getString("RealHash");
-                        //String qr_Photo = d.getString("Photo");
-                        Double qr_Longitude = d.getDouble("Longitude");
-                        Double qr_Latitude = d.getDouble("Latitude");
-                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
-                        qrDataList.add(qrCode);
+                        Comment comment = d.toObject(Comment.class);
+                        String comment_username = d.getString("user");
+                        String comment_saltedHash = d.getString("qrInstance");
+                        String comment_text = d.getString("commentText");
+                        String comment_timestamp = d.getString("timestamp");
+                        Comment comment1 = new Comment(comment_saltedHash, comment_text, comment_timestamp, comment_username);
+                        qrDataList.add(comment1);
                     }
-                    qrCollectionAdapter.notifyDataSetChanged();
+                    commentAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -196,7 +203,7 @@ public class QRCollectionActivity extends AppCompatActivity {
 
         // Validate user input
         if ((comment.equals(null)) || (username.equals(null))) {
-            Toast.makeText(QRCollectionActivity.this, "Must fill-in a comment.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CommentActivity.this, "Must fill-in a comment.", Toast.LENGTH_SHORT).show();
         }
 
 
