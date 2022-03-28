@@ -157,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
         scanProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),ScanLogin.class));
                 // to be implemented later
             }
         });
@@ -172,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
             nextActivity();
         }
     }
+
 
     /**
      * Creates a profile on the firestore database
