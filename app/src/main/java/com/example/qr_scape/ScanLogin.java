@@ -31,7 +31,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScanLogin extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     ZXingScannerView ScanLogin;
-    final String USERNAME = "USERNAME";
+    final String USERNAME = "Username";
     final String PROFILES = "Profiles";
     SharedPreferences sharedPreferences;
 
@@ -80,7 +80,9 @@ public class ScanLogin extends AppCompatActivity implements ZXingScannerView.Res
                                     SharedPreferences.Editor shEditor = sharedPreferences.edit();
                                     shEditor.putString(USERNAME,rawResult.getText());
                                     shEditor.commit();
+
                                     String savedUserName = sharedPreferences.getString(USERNAME,null);
+                                    Log.d("ScannedLogin", savedUserName);
                                     if (savedUserName != null) {
                                         Intent intent = new Intent(getApplicationContext(), Home.class);
                                         startActivity(intent);
