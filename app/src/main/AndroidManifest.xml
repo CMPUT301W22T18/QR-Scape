@@ -16,6 +16,9 @@
         android:theme="@style/Theme.QRScape"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ScannedQR_GameStatus"
+            android:exported="false" />
+        <activity
             android:name=".OtherProfileActivity"
             android:exported="false" />
         <activity
