@@ -21,6 +21,8 @@
  */
 package com.example.qr_scape;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -224,5 +226,4 @@ public class ProfileActivity extends AppCompatActivity {
         openStatsIntent.putExtra("Profile", savedUserName);
         startActivity(openStatsIntent);
     }
-
 }

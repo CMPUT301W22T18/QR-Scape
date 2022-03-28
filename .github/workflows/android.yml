@@ -3,6 +3,7 @@ name: Android CI
 on:
   push:
     branches: [ main, Staging-, Integrated ]
+
   pull_request:
     branches: [ main, Staging-, Integrated ]
 
