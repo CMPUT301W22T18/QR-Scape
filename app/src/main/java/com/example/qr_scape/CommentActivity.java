@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,8 +36,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +81,9 @@ public class CommentActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        Intent intent = getIntent();
+        String saltedHash = intent.getStringExtra("saltedHash");
+
         db.collection("Comments").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -98,6 +105,23 @@ public class CommentActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button addComment = findViewById(R.id.addCommentButton);
+        addComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                String saltedHash = qr_hash.getText().toString();
+
+                EditText commentEditText = findViewById(R.id.editTextComment);
+                String commentText = commentEditText.getText().toString();
+                if (commentText.equalsIgnoreCase(null)){
+                    Toast.makeText(CommentActivity.this, "Must fill-in comment field", Toast.LENGTH_SHORT).show();
+                } else {
+                    addComment(commentText, saltedHash);
+                }
+            }
+        });
+
     }
 
 
@@ -201,6 +225,10 @@ public class CommentActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
         String username = sharedPreferences.getString(USERNAME, null);
 
+        // Get current timestamp
+        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy/hh:mm:ss");
+        String timestamp = s.format(new Date());
+
         // Validate user input
         if ((comment.equals(null)) || (username.equals(null))) {
             Toast.makeText(CommentActivity.this, "Must fill-in a comment.", Toast.LENGTH_SHORT).show();
@@ -217,7 +245,7 @@ public class CommentActivity extends AppCompatActivity {
             data.put("commentText", comment);
             data.put("qrInstance", QRHashSalted);
             data.put("user", username);
-            data.put("timestamp", "time_stamp");
+            data.put("timestamp", timestamp);
 
             // Store to Firestore the QRCodeInstance
             // Get reference to Firestore collection and Document ID
