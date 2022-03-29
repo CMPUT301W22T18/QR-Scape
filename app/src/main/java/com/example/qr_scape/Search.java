@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -56,9 +57,14 @@ import java.util.Locale;
  * @version 3
  */
 public class Search extends AppCompatActivity {
-    String PLAYERS = "PLAYERS";
-    String PROFILES = "Profiles";
-    String CODES = "CODES";
+    final String PLAYERS = "PLAYERS";
+    final String PROFILES = "Profiles";
+    final String CODES = "CODES";
+    final String USERNAME = "USERNAME";
+    final String HIGHSCORE = "Highest Score";
+    final String LOWSCORE = "Lowest Score";
+    final String TOTALSCANS = "Total Scans";
+    final String TOTALSCORE = "Total Score";
     BottomNavigationView bottomNavigationView;
     EditText searchField;
     Button modeSelector;
@@ -136,6 +142,15 @@ public class Search extends AppCompatActivity {
 
         // Set player list
         playerList = findViewById(R.id.search_player_result_listview);
+        playerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // open detailed view for user
+                Intent intent = new Intent(view.getContext(), OtherProfileActivity.class);
+                intent.putExtra(USERNAME, userAdapter.getItem(i).getName());
+                startActivity(intent);
+            }
+        });
 
         // Set userAdapter
         userAdapter = new UserAdapter(this,new ArrayList<User>());

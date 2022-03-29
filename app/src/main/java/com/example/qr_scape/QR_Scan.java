@@ -82,6 +82,7 @@ public class QR_Scan extends AppCompatActivity  {
     double scanLongitude;
     String scanQRText;
 
+
     BottomNavigationView bottomNavigationView;
     Button scanbtn;
     Button location;
@@ -149,6 +150,8 @@ public class QR_Scan extends AppCompatActivity  {
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
 
                 scanQRText = scantext.getText().toString();
+
+
                 final String USERNAME = "Username";
                 btOpen.setVisibility(View.VISIBLE);
                 location.setVisibility(View.VISIBLE);

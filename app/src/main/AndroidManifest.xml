@@ -16,9 +16,15 @@
         android:theme="@style/Theme.QRScape"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Expanded_QR_View"
-            android:parentActivityName=".QRCollectionActivity"
+            android:name=".ScannedQR_GameStatus"
             android:exported="false" />
+        <activity
+            android:name=".OtherProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Expanded_QR_View"
+            android:exported="false"
+            android:parentActivityName=".QRCollectionActivity" />
         <activity
             android:name=".QRCollectionActivity"
             android:parentActivityName=".ProfileActivity"
@@ -36,7 +42,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA00zq922dgbzYW0lqmkt7JM1FKBp4BO2Q" />
-
+        <activity
+            android:name=".ScanLogin"
+            android:exported="false" />
         <activity
             android:name=".ScanView"
             android:exported="false" />
