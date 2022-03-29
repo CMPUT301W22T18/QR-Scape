@@ -118,6 +118,7 @@ public class CommentActivity extends AppCompatActivity {
                     Toast.makeText(CommentActivity.this, "Must fill-in comment field", Toast.LENGTH_SHORT).show();
                 } else {
                     addComment(commentText, saltedHash);
+                    commentAdapter.notifyDataSetChanged();
                 }
             }
         });

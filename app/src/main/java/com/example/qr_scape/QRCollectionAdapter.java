@@ -59,11 +59,11 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
                 }
             });
 
-            qr_user = itemView.findViewById(R.id.comment_user);
-            qr_score = itemView.findViewById(R.id.comment_text);
-            qr_hash = itemView.findViewById(R.id.comment_hash);
+            qr_user = itemView.findViewById(R.id.comment_text);
+            qr_score = itemView.findViewById(R.id.comment_user);
+            qr_hash = itemView.findViewById(R.id.comment_timestamp);
             qr_lat = itemView.findViewById(R.id.comment_lat);
-            qr_long = itemView.findViewById(R.id.comment_timestamp);
+            qr_long = itemView.findViewById(R.id.comment_DNE);
 
         }
     }

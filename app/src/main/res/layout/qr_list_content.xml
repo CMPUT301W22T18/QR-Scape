@@ -25,7 +25,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/comment_user"
+            android:id="@+id/comment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -47,11 +47,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/comment_text"
+            android:id="@+id/comment_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/cSCORE"
-            android:layout_below="@+id/comment_user"
+            android:layout_below="@+id/comment_text"
             android:layout_centerHorizontal="true"
             android:text="Score"
             android:textSize="25dp"
@@ -73,27 +73,27 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/cHASH"
-            android:id="@+id/comment_hash"
+            android:id="@+id/comment_timestamp"
             android:text="Hash"
             android:textSize="25dp"
-            android:layout_below="@+id/comment_text"
+            android:layout_below="@+id/comment_user"
             android:textColor="#000"/>
 
         <TextView
             android:id="@+id/cLONGITUDE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/comment_hash"
+            android:layout_below="@+id/comment_timestamp"
             android:text="Longitude: "
             android:textColor="@color/black"
             android:textSize="25dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/comment_timestamp"
+            android:id="@+id/comment_DNE"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/comment_hash"
+            android:layout_below="@+id/comment_timestamp"
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/cLONGITUDE"
             android:text="Longitude"
@@ -103,7 +103,7 @@
             android:id="@+id/cLATITUDE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/comment_timestamp"
+            android:layout_below="@+id/comment_DNE"
             android:text="Latitude: "
             android:textColor="@color/black"
             android:textSize="25dp"
@@ -117,7 +117,7 @@
             android:id="@+id/comment_lat"
             android:text="Latitude"
             android:textSize="25dp"
-            android:layout_below="@+id/comment_timestamp"
+            android:layout_below="@+id/comment_DNE"
             />
 
     </RelativeLayout>

@@ -1,6 +1,5 @@
 package com.example.qr_scape;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +26,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
 
     @Override
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
-        holder.comment_user.setText(qrDataList.get(position).getUsername());
         holder.comment_text.setText(qrDataList.get(position).getCommentText());
-        holder.comment_hash.setText(qrDataList.get(position).getQrInstance());
+        holder.comment_user.setText(qrDataList.get(position).getUsername());
         holder.comment_timestamp.setText(qrDataList.get(position).getTimestamp());
 
     }
@@ -58,9 +56,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
 //                }
 //            });
 
-            comment_user = itemView.findViewById(R.id.comment_user);
             comment_text = itemView.findViewById(R.id.comment_text);
-            comment_hash = itemView.findViewById(R.id.comment_hash);
+            comment_user = itemView.findViewById(R.id.comment_user);
             comment_timestamp = itemView.findViewById(R.id.comment_timestamp);
 
         }
