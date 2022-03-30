@@ -16,6 +16,7 @@ package com.example.qr_scape;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,12 +61,14 @@ public class QRCollectionActivity extends AppCompatActivity {
     private ArrayList<QRCode> qrDataList;
     private FirebaseFirestore db;
     private QRCollectionAdapter qrCollectionAdapter;
+    SharedPreferences sharedPreferences;
     //ListView qrList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_collections_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView=(RecyclerView)findViewById(R.id.qr_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -73,9 +76,14 @@ public class QRCollectionActivity extends AppCompatActivity {
         qrCollectionAdapter = new QRCollectionAdapter(qrDataList);
         recyclerView.setAdapter(qrCollectionAdapter);
 
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+        String savedUserName = sharedPreferences.getString("Username",null);
+
         db = FirebaseFirestore.getInstance();
 
-        db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("QRCodeInstance")
+                .whereEqualTo("Username",savedUserName)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
