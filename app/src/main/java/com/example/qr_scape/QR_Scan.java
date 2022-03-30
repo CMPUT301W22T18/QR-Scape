@@ -92,12 +92,14 @@ public class QR_Scan extends AppCompatActivity  {
     private TextView textLatLong;
     private ProgressBar progressBar;
     public static TextView scantext;
+    public static TextView scantextscore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
         scantext=(TextView)findViewById(R.id.scantext);
         scanbtn=(Button) findViewById(R.id.scanbtn);
+        scantextscore=(TextView)findViewById(R.id.scantext3);
         location = (Button) findViewById(R.id.buttonCurrentLocation);
 
         imageView = findViewById(R.id.image_view);
@@ -150,7 +152,6 @@ public class QR_Scan extends AppCompatActivity  {
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
 
                 scanQRText = scantext.getText().toString();
-
 
                 final String USERNAME = "Username";
                 btOpen.setVisibility(View.VISIBLE);
