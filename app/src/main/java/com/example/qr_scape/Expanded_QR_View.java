@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -87,15 +86,6 @@ public class Expanded_QR_View extends AppCompatActivity {
             }
         });
 
-        Button deleteButton;
-        deleteButton = (Button) findViewById(R.id.owner_delete_qrcode);
-        deleteButton.setVisibility(View.GONE);
-
-        SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
-        String isOwner = sharedPreferences.getString("Owner", null);
-        if (isOwner.equals("True")) {
-            deleteButton.setVisibility(View.VISIBLE);
-        }
 
 
 
