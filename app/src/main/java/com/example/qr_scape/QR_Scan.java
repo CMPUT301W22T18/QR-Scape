@@ -97,6 +97,7 @@ public class QR_Scan extends AppCompatActivity  {
     public static TextView scantext;
     FirebaseStorage storage;
     StorageReference storageRef;
+    private QRCode qrCode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,6 +155,14 @@ public class QR_Scan extends AppCompatActivity  {
         scanbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // clear old data
+                scanPhoto = null;
+                scanLatitude = 0;
+                scanLongitude = 0;
+                scanQRText = "Score";
+                textLatLong.setText("");
+                imageView.setImageBitmap(null);
+
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
 
                 scanQRText = scantext.getText().toString();
@@ -305,6 +314,7 @@ public class QR_Scan extends AppCompatActivity  {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        final String USERNAME = "Username";
         if (requestCode == 100) {
             // get capture Image
             //ByteArrayOutputStream bao = new ByteArrayOutputStream();
@@ -318,8 +328,17 @@ public class QR_Scan extends AppCompatActivity  {
             captureImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] byteArray = baos.toByteArray();
 
+            // get username
+            SharedPreferences sharedPreferences;
+            sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+            String username = sharedPreferences.getString(USERNAME,null);
+
+            // get salted hash
+            String saltedHash = new QRCode(scanQRText, username, 0, 0, "")
+                    .getQRHashSalted();
+
             // upload image to storage
-            StorageReference imageRef = storageRef.child("test.jpg");
+            StorageReference imageRef = storageRef.child(saltedHash + ".jpg");
             imageRef.putBytes(byteArray)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
