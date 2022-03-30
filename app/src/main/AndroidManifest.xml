@@ -27,7 +27,6 @@
             android:parentActivityName=".QRCollectionActivity" />
         <activity
             android:name=".QRCollectionActivity"
-            android:parentActivityName=".ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".PersonalStats"
