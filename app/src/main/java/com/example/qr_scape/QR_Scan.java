@@ -49,6 +49,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.zxing.Result;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -92,6 +95,8 @@ public class QR_Scan extends AppCompatActivity  {
     private TextView textLatLong;
     private ProgressBar progressBar;
     public static TextView scantext;
+    FirebaseStorage storage;
+    StorageReference storageRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +104,8 @@ public class QR_Scan extends AppCompatActivity  {
         scantext=(TextView)findViewById(R.id.scantext);
         scanbtn=(Button) findViewById(R.id.scanbtn);
         location = (Button) findViewById(R.id.buttonCurrentLocation);
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
 
         imageView = findViewById(R.id.image_view);
         btOpen = findViewById(R.id.bt_open);
@@ -306,16 +313,26 @@ public class QR_Scan extends AppCompatActivity  {
             // Set Capture Image to ImageView
             imageView.setImageBitmap(captureImage);
 
-            // Set global variable
-            //scanPhoto = captureImage;
-            //addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
+            // convert to byte stream
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            captureImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] byteArray = baos.toByteArray();
 
-//            captureImage.compress(Bitmap.CompressFormat.PNG, 100, bao);
-//            captureImage.recycle();
-//            byte[] byteArray = bao.toByteArray();
-//            String imageB64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-//            scanPhoto = imageB64;
-
+            // upload image to storage
+            StorageReference imageRef = storageRef.child("test.jpg");
+            imageRef.putBytes(byteArray)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d("image upload", "Successfully uploaded photo");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("image upload", "Failed to upload photo");
+                        }
+                    });
         }
     }
 
