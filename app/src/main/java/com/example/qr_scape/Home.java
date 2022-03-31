@@ -101,7 +101,7 @@ public class Home extends AppCompatActivity {
      */
     public void notifyOwner() {
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
-        String ownerBool = sharedPreferences.getString("Owner",null);
+        String ownerBool = sharedPreferences.getString("Owner","null");
         if (ownerBool.equals("True")) {
             Log.d("Is owner?", "owner");
             Snackbar.make(this.getWindow().getDecorView().findViewById(android.R.id.content), R.string.new_owner, Snackbar.LENGTH_LONG)
