@@ -1,3 +1,16 @@
+//Copyright 2022, Ty Greve
+//
+//Licensed under the Apache License, Version 2.0 (the "License");
+//you may not use this file except in compliance with the License.
+//You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//Unless required by applicable law or agreed to in writing, software
+//distributed under the License is distributed on an "AS IS" BASIS,
+//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//See the License for the specific language governing permissions and
+//limitations under the License.
 package com.example.qr_scape;
 
 import android.view.LayoutInflater;
@@ -11,10 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewholder> {
-    ArrayList<Comment> qrDataList;
+    ArrayList<Comment> commentDataList;
 
-    public CommentAdapter(ArrayList<Comment> qrDataList) {
-        this.qrDataList = qrDataList;
+    public CommentAdapter(ArrayList<Comment> commentDataList) {
+        this.commentDataList = commentDataList;
     }
 
     @NonNull
@@ -26,15 +39,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
 
     @Override
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
-        holder.comment_text.setText(qrDataList.get(position).getCommentText());
-        holder.comment_user.setText(qrDataList.get(position).getUsername());
-        holder.comment_timestamp.setText(qrDataList.get(position).getTimestamp());
-
+        holder.comment_text.setText(commentDataList.get(position).getCommentText());
+        holder.comment_user.setText(commentDataList.get(position).getUsername());
+        holder.comment_timestamp.setText(commentDataList.get(position).getTimestamp());
     }
 
     @Override
     public int getItemCount() {
-        return qrDataList.size();
+        return commentDataList.size();
     }
 
     class myviewholder extends RecyclerView.ViewHolder {
@@ -42,20 +54,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(view.getContext(), Expanded_QR_View.class);
-//                    intent.putExtra("username",qrDataList.get(getAdapterPosition()).getUsername());
-//                    intent.putExtra("score",String.valueOf(qrDataList.get(getAdapterPosition()).getScore()));
-//                    intent.putExtra("hash",qrDataList.get(getAdapterPosition()).getQRHash());
-//                    intent.putExtra("long",String.valueOf(qrDataList.get(getAdapterPosition()).getLongitude()));
-//                    intent.putExtra("lat",String.valueOf(qrDataList.get(getAdapterPosition()).getLatitude()));
-//                    view.getContext().startActivity(intent);
-//                }
-//            });
-
             comment_text = itemView.findViewById(R.id.comment_text);
             comment_user = itemView.findViewById(R.id.comment_user);
             comment_timestamp = itemView.findViewById(R.id.comment_timestamp);
