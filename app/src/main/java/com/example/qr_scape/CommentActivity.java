@@ -74,6 +74,7 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comments_layout);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerView=(RecyclerView)findViewById(R.id.comment_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         qrDataList = new ArrayList<>();
