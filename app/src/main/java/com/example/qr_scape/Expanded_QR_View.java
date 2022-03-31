@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,6 +85,20 @@ public class Expanded_QR_View extends AppCompatActivity {
             }
         });
 
+        Button openComments = findViewById(R.id.seeCommentsButton);
+        openComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                String saltedHash = qr_hash.getText().toString();
+//                deleteQRCode(saltedHash);
+
+                Intent intent = new Intent(view.getContext(), CommentActivity.class);
+                intent.putExtra("saltedHash", hash);
+                view.getContext().startActivity(intent);
+
+                //startActivity(new Intent(Expanded_QR_View.this, CommentActivity.class));
+            }
+        });
 
     }
 
