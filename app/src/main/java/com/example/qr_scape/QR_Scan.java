@@ -24,12 +24,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -38,11 +37,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Base64;
+
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -51,19 +48,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.zxing.Result;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
  * QR Scan Activity is for scanning the QR code
  * allows user to get the score of the scanned QR code
@@ -102,11 +94,14 @@ public class QR_Scan extends AppCompatActivity  {
     String hash;
     QRCode qrCode;
     Bitmap image;
+    FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
+
+        storage = FirebaseStorage.getInstance();
 
         // set current location button
         findViewById(R.id.buttonCurrentLocation).setOnClickListener(new View.OnClickListener() {
@@ -158,30 +153,6 @@ public class QR_Scan extends AppCompatActivity  {
             public void onClick(View view) {
                 clear();
                 startActivityForResult(new Intent(getApplicationContext(), ScanView.class), 200);
-
-                //scanQRText = scantext.getText().toString();
-
-/*
-                final String USERNAME = "Username";
-                btOpen.setVisibility(View.VISIBLE);
-                location.setVisibility(View.VISIBLE);
-                if (!scanQRText.equals("Score")){
-                    // Check shared preferences for username
-                    SharedPreferences sharedPreferences;
-                    sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
-                    String username = sharedPreferences.getString(USERNAME,null);
-                    QRCode qrCode = new QRCode(scanQRText, username, scanLatitude, scanLongitude, scanPhoto);
-                    // Update user's scores
-                    ScoreActivity scoreUpdater = new ScoreActivity(username, qrCode.getQRHash());
-                    scoreUpdater.updateHighestScore();
-                    scoreUpdater.updateNumberOfScans();
-                    scoreUpdater.updateLowestScore();
-                    scoreUpdater.updateTotalScore();
-                    addQRCode(scanQRText, scanLatitude, scanLongitude, scanPhoto);
-
-                }
-*/
-
             }
         });
 
@@ -196,7 +167,8 @@ public class QR_Scan extends AppCompatActivity  {
                 scoreUpdater.updateNumberOfScans();
                 scoreUpdater.updateLowestScore();
                 scoreUpdater.updateTotalScore();
-                addPhoto();
+                savePhoto(image);
+                clear();
             }
         });
 
@@ -287,6 +259,11 @@ public class QR_Scan extends AppCompatActivity  {
         }
     }
 
+    /**
+     * clear
+     * resets values
+     * hides ui elements
+     */
     public void clear() {
         imageView.setImageBitmap(null);
         table.setVisibility(View.GONE);
@@ -376,13 +353,21 @@ public class QR_Scan extends AppCompatActivity  {
             imageView.setImageBitmap(image);
 
         } else if (requestCode == 200) {
-            parseQRText(data.getStringExtra("data"));
+            if (data.getStringExtra("data") != null) {
+                parseQRText(data.getStringExtra("data"));
+            }
         }
     }
 
+    /**
+     * parseQRText
+     * creates a QRcode based off of given text
+     * updates displays and makes visable
+     * @param qrText String
+     */
     protected void parseQRText(String qrText) {
         SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
-        String savedUserName = sharedPreferences.getString("USERNAME",null);
+        String savedUserName = sharedPreferences.getString("Username",null);
         qrCode = new QRCode(qrText, savedUserName, 0, 0, null);
         hashTextView.setText(qrCode.getQRHash());
         detailView.setVisibility(View.VISIBLE);
@@ -450,8 +435,36 @@ public class QR_Scan extends AppCompatActivity  {
 
     }
 
-    private void addPhoto() {
-        
+    /**
+     * savePhoto
+     * compresses and saves a photo to the database
+     * saved as the qrCode saltedhash.jpg
+     * @param image a bitmao containg the image to be saved
+     */
+    private void savePhoto(Bitmap image) {
+        if (image != null) {
+            // compress image and covert to byte stream
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] byteArray = baos.toByteArray();
+
+            // upload image
+            StorageReference storageRef = storage.getReference();
+            StorageReference imageRef = storageRef.child(qrCode.getQRHashSalted() + ".jpg");
+            imageRef.putBytes(byteArray)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d("image upload", "Successfully uploaded photo");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("image upload", "Failed to upload photo");
+                        }
+                    });
+        }
     }
 
 }
