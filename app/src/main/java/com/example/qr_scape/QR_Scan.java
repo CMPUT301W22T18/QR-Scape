@@ -98,12 +98,14 @@ public class QR_Scan extends AppCompatActivity  {
     FirebaseStorage storage;
     StorageReference storageRef;
     private QRCode qrCode;
+    public static TextView scantextscore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
         scantext=(TextView)findViewById(R.id.scantext);
         scanbtn=(Button) findViewById(R.id.scanbtn);
+        scantextscore=(TextView)findViewById(R.id.scantext3);
         location = (Button) findViewById(R.id.buttonCurrentLocation);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
@@ -166,7 +168,6 @@ public class QR_Scan extends AppCompatActivity  {
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
 
                 scanQRText = scantext.getText().toString();
-
 
                 final String USERNAME = "Username";
                 btOpen.setVisibility(View.VISIBLE);
