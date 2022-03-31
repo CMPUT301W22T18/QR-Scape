@@ -29,6 +29,10 @@
             android:name=".QRCollectionActivity"
             android:exported="false" />
         <activity
+            android:name=".CommentActivity"
+            android:exported="false"
+            android:parentActivityName=".Expanded_QR_View"/>
+        <activity
             android:name=".PersonalStats"
             android:exported="false" />
         <activity
