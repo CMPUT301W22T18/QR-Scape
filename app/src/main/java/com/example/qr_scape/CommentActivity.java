@@ -66,6 +66,7 @@ public class CommentActivity extends AppCompatActivity {
     private ArrayList<Comment> qrDataList;
     private FirebaseFirestore db;
     private CommentAdapter commentAdapter;
+    String saltedHash;
     //ListView qrList;
 
     @Override
@@ -82,9 +83,11 @@ public class CommentActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();
-        String saltedHash = intent.getStringExtra("saltedHash");
+        saltedHash = intent.getStringExtra("saltedHash");
 
-        db.collection("Comments").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("Comments")
+            .whereEqualTo("qrInstance", saltedHash)
+            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -118,8 +121,9 @@ public class CommentActivity extends AppCompatActivity {
                     Toast.makeText(CommentActivity.this, "Must fill-in comment field", Toast.LENGTH_SHORT).show();
                 } else {
                     addComment(commentText, saltedHash);
-                    commentAdapter.notifyDataSetChanged();
+                    commentEditText.setText(null);
                 }
+                commentAdapter.notifyDataSetChanged();
             }
         });
 
@@ -247,6 +251,11 @@ public class CommentActivity extends AppCompatActivity {
             data.put("qrInstance", QRHashSalted);
             data.put("user", username);
             data.put("timestamp", timestamp);
+
+            // Add comment to data list
+            Comment commentObj = new Comment(QRHashSalted, comment, timestamp, username);
+            qrDataList.add(commentObj);
+
 
             // Store to Firestore the QRCodeInstance
             // Get reference to Firestore collection and Document ID

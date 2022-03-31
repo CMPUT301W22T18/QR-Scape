@@ -81,10 +81,11 @@ public class QRCollectionActivity extends AppCompatActivity {
                         String qr_username = d.getString("Username");
                         Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
                         String qr_realHash = d.getString("RealHash");
+                        String qr_saltedHash = d.getId().toString();
                         //String qr_Photo = d.getString("Photo");
                         Double qr_Longitude = d.getDouble("Longitude");
                         Double qr_Latitude = d.getDouble("Latitude");
-                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                        QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash,qr_username, qr_Latitude, qr_Longitude, null, qr_scoreLong);
                         qrDataList.add(qrCode);
                     }
                     qrCollectionAdapter.notifyDataSetChanged();
