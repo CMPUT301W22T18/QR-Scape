@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="6dp"
         android:text="Scan QRCode"
         android:textSize="20sp"
         android:textColor="@color/white"
@@ -25,6 +25,23 @@
 
     <TextView
         android:id="@+id/scantext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="6dp"
+        android:text="Score"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scanbtn" />
+
+    <TextView
+        android:id="@+id/scantext3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -40,10 +57,10 @@
         app:layout_constraintTop_toBottomOf="@+id/scanbtn" />
 
     <ImageView
+        android:id="@+id/image_view"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_weight="1"
-        android:id="@+id/image_view"/>
+        android:layout_height="177dp"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/bt_open"
