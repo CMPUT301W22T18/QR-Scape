@@ -28,18 +28,10 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.util.Locale;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-/**
- * Scan View Activity opens when scan button is pressed
- * It allows the user to scan a QR code and get a textvalue of it
- * @author Harsh Shah
-  */
-// From: https://www.youtube.com
-// Link: https://www.youtube.com/watch?v=Sb4avOp7D_k
-// Author: https://www.youtube.com/channel/UCfqdbTgV61qlbEgJNw5FpiA
-// License: https://creativecommons.org/licenses/by-sa/3.0/
-public class ScanView extends AppCompatActivity implements ZXingScannerView.ResultHandler {
-    ZXingScannerView ScanView;
-    final String USERNAME = "USERNAME";
+
+public class ScanLogin extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+    ZXingScannerView ScanLogin;
+    final String USERNAME = "Username";
     final String PROFILES = "Profiles";
     SharedPreferences sharedPreferences;
 
@@ -47,15 +39,15 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScanView=new ZXingScannerView(this);
+        ScanLogin=new ZXingScannerView(this);
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
-        setContentView(ScanView);
+        setContentView(ScanLogin);
         Dexter.withContext(getApplicationContext())
                 .withPermission(Manifest.permission.CAMERA)
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        ScanView.startCamera();
+                        ScanLogin.startCamera();
                     }
 
                     @Override
@@ -71,37 +63,41 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
     }
     @Override
     public void handleResult(Result rawResult) {
-        QR_Scan.scantext.setText(rawResult.getText());
-        // user can scan other players profile QR to check game status
         db = FirebaseFirestore.getInstance();
-            db.collection(PROFILES)
-                    .orderBy(FieldPath.documentId())
-                    .startAt(rawResult.getText())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
-                                Log.d(null,"Successfully searched for users");
-                                // populate
-                                for (QueryDocumentSnapshot document : task.getResult()){
+        db.collection(PROFILES)
+                .orderBy(FieldPath.documentId())
+                .startAt(rawResult.getText())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            Log.d(null,"Successfully searched for users");
+                            // populate
+                            for (QueryDocumentSnapshot document : task.getResult()){
 
-                                    if(document.getId().equals(rawResult.getText())){
-                                        // intent to use username in another activity
-                                            Intent intent = new Intent(getApplicationContext(), ScannedQR_GameStatus.class);
-                                            intent.putExtra(USERNAME, rawResult.getText());
-                                            startActivity(intent);
+                                if(document.getId().equals(rawResult.getText())){
+                                    SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                                    shEditor.putString(USERNAME,rawResult.getText());
+                                    shEditor.commit();
 
-
+                                    String savedUserName = sharedPreferences.getString(USERNAME,null);
+                                    Log.d("ScannedLogin", savedUserName);
+                                    if (savedUserName != null) {
+                                        Intent intent = new Intent(getApplicationContext(), Home.class);
+                                        startActivity(intent);
                                     }
+
+
                                 }
-
-
-                            } else {
-                                Log.d(null,"Failed to search for users");
                             }
+
+
+                        } else {
+                            Log.d(null,"Failed to search for users");
                         }
-                    });
+                    }
+                });
 
         onBackPressed();
     }
@@ -109,16 +105,15 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
     @Override
     protected void onPause() {
         super.onPause();
-        ScanView.stopCamera();
+        ScanLogin.stopCamera();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ScanView.setResultHandler(this);
-        ScanView.startCamera();
+        ScanLogin.setResultHandler(this);
+        ScanLogin.startCamera();
     }
-
 
 
 }
