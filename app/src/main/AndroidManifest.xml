@@ -29,6 +29,9 @@
             android:name=".QRCollectionActivity"
             android:exported="false" />
         <activity
+            android:name=".CommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".PersonalStats"
             android:exported="false" />
         <activity
