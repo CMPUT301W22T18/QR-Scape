@@ -22,10 +22,14 @@
 package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -60,18 +64,18 @@ public class Search extends AppCompatActivity {
     final String PLAYERS = "PLAYERS";
     final String PROFILES = "Profiles";
     final String CODES = "CODES";
+    final String CODEINSTANCES = "QRCodeInstance";
+    final String REALHASH = "RealHash";
     final String USERNAME = "USERNAME";
-    final String HIGHSCORE = "Highest Score";
-    final String LOWSCORE = "Lowest Score";
-    final String TOTALSCANS = "Total Scans";
-    final String TOTALSCORE = "Total Score";
     BottomNavigationView bottomNavigationView;
     EditText searchField;
     Button modeSelector;
     Button searchButton;
     ListView playerList;
     UserAdapter userAdapter;
-    ListView codeList;
+    RecyclerView codeList;
+    QRCollectionAdapter codeAdapter;
+    ArrayList<QRCode> codeDataList;
     String mode = PLAYERS;
     FirebaseFirestore db;
 
@@ -157,7 +161,13 @@ public class Search extends AppCompatActivity {
         playerList.setAdapter(userAdapter);
 
         // Set code list
-        codeList = findViewById(R.id.search_code_result_listview);
+        codeList = (RecyclerView) findViewById(R.id.search_code_result_listview);
+        codeList.setLayoutManager(new LinearLayoutManager(this));
+
+        // Set codeAdapter
+        codeDataList = new ArrayList<>();
+        codeAdapter = new QRCollectionAdapter(codeDataList);
+        codeList.setAdapter(codeAdapter);
 
     }
 
@@ -236,6 +246,34 @@ public class Search extends AppCompatActivity {
      * @param searchTerms String term to be searched
      */
     private void codeSearch(String searchTerms) {
-
+        codeDataList.clear();
+        db.collection(CODEINSTANCES)
+                .orderBy(REALHASH)
+                .startAt(searchTerms)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            Log.d(null,"Successfully searched for codes");
+                            // populate
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                String qr_username = document.getString("Username");
+                                Integer qr_scoreLong = Math.toIntExact(document.getLong("Score"));
+                                String qr_realHash = document.getString("RealHash");
+                                //String qr_Photo = d.getString("Photo");
+                                Double qr_Longitude = document.getDouble("Longitude");
+                                Double qr_Latitude = document.getDouble("Latitude");
+                                QRCode qrCode = new QRCode(qr_realHash, qr_Latitude,
+                                        qr_Longitude, qr_scoreLong,qr_username);
+                                codeDataList.add(qrCode);
+                            }
+                        } else {
+                            Log.d(null,"Failed to search for codes");
+                        }
+                        codeAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 }
