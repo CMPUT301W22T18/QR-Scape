@@ -16,15 +16,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/leaveCommentsButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="4dp"
-            android:textColor="@color/white"
-            android:text="Back" />
-
-        <Button
             android:id="@+id/addCommentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
