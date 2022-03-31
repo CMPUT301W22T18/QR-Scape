@@ -108,7 +108,8 @@ public class Expanded_QR_View extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
         String isOwner = sharedPreferences.getString("Owner", null);
-        if (isOwner.equals("True")) {
+        String currentUser = sharedPreferences.getString("Username",null);
+        if (isOwner.equals("True") || currentUser.equals(username)) {
             deleteButton.setVisibility(View.VISIBLE);
         }
 
