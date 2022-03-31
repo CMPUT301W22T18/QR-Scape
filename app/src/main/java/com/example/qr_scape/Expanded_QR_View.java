@@ -89,14 +89,9 @@ public class Expanded_QR_View extends AppCompatActivity {
         openComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                String saltedHash = qr_hash.getText().toString();
-//                deleteQRCode(saltedHash);
-
                 Intent intent = new Intent(view.getContext(), CommentActivity.class);
                 intent.putExtra("saltedHash", hash);
                 view.getContext().startActivity(intent);
-
-                //startActivity(new Intent(Expanded_QR_View.this, CommentActivity.class));
             }
         });
 

@@ -1,6 +1,5 @@
 package com.example.qr_scape;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewholder> {
-    ArrayList<Comment> qrDataList;
+    ArrayList<Comment> commentDataList;
 
-    public CommentAdapter(ArrayList<Comment> qrDataList) {
-        this.qrDataList = qrDataList;
+    public CommentAdapter(ArrayList<Comment> commentDataList) {
+        this.commentDataList = commentDataList;
     }
 
     @NonNull
@@ -27,16 +26,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
 
     @Override
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
-        holder.comment_user.setText(qrDataList.get(position).getUsername());
-        holder.comment_text.setText(qrDataList.get(position).getCommentText());
-        holder.comment_hash.setText(qrDataList.get(position).getQrInstance());
-        holder.comment_timestamp.setText(qrDataList.get(position).getTimestamp());
+        holder.comment_user.setText(commentDataList.get(position).getUsername());
+        holder.comment_text.setText(commentDataList.get(position).getCommentText());
+        holder.comment_hash.setText(commentDataList.get(position).getQrInstance());
+        holder.comment_timestamp.setText(commentDataList.get(position).getTimestamp());
 
     }
 
     @Override
     public int getItemCount() {
-        return qrDataList.size();
+        return commentDataList.size();
     }
 
     class myviewholder extends RecyclerView.ViewHolder {
