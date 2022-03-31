@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -33,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -62,6 +65,7 @@ public class QRCollectionActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private QRCollectionAdapter qrCollectionAdapter;
     SharedPreferences sharedPreferences;
+    BottomNavigationView bottomNavigationView;
     //ListView qrList;
 
     @Override
@@ -78,34 +82,98 @@ public class QRCollectionActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         String savedUserName = sharedPreferences.getString("Username",null);
-
+        String isOwner = sharedPreferences.getString("Owner",null);
         db = FirebaseFirestore.getInstance();
 
-        db.collection("QRCodeInstance")
-                .whereEqualTo("Username",savedUserName)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if(!queryDocumentSnapshots.isEmpty()){
-                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                    Log.d("list", queryDocumentSnapshots.getDocuments().toString());
-                    for (DocumentSnapshot d : list){
+        if (isOwner.equals("True")){
+            db.collection("QRCodeInstance")
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                        for (DocumentSnapshot d : list){
 
-                        QRCode qr = d.toObject(QRCode.class);
-                        String qr_username = d.getString("Username");
-                        Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
-                        String qr_realHash = d.getString("RealHash");
-                        //String qr_Photo = d.getString("Photo");
-                        Double qr_Longitude = d.getDouble("Longitude");
-                        Double qr_Latitude = d.getDouble("Latitude");
-                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
-                        qrDataList.add(qrCode);
+                            QRCode qr = d.toObject(QRCode.class);
+                            String qr_username = d.getString("Username");
+                            Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                            String qr_realHash = d.getString("RealHash");
+                            //String qr_Photo = d.getString("Photo");
+                            Double qr_Longitude = d.getDouble("Longitude");
+                            Double qr_Latitude = d.getDouble("Latitude");
+                            QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                            qrDataList.add(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
                     }
-                    qrCollectionAdapter.notifyDataSetChanged();
                 }
+            });
+        }
+
+        else{
+            db = FirebaseFirestore.getInstance();
+
+            db.collection("QRCodeInstance")
+                    .whereEqualTo("Username",savedUserName)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                        for (DocumentSnapshot d : list){
+
+                            QRCode qr = d.toObject(QRCode.class);
+                            String qr_username = d.getString("Username");
+                            Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                            String qr_realHash = d.getString("RealHash");
+                            //String qr_Photo = d.getString("Photo");
+                            Double qr_Longitude = d.getDouble("Longitude");
+                            Double qr_Latitude = d.getDouble("Latitude");
+                            QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                            qrDataList.add(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_profile);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.nav_scan:
+                        startActivity(new Intent(getApplicationContext(), QR_Scan.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.nav_search:
+                        startActivity(new Intent(getApplicationContext(), Search.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.nav_profile:
+                        return true;
+
+                    case R.id.nav_location:
+                        startActivity(new Intent(getApplicationContext(), Location.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
             }
         });
+
     }
 
 

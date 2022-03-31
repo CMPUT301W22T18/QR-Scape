@@ -9,11 +9,17 @@
     android:background="#272C5E"
     tools:context=".MainActivity">
 
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/qr_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="118dp"/>
+        android:layout_marginBottom="160dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -24,9 +30,9 @@
         app:itemIconTint="@color/white"
         app:itemRippleColor="@color/black"
         app:itemTextColor="@drawable/selector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/qr_recyclerView"
+        app:layout_constraintEnd_toEndOf="@id/qr_recyclerView"
+        app:layout_constraintStart_toStartOf="@id/qr_recyclerView"
         app:menu="@menu/bottom_navigation" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

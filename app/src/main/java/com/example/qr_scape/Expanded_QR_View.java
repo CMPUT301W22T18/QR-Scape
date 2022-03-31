@@ -1,5 +1,7 @@
 package com.example.qr_scape;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -38,6 +40,7 @@ public class Expanded_QR_View extends AppCompatActivity {
     private FirebaseFirestore db;
     SharedPreferences sharedPreferences;
     private ArrayList<QRCode> qrHashList;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,38 @@ public class Expanded_QR_View extends AppCompatActivity {
         if (isOwner.equals("True")) {
             deleteButton.setVisibility(View.VISIBLE);
         }
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_profile);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.nav_scan:
+                        startActivity(new Intent(getApplicationContext(), QR_Scan.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.nav_search:
+                        startActivity(new Intent(getApplicationContext(), Search.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.nav_profile:
+                        return true;
+
+                    case R.id.nav_location:
+                        startActivity(new Intent(getApplicationContext(), Location.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
+        });
 
     }
 
