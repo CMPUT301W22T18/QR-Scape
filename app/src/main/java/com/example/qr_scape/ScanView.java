@@ -80,6 +80,11 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
     @Override
     public void handleResult(Result rawResult) {
         String QRText = rawResult.getText();
+        Intent intent = new Intent();
+        intent.putExtra("data",QRText);
+        setResult(200,intent);
+/*
+
         QRHash = generateHash(QRText);
         score = calculateScore(QRHash);
         String finalscore = String.valueOf(score);
@@ -114,7 +119,7 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
                                 Log.d(null,"Failed to search for users");
                             }
                         }
-                    });
+                    });*/
 
         onBackPressed();
     }
