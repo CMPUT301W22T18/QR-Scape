@@ -262,11 +262,12 @@ public class Search extends AppCompatActivity {
                                 String qr_username = document.getString("Username");
                                 Integer qr_scoreLong = Math.toIntExact(document.getLong("Score"));
                                 String qr_realHash = document.getString("RealHash");
+                                String qr_saltedHash = document.getId().toString();
                                 //String qr_Photo = d.getString("Photo");
                                 Double qr_Longitude = document.getDouble("Longitude");
                                 Double qr_Latitude = document.getDouble("Latitude");
-                                QRCode qrCode = new QRCode(qr_realHash, qr_Latitude,
-                                        qr_Longitude, qr_scoreLong,qr_username);
+                                QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash,qr_username,
+                                        qr_Latitude, qr_Longitude, null, qr_scoreLong);
                                 codeDataList.add(qrCode);
                             }
                         } else {
