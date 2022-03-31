@@ -159,11 +159,9 @@ public class QR_Scan extends AppCompatActivity  {
             public void onClick(View view) {
                 // clear old data
                 scanPhoto = null;
-                scanLatitude = 0;
-                scanLongitude = 0;
-                scanQRText = "Score";
-                textLatLong.setText("");
+                textLatLong.setText(null);
                 imageView.setImageBitmap(null);
+                qrCode = null;
 
                 startActivity(new Intent(getApplicationContext(),ScanView.class));
 
@@ -303,6 +301,7 @@ public class QR_Scan extends AppCompatActivity  {
     /**
      * Captures the image via camera and gets image using bitmap
      * Imageview is used to set the image which was captured
+     * Saves image to database
      * @param requestCode requests for permission
      * @param resultCode checks the status
      *
@@ -335,8 +334,7 @@ public class QR_Scan extends AppCompatActivity  {
             String username = sharedPreferences.getString(USERNAME,null);
 
             // get salted hash
-            String saltedHash = new QRCode(scanQRText, username, 0, 0, "")
-                    .getQRHashSalted();
+            String saltedHash = qrCode.getQRHashSalted();
 
             // upload image to storage
             StorageReference imageRef = storageRef.child(saltedHash + ".jpg");
@@ -380,7 +378,7 @@ public class QR_Scan extends AppCompatActivity  {
         }
 
         // Create QRCode Instance object
-        QRCode qrCode = new QRCode(QRText, username, latitude, longitude, photo);
+        qrCode = new QRCode(QRText, username, latitude, longitude, photo);
 
 
         if (QRText.length() > 0 && username.length() > 0) {
