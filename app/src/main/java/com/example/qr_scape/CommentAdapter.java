@@ -13,9 +13,15 @@
 //limitations under the License.
 package com.example.qr_scape;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,9 +60,30 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
+
             comment_text = itemView.findViewById(R.id.comment_text);
             comment_user = itemView.findViewById(R.id.comment_user);
             comment_timestamp = itemView.findViewById(R.id.comment_timestamp);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // fill the edit text view on the comments_layout.xml with comment_text
+
+//                    final String USERNAME = "Username";
+//                    final String ISOWNER = "isOwner";
+//                    // Check shared preferences for username or isOwner flag
+//                    SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+//                    String username = sharedPreferences.getString(USERNAME, null);
+//                    String isOwner = sharedPreferences.getString(USERNAME, null);
+//
+//                    if (comment_user.getText().toString().equals(username) || isOwner.equals("True")){
+//                        Button deleteButton = findViewById(R.id.deleteCommentButton);
+//                        deleteButton.setVisibility(View.VISIBLE);
+//                    }
+
+                }
+            });
 
         }
     }

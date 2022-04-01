@@ -24,6 +24,13 @@
             android:textColor="@color/white"
             android:text="Add Comment" />
 
+        <Button
+            android:id="@+id/deleteCommentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete" />
+
 
     </LinearLayout>
 

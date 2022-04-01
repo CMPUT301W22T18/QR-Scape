@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -73,6 +74,7 @@ public class CommentActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comments_layout);
+
 
         recyclerView=(RecyclerView)findViewById(R.id.comment_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -127,6 +129,34 @@ public class CommentActivity extends AppCompatActivity {
                 commentAdapter.notifyDataSetChanged();
             }
         });
+
+        Button deleteComment = findViewById(R.id.deleteCommentButton);
+        //deleteComment.setVisibility(View.GONE);
+        deleteComment.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                EditText commentEditText = findViewById(R.id.editTextComment);
+                TextView timestampTextView = findViewById(R.id.comment_timestamp);
+                String commentText = commentEditText.getText().toString();
+                String commentTimestamp = timestampTextView.getText().toString();
+                final String USERNAME = "Username";
+                // Check shared preferences for username of the user that is making the comment
+                SharedPreferences sharedPreferences;
+                sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+                String username = sharedPreferences.getString(USERNAME, null);
+                if (commentText.equalsIgnoreCase(null) || commentText.equalsIgnoreCase(commentText)){
+                    Toast.makeText(CommentActivity.this, "Must edit comment field", Toast.LENGTH_SHORT).show();
+                    commentEditText.setText(null);
+                } else {
+                    deleteComment(commentText, saltedHash, commentTimestamp, username);
+                    commentEditText.setText(null);
+                    sort(qrDataList);
+                }
+                commentAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     /**
@@ -199,6 +229,54 @@ public class CommentActivity extends AppCompatActivity {
         list.sort((o1, o2)
                 -> o2.getTimestamp().compareTo(
                 o1.getTimestamp()));
-    }
+    }//end sort
+
+    public void deleteComment(String comment, String saltedHash, String timestamp, String user) {
+        // Deletes a comment document in the database
+
+        // Access a Cloud Firestore instance from your Activity
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Comments")
+                .whereEqualTo("commentText", comment)
+                .whereEqualTo("qrInstance", saltedHash)
+                .whereEqualTo("timestamp", timestamp)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                    for (DocumentSnapshot d : list){
+                        // Delete the document from the Firestore comment Collection
+                        db.collection("Comments").document(d.getId())
+                                .delete() // delete document in the Firestore database
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "Document has been deleted successfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                                    }
+                                });
+                    }
+                    // Remove comment from local qrDataList
+                    for(int i = 0; i < qrDataList.size(); i++){
+                        Comment thisComment = qrDataList.get(i);
+                        if((thisComment.getTimestamp().equals(timestamp)) && (thisComment.getCommentText().equals(comment)) && (thisComment.getUsername().equals(user))){
+                            qrDataList.remove(thisComment);
+                        }
+                    }
+                    sort(qrDataList);
+                    commentAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }//end deleteComment
 
 }
