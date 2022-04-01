@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".QR_Scan"
-    android:background="#272C5E"
     android:orientation="vertical">
 
     <Button
