@@ -138,8 +138,7 @@ public class Expanded_QR_View extends AppCompatActivity {
         // Deletes a QRCode (real/physical) and EVERY user instances (scans) of that QR code
         SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
         String isOwner = sharedPreferences.getString("Owner", null);
-        String currentUser = sharedPreferences.getString("Username",null);
-        if (isOwner.equals("True") || currentUser.equals(username)) {
+        if (isOwner.equals("True")) {
             deleteButton.setVisibility(View.VISIBLE);
         }
 
