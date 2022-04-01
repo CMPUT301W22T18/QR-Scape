@@ -66,42 +66,45 @@ public class ScanLogin extends AppCompatActivity implements ZXingScannerView.Res
     }
     @Override
     public void handleResult(Result rawResult) {
-        db = FirebaseFirestore.getInstance();
-        db.collection(PROFILES)
-                .orderBy(FieldPath.documentId())
-                .startAt(rawResult.getText())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            Log.d(null,"Successfully searched for users");
-                            // populate
-                            for (QueryDocumentSnapshot document : task.getResult()){
+        String qrText = rawResult.getText();
+        if (qrText.length() > 10 && qrText.startsWith("QR-Scape:")) {
+            String username = qrText.substring(9);
+            db = FirebaseFirestore.getInstance();
+            db.collection(PROFILES)
+                    .orderBy(FieldPath.documentId())
+                    .startAt(username)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(null, "Successfully searched for users");
+                                // populate
+                                for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                if(document.getId().equals(rawResult.getText())){
-                                    SharedPreferences.Editor shEditor = sharedPreferences.edit();
-                                    shEditor.putString(USERNAME, rawResult.getText());
-                                    shEditor.commit();
-                                    String savedUserName = sharedPreferences.getString(USERNAME,null);
-                                    Log.d("ScannedLogin", savedUserName);
-                                    if (savedUserName != null) {
-                                        Intent intent = new Intent(getApplicationContext(), Home.class);
-                                        startActivity(intent);
-                                        checkOwnerStatus(rawResult.getText());
+                                    if (document.getId().equals(username)) {
+                                        SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                                        shEditor.putString(USERNAME, username);
+                                        shEditor.commit();
+
+                                        String savedUserName = sharedPreferences.getString(USERNAME, null);
+                                        Log.d("ScannedLogin", savedUserName);
+                                        if (savedUserName != null) {
+                                            Intent intent = new Intent(getApplicationContext(), Home.class);
+                                            startActivity(intent);
+                                        }
+
+
                                     }
-
-
                                 }
+
+
+                            } else {
+                                Log.d(null, "Failed to search for users");
                             }
-
-
-                        } else {
-                            Log.d(null,"Failed to search for users");
                         }
-                    }
-                });
-
+                    });
+        }
         onBackPressed();
     }
 

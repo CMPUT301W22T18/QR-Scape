@@ -146,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ScanLogin.class));
-                // to be implemented later
             }
         });
     }

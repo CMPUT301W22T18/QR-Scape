@@ -80,16 +80,13 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
     @Override
     public void handleResult(Result rawResult) {
         String QRText = rawResult.getText();
-        QRHash = generateHash(QRText);
-        score = calculateScore(QRHash);
-        String finalscore = String.valueOf(score);
-        QR_Scan.scantextscore.setText(finalscore);
-        QR_Scan.scantext.setText(rawResult.getText());
-        // user can scan other players profile QR to check game status
-        db = FirebaseFirestore.getInstance();
+        if (QRText.length() > 10 && QRText.startsWith("QR-Scape:")) {
+            // user can scan other players profile QR to check game status
+            String username = QRText.substring(9);
+            db = FirebaseFirestore.getInstance();
             db.collection(PROFILES)
                     .orderBy(FieldPath.documentId())
-                    .startAt(rawResult.getText())
+                    .startAt(username)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -99,11 +96,11 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
                                 // populate
                                 for (QueryDocumentSnapshot document : task.getResult()){
 
-                                    if(document.getId().equals(rawResult.getText())){
+                                    if(document.getId().equals(username)){
                                         // intent to use username in another activity
-                                            Intent intent = new Intent(getApplicationContext(), ScannedQR_GameStatus.class);
-                                            intent.putExtra(USERNAME, rawResult.getText());
-                                            startActivity(intent);
+                                        Intent intent = new Intent(getApplicationContext(), ScannedQR_GameStatus.class);
+                                        intent.putExtra(USERNAME, username);
+                                        startActivity(intent);
 
 
                                     }
@@ -115,7 +112,12 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
                             }
                         }
                     });
-
+            setResult(200, new Intent());
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra("data", QRText);
+            setResult(200, intent);
+        }
         onBackPressed();
     }
 

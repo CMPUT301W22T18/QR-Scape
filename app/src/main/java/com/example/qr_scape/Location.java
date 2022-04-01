@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -38,6 +39,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -71,6 +74,9 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
     FusedLocationProviderClient client;
     GoogleMap map;
     RecyclerView recyclerView;
+    Marker marker;
+    Marker marker1;
+    Circle Mapcircle;
     FirebaseFirestore db;
     ArrayList<LatLng> arrayList;
     ArrayList<QRCode> qrDataList;
@@ -127,6 +133,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
             //call
 
             getCurrentLocation();
+
         }else{
             // when persmission denied
             // request permission
@@ -192,6 +199,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(@NonNull GoogleMap googleMap) {
+
                             // initialize lat lng
                             LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
                             Log.i("currentLocation", String.valueOf(latLng));
@@ -200,11 +208,13 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                     .title("CurrentLocation");
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             googleMap.addMarker(options7);
+
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String query) {
                                     String searchlocation = searchView.getQuery().toString();
                                     List<Address> addressList = null;
+
 
                                     if(searchlocation !=null || !searchlocation.equals("")){
                                         Geocoder geocoder = new Geocoder(Location.this);
@@ -215,15 +225,33 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         }
                                         Address address = addressList.get(0);
                                         LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                                        if(marker != null){
+                                            marker.remove();
+                                            Mapcircle.remove();
+
+                                        }
                                         MarkerOptions options = new MarkerOptions().position(latLng)
                                                 .title(searchlocation);
                                         //zoom map
-                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25));
                                         // Add marker on map
-                                        googleMap.addMarker(options);
+                                        marker = googleMap.addMarker(options);
 
-
+                                        CircleOptions circleOptions = new CircleOptions();
+                                        // Specifying the center of the circle
+                                        circleOptions.center(latLng);
+                                        // Radius of the circle
+                                        circleOptions.radius(50);
+                                        // Border color of the circle
+                                        circleOptions.strokeColor(Color.BLACK);
+                                        // Fill color of the circle
+                                        circleOptions.fillColor(0x30ff0000);
+                                        // Border width of the circle
+                                        circleOptions.strokeWidth(2);
+                                        // Adding the circle to the GoogleMap
+                                        Mapcircle = googleMap.addCircle(circleOptions);
                                         for ( int i = 0; i<arrayList.size(); i++){
+
                                             MarkerOptions options87 = new MarkerOptions().position(arrayList.get(i))
                                                     .title("QR Code");
                                             // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
@@ -232,15 +260,24 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         }
 
 
+
+
                                     }
+
+
+
                                     return false;
+
                                 }
+
 
                                 @Override
                                 public boolean onQueryTextChange(String newText) {
                                     return false;
                                 }
+
                             });
+
 
                         }
                     });
