@@ -86,6 +86,7 @@ public class QRCollectionActivity extends AppCompatActivity {
         String savedUserName = sharedPreferences.getString("Username",null);
         String isOwner = sharedPreferences.getString("Owner",null);
         db = FirebaseFirestore.getInstance();
+        qrCollectionAdapter.notifyDataSetChanged();
 
         if (isOwner.equals("True")){
             db.collection("QRCodeInstance")
@@ -115,8 +116,6 @@ public class QRCollectionActivity extends AppCompatActivity {
         }
 
         else{
-            db = FirebaseFirestore.getInstance();
-
             db.collection("QRCodeInstance")
                     .whereEqualTo("Username",savedUserName)
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -198,6 +197,10 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
+                        if (qrDataList.contains(qrCode)){
+                            qrDataList.remove(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -236,6 +239,9 @@ public class QRCollectionActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         itemsRef.document(document.getId()).delete();
+                        if (qrDataList.contains(qrCode)){
+                            qrDataList.remove(qrCode);
+                        }
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -251,6 +257,10 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
+                        if (qrDataList.contains(qrCode)){
+                            qrDataList.remove(qrCode);
+                        }
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

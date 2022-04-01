@@ -167,7 +167,7 @@ public class Expanded_QR_View extends AppCompatActivity {
         String isOwner = sharedPreferences.getString("Owner", null);
         if (isOwner.equals("True")) {
             Log.d("Can they delete the QR code? ", "Is an owner, can delete!");
-            startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
+
 
             // Access a Cloud Firestore instance from your Activity
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -214,5 +214,6 @@ public class Expanded_QR_View extends AppCompatActivity {
             Log.d("Can they delete the QR code? ", "Not an owner, can't delete!");
         }
 
+        startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
     }//end ownerDeleteQRCode
 }
