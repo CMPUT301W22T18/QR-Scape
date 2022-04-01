@@ -100,6 +100,9 @@ public class QR_Scan extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
         storage = FirebaseStorage.getInstance();
 
