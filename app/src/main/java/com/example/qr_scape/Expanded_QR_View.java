@@ -1,8 +1,6 @@
 package com.example.qr_scape;
 
-
 import static android.content.ContentValues.TAG;
-
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,19 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,10 +26,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class Expanded_QR_View extends AppCompatActivity {
-
-    private FirebaseFirestore db;
-    SharedPreferences sharedPreferences;
-    private ArrayList<QRCode> qrHashList;
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -115,63 +97,6 @@ public class Expanded_QR_View extends AppCompatActivity {
                 view.getContext().startActivity(intent);
 
                 //startActivity(new Intent(Expanded_QR_View.this, CommentActivity.class));
-            }
-        });
-
-    }
-
-    /**
-     * Delete every instance of user QR codes (scanned instances) and the
-     * real/physical QR code from the database
-     * @author Ty Greve, Kiran Deol
-     * @version 2
-     */
-    public void ownerDeleteQRCode(View view){
-        Intent intent = getIntent();
-        String username = intent.getStringExtra("username");
-        String score = intent.getStringExtra("score");
-        String hash = intent.getStringExtra("hash");
-        String longitude = intent.getStringExtra("long");
-        String latitude = intent.getStringExtra("lat");
-
-        QRCode qrCode = new QRCode(hash, Double.parseDouble(latitude), Double.parseDouble(longitude), Integer.parseInt(score), username);
-        // Deletes a QRCode (real/physical) and EVERY user instances (scans) of that QR code
-        SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
-        String isOwner = sharedPreferences.getString("Owner", null);
-        String currentUser = sharedPreferences.getString("Username",null);
-        if (isOwner.equals("True") || currentUser.equals(username)) {
-            deleteButton.setVisibility(View.VISIBLE);
-        }
-
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.nav_profile);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_home:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
-                    case R.id.nav_scan:
-                        startActivity(new Intent(getApplicationContext(), QR_Scan.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_search:
-                        startActivity(new Intent(getApplicationContext(), Search.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_profile:
-                        return true;
-
-                    case R.id.nav_location:
-                        startActivity(new Intent(getApplicationContext(), Location.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return false;
             }
         });
 
