@@ -69,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
         buttonLayout = findViewById(R.id.login_button_layout);
