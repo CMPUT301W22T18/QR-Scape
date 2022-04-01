@@ -51,6 +51,9 @@ public class PersonalStats extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_stats);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference profilesRef = db.collection("Profiles");
         numScans = findViewById(R.id.num_codes);
