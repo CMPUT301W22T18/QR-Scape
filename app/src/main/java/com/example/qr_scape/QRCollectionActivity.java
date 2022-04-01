@@ -73,6 +73,9 @@ public class QRCollectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_collections_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
         recyclerView=(RecyclerView)findViewById(R.id.qr_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
