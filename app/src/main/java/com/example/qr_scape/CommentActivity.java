@@ -104,6 +104,7 @@ public class CommentActivity extends AppCompatActivity {
                         Comment comment1 = new Comment(comment_saltedHash, comment_text, comment_timestamp, comment_username);
                         qrDataList.add(comment1);
                     }
+                    sort(qrDataList);
                     commentAdapter.notifyDataSetChanged();
                 }
             }
@@ -111,6 +112,7 @@ public class CommentActivity extends AppCompatActivity {
 
         Button addComment = findViewById(R.id.addCommentButton);
         addComment.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 EditText commentEditText = findViewById(R.id.editTextComment);
@@ -120,6 +122,7 @@ public class CommentActivity extends AppCompatActivity {
                 } else {
                     addComment(commentText, saltedHash);
                     commentEditText.setText(null);
+                    sort(qrDataList);
                 }
                 commentAdapter.notifyDataSetChanged();
             }
@@ -186,4 +189,16 @@ public class CommentActivity extends AppCompatActivity {
                     });
         }
     }
+
+    // From: https://www.geeksforgeeks.org/
+    // Link: https://www.geeksforgeeks.org/how-to-sort-an-arraylist-of-objects-by-property-in-java/
+    // Author: https://auth.geeksforgeeks.org/user/sparshgupta229/articles
+    // License: https://creativecommons.org/licenses/by-sa/3.0/
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void sort(ArrayList<Comment> list) {
+        list.sort((o1, o2)
+                -> o2.getTimestamp().compareTo(
+                o1.getTimestamp()));
+    }
+
 }
