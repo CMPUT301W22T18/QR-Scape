@@ -6,33 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#272C5E"
     tools:context=".MainActivity">
 
-    <View
-        android:id="@+id/divider2"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+    android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/qr_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="160dp" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/colorgradient"
-        app:itemIconTint="@color/white"
-        app:itemRippleColor="@color/black"
-        app:itemTextColor="@drawable/selector"
-        app:layout_constraintBottom_toBottomOf="@id/qr_recyclerView"
-        app:layout_constraintEnd_toEndOf="@id/qr_recyclerView"
-        app:layout_constraintStart_toStartOf="@id/qr_recyclerView"
-        app:menu="@menu/bottom_navigation" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/colorgradient"
+            app:itemIconTint="@color/white"
+            app:itemRippleColor="@color/black"
+            app:itemTextColor="@drawable/selector"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_navigation" />
+
+    </FrameLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
