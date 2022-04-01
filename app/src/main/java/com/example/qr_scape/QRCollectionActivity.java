@@ -15,9 +15,8 @@ package com.example.qr_scape;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
+
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,10 +35,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,11 +44,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
@@ -64,17 +59,18 @@ public class QRCollectionActivity extends AppCompatActivity {
     private ArrayList<QRCode> qrDataList;
     private FirebaseFirestore db;
     private QRCollectionAdapter qrCollectionAdapter;
+
     SharedPreferences sharedPreferences;
     BottomNavigationView bottomNavigationView;
+
     //ListView qrList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_collections_layout);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        recyclerView=(RecyclerView)findViewById(R.id.qr_recyclerView);
+        recyclerView=(RecyclerView)findViewById(R.id.comment_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         qrDataList = new ArrayList<>();
         qrCollectionAdapter = new QRCollectionAdapter(qrDataList);
@@ -109,6 +105,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                             qrDataList.add(qrCode);
                         }
                         qrCollectionAdapter.notifyDataSetChanged();
+
                     }
                 }
             });
@@ -180,11 +177,12 @@ public class QRCollectionActivity extends AppCompatActivity {
 
     /**
      * Deletes an instance of a user QR code from the database
+     *
      * @param qrCode
      * @author Ty Greve
      * @version 1
      */
-    public void deleteQRCode(QRCode qrCode){
+    public void deleteQRCode(QRCode qrCode) {
         // Deletes an instance (scan by a user) of a QR code. QRCode (real/physical) remains in the database
 
         // Access a Cloud Firestore instance from your Activity
@@ -211,11 +209,12 @@ public class QRCollectionActivity extends AppCompatActivity {
     /**
      * Delete every instance of user QR codes (scanned instances) and the
      * real/physical QR code from the database
+     *
      * @param qrCode
      * @author Ty Greve
      * @version 1
      */
-    public void ownerDeleteQRCode(QRCode qrCode){
+    public void ownerDeleteQRCode(QRCode qrCode) {
         // Deletes a QRCode (real/physical) and EVERY user instances (scans) of that QR code
 
         // Access a Cloud Firestore instance from your Activity
@@ -260,4 +259,57 @@ public class QRCollectionActivity extends AppCompatActivity {
                     }
                 });
     }//end ownerDeleteQRCode
+
+    /**
+     * Add comment on QR code to database
+     *
+     * @author Ty Greve
+     * @version 2
+     */
+    // Add QRCode Method (To be nest in the scanner class)
+    public void addComment(String comment, String QRHashSalted) {
+        final String USERNAME = "Username";
+
+        // Check shared preferences for username of the user that is making the comment
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+        String username = sharedPreferences.getString(USERNAME, null);
+
+        // Validate user input
+        if ((comment.equals(null)) || (username.equals(null))) {
+            Toast.makeText(QRCollectionActivity.this, "Must fill-in a comment.", Toast.LENGTH_SHORT).show();
+        }
+
+
+        if (comment.length() > 0 && username.length() > 0) {
+
+            // Access a Cloud Firestore instance from your Activity
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // Create HashMap for QRCodeInstance and put fields from the qrCode object into it
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("commentText", comment);
+            data.put("qrInstance", QRHashSalted);
+            data.put("user", username);
+            data.put("timestamp", "time_stamp");
+
+            // Store to Firestore the QRCodeInstance
+            // Get reference to Firestore collection and Document ID
+            db.collection("Comments").document()
+                    .set(data) // Set fields in the Firestore database
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "Data has been added successfully!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Data could not be added!" + e.toString());
+                        }
+                    });
+        }
+
+    }
 }
