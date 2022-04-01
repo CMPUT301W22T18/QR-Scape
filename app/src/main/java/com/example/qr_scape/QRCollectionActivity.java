@@ -15,11 +15,16 @@ package com.example.qr_scape;
 
 import static android.content.ContentValues.TAG;
 
-
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,18 +34,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
@@ -53,56 +64,128 @@ public class QRCollectionActivity extends AppCompatActivity {
     private ArrayList<QRCode> qrDataList;
     private FirebaseFirestore db;
     private QRCollectionAdapter qrCollectionAdapter;
+    SharedPreferences sharedPreferences;
+    BottomNavigationView bottomNavigationView;
     //ListView qrList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_collections_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        recyclerView=(RecyclerView)findViewById(R.id.comment_recyclerView);
+        recyclerView=(RecyclerView)findViewById(R.id.qr_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         qrDataList = new ArrayList<>();
         qrCollectionAdapter = new QRCollectionAdapter(qrDataList);
         recyclerView.setAdapter(qrCollectionAdapter);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+        String savedUserName = sharedPreferences.getString("Username",null);
+        String isOwner = sharedPreferences.getString("Owner",null);
         db = FirebaseFirestore.getInstance();
+        qrCollectionAdapter.notifyDataSetChanged();
 
-        db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if(!queryDocumentSnapshots.isEmpty()){
-                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                    Log.d("list", queryDocumentSnapshots.getDocuments().toString());
-                    for (DocumentSnapshot d : list){
+        if (isOwner.equals("True")){
+            db.collection("QRCodeInstance")
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                        for (DocumentSnapshot d : list){
 
-                        QRCode qr = d.toObject(QRCode.class);
-                        String qr_username = d.getString("Username");
-                        Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
-                        String qr_realHash = d.getString("RealHash");
-                        String qr_saltedHash = d.getId().toString();
-                        //String qr_Photo = d.getString("Photo");
-                        Double qr_Longitude = d.getDouble("Longitude");
-                        Double qr_Latitude = d.getDouble("Latitude");
-                        QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash,qr_username, qr_Latitude, qr_Longitude, null, qr_scoreLong);
-                        qrDataList.add(qrCode);
+                            QRCode qr = d.toObject(QRCode.class);
+                            String qr_username = d.getString("Username");
+                            Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                            String qr_realHash = d.getString("RealHash");
+                            String qr_saltedHash = d.getId().toString();
+                            //String qr_Photo = d.getString("Photo");
+                            Double qr_Longitude = d.getDouble("Longitude");
+                            Double qr_Latitude = d.getDouble("Latitude");
+                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash ,qr_username, qr_Latitude, qr_Longitude,null, qr_scoreLong);
+                            qrDataList.add(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
                     }
-                    qrCollectionAdapter.notifyDataSetChanged();
                 }
-            }
-        });
+            });
+        }
+
+        else{
+            db.collection("QRCodeInstance")
+                    .whereEqualTo("Username",savedUserName)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                        for (DocumentSnapshot d : list){
+
+                            QRCode qr = d.toObject(QRCode.class);
+                            String qr_username = d.getString("Username");
+                            Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                            String qr_realHash = d.getString("RealHash");
+                            String qr_saltedHash = d.getId().toString();
+                            //String qr_Photo = d.getString("Photo");
+                            Double qr_Longitude = d.getDouble("Longitude");
+                            Double qr_Latitude = d.getDouble("Latitude");
+                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash ,qr_username, qr_Latitude, qr_Longitude,null, qr_scoreLong);
+                            qrDataList.add(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+
+//        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.nav_home:
+//                        startActivity(new Intent(getApplicationContext(), Home.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//
+//                    case R.id.nav_scan:
+//                        startActivity(new Intent(getApplicationContext(), QR_Scan.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                    case R.id.nav_search:
+//                        startActivity(new Intent(getApplicationContext(), Search.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                    case R.id.nav_profile:
+//                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                    case R.id.nav_location:
+//                        startActivity(new Intent(getApplicationContext(), Location.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
+//
     }
 
 
     /**
      * Deletes an instance of a user QR code from the database
-     *
      * @param qrCode
      * @author Ty Greve
      * @version 1
      */
-    public void deleteQRCode(QRCode qrCode) {
+    public void deleteQRCode(QRCode qrCode){
         // Deletes an instance (scan by a user) of a QR code. QRCode (real/physical) remains in the database
 
         // Access a Cloud Firestore instance from your Activity
@@ -116,6 +199,10 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
+                        if (qrDataList.contains(qrCode)){
+                            qrDataList.remove(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -129,12 +216,11 @@ public class QRCollectionActivity extends AppCompatActivity {
     /**
      * Delete every instance of user QR codes (scanned instances) and the
      * real/physical QR code from the database
-     *
      * @param qrCode
      * @author Ty Greve
      * @version 1
      */
-    public void ownerDeleteQRCode(QRCode qrCode) {
+    public void ownerDeleteQRCode(QRCode qrCode){
         // Deletes a QRCode (real/physical) and EVERY user instances (scans) of that QR code
 
         // Access a Cloud Firestore instance from your Activity
@@ -155,6 +241,9 @@ public class QRCollectionActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         itemsRef.document(document.getId()).delete();
+                        if (qrDataList.contains(qrCode)){
+                            qrDataList.remove(qrCode);
+                        }
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -170,6 +259,10 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
+                        if (qrDataList.contains(qrCode)){
+                            qrDataList.remove(qrCode);
+                        }
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

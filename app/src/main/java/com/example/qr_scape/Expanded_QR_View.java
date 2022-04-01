@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,8 +27,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Expanded_QR_View extends AppCompatActivity {
+    private FirebaseFirestore db;
+    SharedPreferences sharedPreferences;
+    private ArrayList<QRCode> qrHashList;
     BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,8 @@ public class Expanded_QR_View extends AppCompatActivity {
         TextView qr_score = findViewById(R.id.tv_score);
         TextView qr_longitude = findViewById(R.id.tv_longitude);
         TextView qr_latitude = findViewById(R.id.tv_latitude);
+        TextView qr_scannedBy = findViewById(R.id.tv_scannedBy);
+
 
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
@@ -46,12 +57,54 @@ public class Expanded_QR_View extends AppCompatActivity {
         String hash = intent.getStringExtra("hash");
         String longitude = intent.getStringExtra("long");
         String latitude = intent.getStringExtra("lat");
+        String realHash = intent.getStringExtra("realHash");
 
         qr_user.setText(username);
         qr_hash.setText(hash);
         qr_score.setText(score);
         qr_longitude.setText(longitude);
         qr_latitude.setText(latitude);
+
+        qrHashList = new ArrayList<>();
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("QRCodeInstance")
+                .whereEqualTo("RealHash",realHash)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    Log.d("hash_list", queryDocumentSnapshots.getDocuments().toString());
+                    for (DocumentSnapshot d : list){
+                        QRCode qr = d.toObject(QRCode.class);
+                        String qr_username = d.getString("Username");
+                        Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                        String qr_realHash = d.getString("RealHash");
+                        Double qr_Longitude = d.getDouble("Longitude");
+                        Double qr_Latitude = d.getDouble("Latitude");
+                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                        qrHashList.add(qrCode);
+                        Log.d("size",String.valueOf(qrHashList.size()));
+                        String scannedBy = String.valueOf(qrHashList.size());
+                        qr_scannedBy.setText(scannedBy);
+                    }
+                }
+            }
+        });
+
+        Button deleteButton;
+        deleteButton = (Button) findViewById(R.id.owner_delete_qrcode);
+        deleteButton.setVisibility(View.GONE);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+        String isOwner = sharedPreferences.getString("Owner", null);
+        String currentUser = sharedPreferences.getString("Username",null);
+        if (isOwner.equals("True") || currentUser.equals(username)) {
+            deleteButton.setVisibility(View.VISIBLE);
+        }
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
@@ -122,7 +175,7 @@ public class Expanded_QR_View extends AppCompatActivity {
         String isOwner = sharedPreferences.getString("Owner", null);
         if (isOwner.equals("True")) {
             Log.d("Can they delete the QR code? ", "Is an owner, can delete!");
-            startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
+
 
             // Access a Cloud Firestore instance from your Activity
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -169,5 +222,6 @@ public class Expanded_QR_View extends AppCompatActivity {
             Log.d("Can they delete the QR code? ", "Not an owner, can't delete!");
         }
 
+        startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
     }//end ownerDeleteQRCode
 }
