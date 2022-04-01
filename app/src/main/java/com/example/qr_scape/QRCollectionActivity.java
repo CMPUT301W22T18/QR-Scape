@@ -107,7 +107,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                             //String qr_Photo = d.getString("Photo");
                             Double qr_Longitude = d.getDouble("Longitude");
                             Double qr_Latitude = d.getDouble("Latitude");
-                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash ,qr_username, qr_Latitude, qr_Longitude,null, qr_scoreLong);
                             qrDataList.add(qrCode);
                         }
                         qrCollectionAdapter.notifyDataSetChanged();
@@ -136,7 +136,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                             //String qr_Photo = d.getString("Photo");
                             Double qr_Longitude = d.getDouble("Longitude");
                             Double qr_Latitude = d.getDouble("Latitude");
-                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash , qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash ,qr_username, qr_Latitude, qr_Longitude,null, qr_scoreLong);
                             qrDataList.add(qrCode);
                         }
                         qrCollectionAdapter.notifyDataSetChanged();
@@ -145,37 +145,37 @@ public class QRCollectionActivity extends AppCompatActivity {
             });
         }
 
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_home:
-                        startActivity(new Intent(getApplicationContext(), Home.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
-                    case R.id.nav_scan:
-                        startActivity(new Intent(getApplicationContext(), QR_Scan.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_search:
-                        startActivity(new Intent(getApplicationContext(), Search.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_profile:
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_location:
-                        startActivity(new Intent(getApplicationContext(), Location.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return false;
-            }
-        });
-
+//        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.nav_home:
+//                        startActivity(new Intent(getApplicationContext(), Home.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//
+//                    case R.id.nav_scan:
+//                        startActivity(new Intent(getApplicationContext(), QR_Scan.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                    case R.id.nav_search:
+//                        startActivity(new Intent(getApplicationContext(), Search.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                    case R.id.nav_profile:
+//                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                    case R.id.nav_location:
+//                        startActivity(new Intent(getApplicationContext(), Location.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
+//
     }
 
 

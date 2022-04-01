@@ -123,9 +123,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
@@ -144,12 +143,10 @@
         android:id="@+id/tv_longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintEnd_toEndOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="@+id/tv_latitude" />
 
     <TextView
         android:id="@+id/textView10"
@@ -201,7 +198,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    
+
     <Button
         android:id="@+id/owner_delete_qrcode"
         android:layout_width="wrap_content"
@@ -209,9 +206,21 @@
         android:layout_marginTop="16dp"
         android:onClick="ownerDeleteQRCode"
         android:text="DELETE"
-        app:layout_constraintEnd_toEndOf="@+id/tv_scannedBy"
-        app:layout_constraintStart_toStartOf="@+id/tv_scannedBy"
+        app:layout_constraintEnd_toStartOf="@+id/seeCommentsButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_scannedBy" />
+
+    <Button
+        android:id="@+id/seeCommentsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:text="See Comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/owner_delete_qrcode"
+        app:layout_constraintTop_toTopOf="@+id/owner_delete_qrcode" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,12 +34,16 @@
         <entry key="..\:/Users/harsh/QR-Scape/app/src/main/res/layout/leaderboard_item.xml" value="0.30833333333333335" />
         <entry key="..\:/Users/harsh/QR-Scape/app/src/main/res/layout/qr_collections_layout.xml" value="0.12454710144927536" />
         <entry key="..\:/Users/harsh/QR-Scape/app/src/main/res/layout/qr_list_content.xml" value="0.12454710144927536" />
-        <entry key="app/src/main/res/layout/activity_expanded_qr_view.xml" value="0.2994791666666667" />
+        <entry key="app/src/main/res/layout/activity_expanded_qr_view.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.3104166666666667" />
+        <entry key="app/src/main/res/layout/comment_list_content.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/layout/comments_layout.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/layout/expanded_qr_activity.xml" value="0.3104166666666667" />
         <entry key="app/src/main/res/layout/leaderboard_item.xml" value="0.30625" />
         <entry key="app/src/main/res/layout/qr_collections_layout.xml" value="0.11851851851851852" />
         <entry key="app/src/main/res/layout/qr_list_content.xml" value="0.27037037037037037" />
+        <entry key="app/src/main/res/menu/bottom_navigation.xml" value="0.3030769230769231" />
       </map>
     </option>
   </component>
