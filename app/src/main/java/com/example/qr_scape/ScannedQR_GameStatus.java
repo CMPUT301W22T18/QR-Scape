@@ -3,6 +3,7 @@ package com.example.qr_scape;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 
 import android.content.Intent;
 import android.os.Bundle;
