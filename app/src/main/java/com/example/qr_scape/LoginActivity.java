@@ -74,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
         buttonLayout = findViewById(R.id.login_button_layout);
         createProfileLayout = findViewById(R.id.login_create_profile_layout);
         EditText usernameText = findViewById(R.id.login_username_edittext);
-        EditText userOwnerKey = findViewById(R.id.login_owner_key_edittext);
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection(PROFILES);
 
@@ -107,21 +106,12 @@ public class LoginActivity extends AppCompatActivity {
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = usernameText.getText().toString();
-                String ownerKey = userOwnerKey.getText().toString();
-                // validate username
+                String username = usernameText.getText().toString();// validate username
                 if (username.length() == 0) {
                     // warn user that input is incorrect
                     Snackbar.make(usernameText,R.string.invalid_username_warning,Snackbar.LENGTH_SHORT)
                             .show();
                     return;
-                }
-
-                if (!ownerKey.equals("A3DEACA823EJDC9S9DP2")) {
-                    // warn user that owner key is incorrect
-                    // account will be made, but without owner privileges
-                    Snackbar.make(userOwnerKey, R.string.incorrect_owner_key_warning, Snackbar.LENGTH_LONG)
-                            .show();
                 }
 
                 // check if username already exists
@@ -138,8 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                                     return;
                                 } else {
                                     createProfile(username);
-                                    addOwner(username, ownerKey);
-                                    saveUserStatus(username);
                                 }
                             }
                         })
@@ -158,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ScanLogin.class));
-                // to be implemented later
             }
         });
     }
@@ -170,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkDeviceCredentials(){
         String savedUserName = sharedPreferences.getString(USERNAME,null);
         if (savedUserName != null) {
+            checkOwnerStatus(savedUserName);
             nextActivity();
         }
     }
@@ -203,54 +191,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Adds Owner flag to firestore database
-     * On success saves credentials
-     * @param username String for profiles username
-     * @param ownerKey String for user's inputted owner key
-     */
-    private void addOwner(String username, String ownerKey) {
-        if (ownerKey.equals("A3DEACA823EJDC9S9DP2")) {
-            // activate owner status in firebase
-            HashMap<String, String> ownerBool = new HashMap<>();
-            ownerBool.put("Owner", "True");
-            db.collection(PROFILES)
-                    .document(username)
-                    .set(ownerBool, SetOptions.merge())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d(null, "Successfully set them to owner");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(null,"Failed to set their status on firebase");
-                        }
-                    });
-        } else {
-            // activate owner status in firebase
-            HashMap<String, String> ownerBool = new HashMap<>();
-            ownerBool.put("Owner", "False");
-            db.collection(PROFILES)
-                    .document(username)
-                    .set(ownerBool, SetOptions.merge())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d(null, "Successfully set them to not an owner");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(null,"Failed to set their status on firebase");
-                        }
-                    });
-        }
-    }
-
-    /**
      * Saves username to shared prefrences
      * @param username string Profile username
      */
@@ -272,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
      * Saves username's status as owner or not
      * @param username string Profile username
      */
-    private void saveUserStatus(String username) {
+    private void checkOwnerStatus(String username) {
         final Object[] ownerStatus = new Object[1];
         Task<DocumentSnapshot> userRef = db.collection("Profiles").document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

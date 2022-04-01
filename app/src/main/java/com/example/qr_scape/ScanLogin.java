@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -33,6 +35,7 @@ public class ScanLogin extends AppCompatActivity implements ZXingScannerView.Res
     ZXingScannerView ScanLogin;
     final String USERNAME = "Username";
     final String PROFILES = "Profiles";
+    final String OWNER = "Owner";
     SharedPreferences sharedPreferences;
 
     FirebaseFirestore db;
@@ -63,42 +66,45 @@ public class ScanLogin extends AppCompatActivity implements ZXingScannerView.Res
     }
     @Override
     public void handleResult(Result rawResult) {
-        db = FirebaseFirestore.getInstance();
-        db.collection(PROFILES)
-                .orderBy(FieldPath.documentId())
-                .startAt(rawResult.getText())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            Log.d(null,"Successfully searched for users");
-                            // populate
-                            for (QueryDocumentSnapshot document : task.getResult()){
+        String qrText = rawResult.getText();
+        if (qrText.length() > 10 && qrText.startsWith("QR-Scape:")) {
+            String username = qrText.substring(9);
+            db = FirebaseFirestore.getInstance();
+            db.collection(PROFILES)
+                    .orderBy(FieldPath.documentId())
+                    .startAt(username)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(null, "Successfully searched for users");
+                                // populate
+                                for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                if(document.getId().equals(rawResult.getText())){
-                                    SharedPreferences.Editor shEditor = sharedPreferences.edit();
-                                    shEditor.putString(USERNAME,rawResult.getText());
-                                    shEditor.commit();
+                                    if (document.getId().equals(username)) {
+                                        SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                                        shEditor.putString(USERNAME, username);
+                                        shEditor.commit();
 
-                                    String savedUserName = sharedPreferences.getString(USERNAME,null);
-                                    Log.d("ScannedLogin", savedUserName);
-                                    if (savedUserName != null) {
-                                        Intent intent = new Intent(getApplicationContext(), Home.class);
-                                        startActivity(intent);
+                                        String savedUserName = sharedPreferences.getString(USERNAME, null);
+                                        Log.d("ScannedLogin", savedUserName);
+                                        if (savedUserName != null) {
+                                            Intent intent = new Intent(getApplicationContext(), Home.class);
+                                            startActivity(intent);
+                                        }
+
+
                                     }
-
-
                                 }
+
+
+                            } else {
+                                Log.d(null, "Failed to search for users");
                             }
-
-
-                        } else {
-                            Log.d(null,"Failed to search for users");
                         }
-                    }
-                });
-
+                    });
+        }
         onBackPressed();
     }
 
@@ -113,6 +119,40 @@ public class ScanLogin extends AppCompatActivity implements ZXingScannerView.Res
         super.onResume();
         ScanLogin.setResultHandler(this);
         ScanLogin.startCamera();
+    }
+
+    /**
+     * Saves username's status as owner or not
+     * @param username string Profile username
+     */
+    private void checkOwnerStatus(String username) {
+        final Object[] ownerStatus = new Object[1];
+        Task<DocumentSnapshot> userRef = db.collection("Profiles").document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ownerStatus[0] = document.get("Owner");
+                        if (ownerStatus[0]  == null | String.valueOf(ownerStatus[0]).equals("False")) {
+                            SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                            shEditor.putString(OWNER, "False");
+                            shEditor.commit();
+                            Log.d("LoginActivity: Is owner?", "They are NOT owner on sharedprefs");
+                        } else {
+                            SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                            shEditor.putString(OWNER, "True");
+                            shEditor.commit();
+                            Log.d("LoginActivity: Is owner?", "They are an owner on sharedprefs");
+                        }
+                    } else {
+                        Log.d("LoginActivity", "No such document");
+                    }
+                } else {
+                    Log.d("LoginActivity", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
 
