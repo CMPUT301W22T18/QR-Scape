@@ -58,6 +58,8 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
         ScanView=new ZXingScannerView(this);
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         setContentView(ScanView);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         Dexter.withContext(getApplicationContext())
                 .withPermission(Manifest.permission.CAMERA)
                 .withListener(new PermissionListener() {
