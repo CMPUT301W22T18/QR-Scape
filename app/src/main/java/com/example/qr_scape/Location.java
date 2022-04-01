@@ -233,7 +233,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         MarkerOptions options = new MarkerOptions().position(latLng)
                                                 .title(searchlocation);
                                         //zoom map
-                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25));
+                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
                                         // Add marker on map
                                         marker = googleMap.addMarker(options);
 
@@ -259,12 +259,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
 
                                         }
 
-
-
-
                                     }
-
-
 
                                     return false;
 
