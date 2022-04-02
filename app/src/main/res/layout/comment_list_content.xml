@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/cUSERNAME"
             android:text="Comment"
             android:textColor="#000"
             android:textSize="25dp" />
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_text"
             android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/cSCORE"
             android:text="Author"
             android:textColor="@color/black"
             android:textSize="25dp" />
@@ -41,7 +39,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_user"
             android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/cHASH"
             android:text="Timestamp"
             android:textColor="#000"
             android:textSize="25dp" />
