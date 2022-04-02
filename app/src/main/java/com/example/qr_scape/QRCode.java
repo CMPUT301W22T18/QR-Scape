@@ -34,9 +34,21 @@ public class QRCode {
     private String username;
     private String photo;
 
+    /**
+     * This method is the empty constructor method which creates an object
+     * of type Comment
+     */
     public QRCode() {
     }
 
+    /**
+     * This method is the constructor method which creates an object
+     * of type QRCode, without the saltedHash or photo
+     * @param QRHash
+     * @param latitude
+     * @param longitude
+     * @param username
+     */
     public QRCode(String QRHash, double latitude, double longitude, int score, String username) {
         this.QRHash = QRHash;
         this.latitude = latitude;
@@ -48,7 +60,7 @@ public class QRCode {
     // Constructors
     /**
      * This method is the constructor method which creates an object
-     * of type QRCode, without location
+     * of type QRCode
      * @param realHash
      * @param saltedHash
      * @param latitude
@@ -89,11 +101,19 @@ public class QRCode {
 
     // Getters and Setters
 
-
+    /**
+     * This method gets the username of the player that made this QRCode object
+     * @return username
+     * Returns the username of the QRCode object
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * This method sets the QR code username of the player that made this QRCode object
+     * @param username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -135,19 +155,33 @@ public class QRCode {
     public void setQRHash(String QRHash) {
         this.QRHash = QRHash;
     }
-
+    /**
+     * This method gets the QR code latitude where the QR code was scanned
+     * @return latitude
+     * Returns the latitude of the QRCode object
+     */
     public double getLatitude() {
         return latitude;
     }
-
+    /**
+     * This method sets the QR code latitude where the QR code was scanned
+     * @param latitude
+     */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-
+    /**
+     * This method gets the QR code longitude where the QR code was scanned
+     * @return longitude
+     * Returns the longitude of the QRCode object
+     */
     public double getLongitude() {
         return longitude;
     }
-
+    /**
+     * This method sets the QR code longitude where the QR code was scanned
+     * @param longitude
+     */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
@@ -168,11 +202,18 @@ public class QRCode {
     public void setScore(int score) {
         this.score = score;
     }
-
+    /**
+     * This method gets the photo of the QRCode object
+     * @return photo
+     * Returns the photo of the QRCode object
+     */
     public String getPhoto() {
         return photo;
     }
-
+    /**
+     * This method sets the photo of the QRCode object
+     * @param photo
+     */
     public void setPhoto(String photo) {
         this.photo = photo;
     }
