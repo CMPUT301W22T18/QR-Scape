@@ -35,7 +35,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
     public CommentAdapter(ArrayList<Comment> commentDataList) {
         this.commentDataList = commentDataList;
     }
-
+    SharedPreferences sharedPreferences;
     @NonNull
     @Override
     public myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -73,7 +73,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.myviewho
 //                    final String USERNAME = "Username";
 //                    final String ISOWNER = "isOwner";
 //                    // Check shared preferences for username or isOwner flag
-//                    SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+//
+//                    sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
 //                    String username = sharedPreferences.getString(USERNAME, null);
 //                    String isOwner = sharedPreferences.getString(USERNAME, null);
 //
