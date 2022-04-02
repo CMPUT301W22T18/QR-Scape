@@ -39,6 +39,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -79,6 +81,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
     Circle Mapcircle;
     FirebaseFirestore db;
     ArrayList<LatLng> arrayList;
+    ArrayList<Integer> arrayList1;
     ArrayList<QRCode> qrDataList;
     SearchView searchView;
 
@@ -94,6 +97,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
 
         client = LocationServices.getFusedLocationProviderClient(this);
         arrayList = new ArrayList<>();
+        arrayList1 = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
         db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -116,6 +120,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                         Log.i("location", String.valueOf(qr_Longitude));
                         LatLng latLngfire = new LatLng(qr_Latitude, qr_Longitude);
                         arrayList.add(latLngfire);
+                        arrayList1.add(qr_scoreLong);
                         Log.d("firelocation", String.valueOf(arrayList));
 //                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
 //                        qrDataList.add(qrCode);
@@ -252,10 +257,13 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         Mapcircle = googleMap.addCircle(circleOptions);
                                         for ( int i = 0; i<arrayList.size(); i++){
 
-                                            MarkerOptions options87 = new MarkerOptions().position(arrayList.get(i))
-                                                    .title("QR Code");
-                                            // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
-                                            googleMap.addMarker(options87);
+//                                              // icon color changed for nearby QR
+                                                // scores shown for each QR
+                                                BitmapDescriptor bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                                                MarkerOptions options87 = new MarkerOptions().icon(bd).position(arrayList.get(i)).title(String.valueOf(arrayList1.get(i)));
+                                                // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
+                                                googleMap.addMarker(options87);
+                                                
 
                                         }
 
