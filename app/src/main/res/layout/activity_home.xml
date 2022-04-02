@@ -4,17 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#272C5E"
     tools:context=".Home">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"
-        android:textColor="@color/white"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -51,5 +41,13 @@
         android:onClick="openQRCodes"
         android:text="QR Codes"
         android:textColor="#FFFFFF" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="252dp"
+        android:layout_height="282dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ic_qr_scape_home_logo" />
 
 </RelativeLayout>

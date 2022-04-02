@@ -18,6 +18,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -100,6 +101,9 @@ public class QR_Scan extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
         storage = FirebaseStorage.getInstance();
 
