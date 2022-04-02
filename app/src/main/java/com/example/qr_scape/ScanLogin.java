@@ -45,6 +45,8 @@ public class ScanLogin extends AppCompatActivity implements ZXingScannerView.Res
         ScanLogin=new ZXingScannerView(this);
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         setContentView(ScanLogin);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         Dexter.withContext(getApplicationContext())
                 .withPermission(Manifest.permission.CAMERA)
                 .withListener(new PermissionListener() {
