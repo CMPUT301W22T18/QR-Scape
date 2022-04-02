@@ -59,10 +59,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Location Activity allows the user to find QR Codes current location
- * it shows a map which can be zoomed in, out based on the lat/long which is feed into
- * The navigation bar is allowed to browse it and switch between different
- * activities
+ * Location Activity allows the user to check its current location,
+ * nearby QR codes and search for QR codes with a defined search
+ * The search functionality allows user to see nearby QR codes within a radius of 50KMs
+ * Each QR codes have their respective score values assigned to it,
+ * allowing user for an effective search
  * @author Harsh Shah
  */
 // From: https://www.youtube.com
@@ -108,7 +109,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                     Log.d("list", queryDocumentSnapshots.getDocuments().toString());
                     for (DocumentSnapshot d : list){
-
+                        // gets data from firestore
                         QRCode qr = d.toObject(QRCode.class);
                         String qr_username = d.getString("Username");
                         Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
@@ -119,11 +120,10 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                         Log.i("location", String.valueOf(qr_Latitude));
                         Log.i("location", String.valueOf(qr_Longitude));
                         LatLng latLngfire = new LatLng(qr_Latitude, qr_Longitude);
-                        arrayList.add(latLngfire);
-                        arrayList1.add(qr_scoreLong);
+                        arrayList.add(latLngfire); // array is appended with lat/long
+                        arrayList1.add(qr_scoreLong); // array is appended with scores
                         Log.d("firelocation", String.valueOf(arrayList));
-//                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
-//                        qrDataList.add(qrCode);
+
                     }
 
                 }
@@ -180,7 +180,8 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
         /**
          * getCurrentLocation allows the user to check
          * QR Codes current location once the user grants the permission
-         * Getting location of multiple QR Codes will be implemented in the next version
+         * Once current location is set, search feature allows user to search for a  particular region
+         * and check for near by QR codes with a highlighted 50km circle
          */
     }
     public void getCurrentLocation() {
@@ -263,16 +264,11 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                                 MarkerOptions options87 = new MarkerOptions().icon(bd).position(arrayList.get(i)).title(String.valueOf(arrayList1.get(i)));
                                                 // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
                                                 googleMap.addMarker(options87);
-                                                
-
                                         }
 
                                     }
-
                                     return false;
-
                                 }
-
 
                                 @Override
                                 public boolean onQueryTextChange(String newText) {
@@ -291,6 +287,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
 
     /**
      * checks permission from the user considering their privacy
+     * once approved, user is taken to its current location on the map
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

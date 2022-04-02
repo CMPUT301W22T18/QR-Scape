@@ -1,3 +1,17 @@
+////Copyright 2022, Harsh Shah
+////
+////Licensed under the Apache License, Version 2.0 (the "License");
+////you may not use this file except in compliance with the License.
+////You may obtain a copy of the License at
+////
+////    http://www.apache.org/licenses/LICENSE-2.0
+////
+////Unless required by applicable law or agreed to in writing, software
+////distributed under the License is distributed on an "AS IS" BASIS,
+////WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+////See the License for the specific language governing permissions and
+////limitations under the License.
+
 package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
@@ -30,7 +44,12 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.util.Locale;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
+/**
+ * ScanLogin Activity allows to scan a QR code via login page,
+ * which loads its own profile on a different device
+ * with respective profile consisting of its stats, user info etc
+ * @author Harsh Shah
+ */
 public class ScanLogin extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     ZXingScannerView ScanLogin;
     final String USERNAME = "Username";
