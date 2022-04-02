@@ -1,6 +1,7 @@
 package com.example.qr_scape;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
         holder.qr_user.setText(qrDataList.get(position).getUsername());
         holder.qr_score.setText(Integer.toString(qrDataList.get(position).getScore()));
-        holder.qr_hash.setText(qrDataList.get(position).getQRHash());
+        holder.qr_hash.setText(qrDataList.get(position).getQRHashSalted());
         holder.qr_lat.setText(String.valueOf(qrDataList.get(position).getLatitude()));
         holder.qr_long.setText(String.valueOf(qrDataList.get(position).getLongitude()));
 
@@ -52,18 +53,20 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
                     Intent intent = new Intent(view.getContext(), Expanded_QR_View.class);
                     intent.putExtra("username",qrDataList.get(getAdapterPosition()).getUsername());
                     intent.putExtra("score",String.valueOf(qrDataList.get(getAdapterPosition()).getScore()));
-                    intent.putExtra("hash",qrDataList.get(getAdapterPosition()).getQRHash());
+                    intent.putExtra("realHash",qrDataList.get(getAdapterPosition()).getQRHash());
+                    intent.putExtra("hash",qrDataList.get(getAdapterPosition()).getQRHashSalted());
+                    Log.d("Test",qrDataList.get(getAdapterPosition()).getQRHashSalted());
                     intent.putExtra("long",String.valueOf(qrDataList.get(getAdapterPosition()).getLongitude()));
                     intent.putExtra("lat",String.valueOf(qrDataList.get(getAdapterPosition()).getLatitude()));
                     view.getContext().startActivity(intent);
                 }
             });
 
-            qr_user = itemView.findViewById(R.id.comment_user);
-            qr_score = itemView.findViewById(R.id.comment_text);
-            qr_hash = itemView.findViewById(R.id.comment_hash);
+            qr_user = itemView.findViewById(R.id.comment_text);
+            qr_score = itemView.findViewById(R.id.comment_user);
+            qr_hash = itemView.findViewById(R.id.comment_timestamp);
             qr_lat = itemView.findViewById(R.id.comment_lat);
-            qr_long = itemView.findViewById(R.id.comment_timestamp);
+            qr_long = itemView.findViewById(R.id.comment_DNE);
 
         }
     }

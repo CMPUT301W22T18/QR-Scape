@@ -6,38 +6,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#272C5E"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/leaveCommentsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back" />
 
         <Button
             android:id="@+id/addCommentButton"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="Add Comment" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/edit_text_background">
 
         <EditText
             android:id="@+id/editTextComment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_margin="4dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine"
             android:minHeight="48dp"
-            android:text="Type Comment Here" />
+            android:textColor="@color/white"
+            android:hint="Type Comment Here" />
 
     </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comment_recyclerView"

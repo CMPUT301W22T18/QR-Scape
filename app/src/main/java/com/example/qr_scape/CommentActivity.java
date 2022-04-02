@@ -33,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,12 +67,16 @@ public class CommentActivity extends AppCompatActivity {
     private ArrayList<Comment> qrDataList;
     private FirebaseFirestore db;
     private CommentAdapter commentAdapter;
+    String saltedHash;
     //ListView qrList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comments_layout);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
         recyclerView=(RecyclerView)findViewById(R.id.comment_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -82,9 +87,11 @@ public class CommentActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();
-        String saltedHash = intent.getStringExtra("saltedHash");
+        saltedHash = intent.getStringExtra("saltedHash");
 
-        db.collection("Comments").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("Comments")
+            .whereEqualTo("qrInstance", saltedHash)
+            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -110,108 +117,21 @@ public class CommentActivity extends AppCompatActivity {
         addComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                String saltedHash = qr_hash.getText().toString();
-
                 EditText commentEditText = findViewById(R.id.editTextComment);
                 String commentText = commentEditText.getText().toString();
                 if (commentText.equalsIgnoreCase(null)){
                     Toast.makeText(CommentActivity.this, "Must fill-in comment field", Toast.LENGTH_SHORT).show();
                 } else {
                     addComment(commentText, saltedHash);
+                    commentEditText.setText(null);
                 }
+                commentAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
-
     /**
-     * Deletes an instance of a user QR code from the database
-     *
-     * @param qrCode
-     * @author Ty Greve
-     * @version 1
-     */
-    public void deleteQRCode(QRCode qrCode) {
-        // Deletes an instance (scan by a user) of a QR code. QRCode (real/physical) remains in the database
-
-        // Access a Cloud Firestore instance from your Activity
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Delete the document from the Firestore QRCodeInstance Collection
-        // Get reference to Firestore collection and Document ID
-        db.collection("QRCodeInstance").document(qrCode.getQRHashSalted())
-                .delete() // delete document in the Firestore database
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Document has been deleted successfully!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
-                    }
-                });
-    }//end deleteQRCode
-
-    /**
-     * Delete every instance of user QR codes (scanned instances) and the
-     * real/physical QR code from the database
-     *
-     * @param qrCode
-     * @author Ty Greve
-     * @version 1
-     */
-    public void ownerDeleteQRCode(QRCode qrCode) {
-        // Deletes a QRCode (real/physical) and EVERY user instances (scans) of that QR code
-
-        // Access a Cloud Firestore instance from your Activity
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // From: https://stackoverflow.com/
-        // Link: https://stackoverflow.com/a/49147139
-        // Author: https://stackoverflow.com/users/5246885/alex-mamo
-        // License: https://creativecommons.org/licenses/by-sa/3.0/
-        // Delete every document from the Firestore QRCodeInstance Collection that has the realHash value
-        // Get reference to Firestore collection
-        CollectionReference itemsRef = db.collection("QRCodeInstance");
-        // Make query is realHash == qrcode.getQRHash()
-        Query query = itemsRef.whereEqualTo("realHash", qrCode.getQRHash());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot document : task.getResult()) {
-                        itemsRef.document(document.getId()).delete();
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-
-        // Delete the document from the Firestore QRCodes (real/physical) Collection
-        // Get reference to Firestore collection and Document ID
-        db.collection("QRCodes").document(qrCode.getQRHash())
-                .delete() // delete document in the Firestore database
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Document has been deleted successfully!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
-                    }
-                });
-    }//end ownerDeleteQRCode
-
-    /**
-     * Add comment on QR code to database
+     * Add comment on QR code to database and the the local commentDataList
      *
      * @author Ty Greve
      * @version 2
@@ -247,6 +167,11 @@ public class CommentActivity extends AppCompatActivity {
             data.put("user", username);
             data.put("timestamp", timestamp);
 
+            // Add comment to data list
+            Comment commentObj = new Comment(QRHashSalted, comment, timestamp, username);
+            qrDataList.add(commentObj);
+
+
             // Store to Firestore the QRCodeInstance
             // Get reference to Firestore collection and Document ID
             db.collection("Comments").document()
@@ -264,6 +189,5 @@ public class CommentActivity extends AppCompatActivity {
                         }
                     });
         }
-
     }
 }

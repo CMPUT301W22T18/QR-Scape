@@ -14,34 +14,31 @@
 
 
         <TextView
-            android:id="@+id/comment_user"
+            android:id="@+id/comment_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/cUSERNAME"
             android:text="Comment"
             android:textColor="#000"
             android:textSize="25dp" />
 
         <TextView
-            android:id="@+id/comment_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/comment_user"
-            android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/cSCORE"
-            android:text="Username"
-            android:textColor="@color/black"
-            android:textSize="25dp" />
-
-        <TextView
-            android:id="@+id/comment_hash"
+            android:id="@+id/comment_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_text"
             android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/cHASH"
+            android:text="Author"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/comment_timestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/comment_user"
+            android:layout_centerHorizontal="true"
             android:text="Timestamp"
             android:textColor="#000"
             android:textSize="25dp" />

@@ -21,6 +21,8 @@
  */
 package com.example.qr_scape;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -166,7 +168,7 @@ public class ProfileActivity extends AppCompatActivity {
         // it takes in username and generates the QR code with username!
         imageView = findViewById(R.id.profile_imageview);
         codeEditText= findViewById(R.id.profile_code_edittext);
-        codeEditText.setText(savedUserName);
+        codeEditText.setText("QR-Scape:" + savedUserName);
         codeButton = findViewById(R.id.profile_generate_button);
         codeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,5 +231,4 @@ public class ProfileActivity extends AppCompatActivity {
         openStatsIntent.putExtra("Profile", savedUserName);
         startActivity(openStatsIntent);
     }
-
 }
