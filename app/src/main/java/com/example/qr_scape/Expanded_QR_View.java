@@ -186,6 +186,8 @@ public class Expanded_QR_View extends AppCompatActivity {
         String isOwner = sharedPreferences.getString("Owner", null);
         if (isOwner.equals("True")) {
             Log.d("Can they delete the QR code? ", "Is an owner, can delete!");
+
+
             // Access a Cloud Firestore instance from your Activity
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -195,10 +197,25 @@ public class Expanded_QR_View extends AppCompatActivity {
             // License: https://creativecommons.org/licenses/by-sa/3.0/
             // Delete every document from the Firestore QRCodeInstance Collection that has the realHash value
             // Get reference to Firestore collection
+            CollectionReference itemsRef = db.collection("QRCodeInstance");
             // Make query is realHash == qrcode.getQRHash()
+            Query query = itemsRef.whereEqualTo("RealHash", qrCode.getQRHash()).whereEqualTo("Username", qrCode.getUsername());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            itemsRef.document(document.getId()).delete();
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+
             // Delete the document from the Firestore QRCodes (real/physical) Collection
             // Get reference to Firestore collection and Document ID
-            db.collection("QRCodeInstance").document(qrCode.getQRHash())
+            db.collection("QRCodes").document(qrCode.getQRHash())
                     .delete() // delete document in the Firestore database
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
