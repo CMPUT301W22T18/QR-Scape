@@ -214,7 +214,10 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                     .title("CurrentLocation");
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             googleMap.addMarker(options7);
-
+                            // From: https://www.youtube.com
+                            // Link: https://www.youtube.com/watch?v=iWYsBDCGhGw
+                            // Author: https://www.youtube.com/channel/UCUIF5MImktJLDWDKe5oTdJQ
+                            // License: https://creativecommons.org/licenses/by-sa/3.0/
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String query) {
@@ -242,7 +245,10 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
                                         // Add marker on map
                                         marker = googleMap.addMarker(options);
-
+                                        // From: http://www.codeplayon.com/
+                                        // Link: https://codeplayon.medium.com/how-to-draw-a-circle-around-marker-on-google-map-in-android-d8122e434a93
+                                        // Author: http://www.codeplayon.com/
+                                        // License: https://www.gnu.org/licenses/gpl-3.0.en.html
                                         CircleOptions circleOptions = new CircleOptions();
                                         // Specifying the center of the circle
                                         circleOptions.center(latLng);
@@ -256,6 +262,10 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         circleOptions.strokeWidth(2);
                                         // Adding the circle to the GoogleMap
                                         Mapcircle = googleMap.addCircle(circleOptions);
+                                        // From: https://www.youtube.com
+                                        // Link: https://www.youtube.com/watch?v=kcFjBtEVikE
+                                        // Author: https://www.youtube.com/channel/UCBXE_skWN_eFn0eat7658rA
+                                        // License: https://creativecommons.org/licenses/by-sa/3.0/
                                         for ( int i = 0; i<arrayList.size(); i++){
 
 //                                              // icon color changed for nearby QR

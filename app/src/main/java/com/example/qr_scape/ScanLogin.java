@@ -1,4 +1,4 @@
-////Copyright 2022, Harsh Shah
+////Copyright 2022, Harsh Shah, Ty Greve
 ////
 ////Licensed under the Apache License, Version 2.0 (the "License");
 ////you may not use this file except in compliance with the License.
@@ -50,6 +50,10 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  * with respective profile consisting of its stats, user info etc
  * @author Harsh Shah
  */
+// From: https://www.youtube.com
+// Link: https://www.youtube.com/watch?v=Sb4avOp7D_k
+// Author: https://www.youtube.com/channel/UCfqdbTgV61qlbEgJNw5FpiA
+// License: https://creativecommons.org/licenses/by-sa/3.0/
 public class ScanLogin extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     ZXingScannerView ScanLogin;
     final String USERNAME = "Username";
