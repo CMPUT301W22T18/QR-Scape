@@ -46,6 +46,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * LoginActivity
@@ -108,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = usernameText.getText().toString();// validate username
+                String username = usernameText.getText().toString().toLowerCase(Locale.ROOT);// validate username
                 if (username.length() == 0) {
                     // warn user that input is incorrect
                     Snackbar.make(usernameText,R.string.invalid_username_warning,Snackbar.LENGTH_SHORT)
