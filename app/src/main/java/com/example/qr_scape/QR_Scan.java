@@ -1,4 +1,4 @@
-//Copyright 2022, Harsh Shah, Kiran Deol, Ty Greve,  Dallin Dmytryk
+//Copyright 2022, Harsh Shah, Kiran Deol, Ty Greve
 //
 //Licensed under the Apache License, Version 2.0 (the "License");
 //you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ import java.util.HashMap;
  * Photos captured are in progress as we cant update it in firestore for now
  * We have score being updated on scanned QR code into the player stats, which is on profile
  * (latest update on photos is, bitmap is encoded to base64-string and we saw an instance of string in firebase as image)
- * @author Harsh Shah,  Dallin Dmytryk
+ * @author Harsh Shah
  *
  */
 public class QR_Scan extends AppCompatActivity  {

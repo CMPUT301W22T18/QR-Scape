@@ -39,8 +39,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -59,11 +57,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Location Activity allows the user to check its current location,
- * nearby QR codes and search for QR codes with a defined search
- * The search functionality allows user to see nearby QR codes within a radius of 50KMs
- * Each QR codes have their respective score values assigned to it,
- * allowing user for an effective search
+ * Location Activity allows the user to find QR Codes current location
+ * it shows a map which can be zoomed in, out based on the lat/long which is feed into
+ * The navigation bar is allowed to browse it and switch between different
+ * activities
  * @author Harsh Shah
  */
 // From: https://www.youtube.com
@@ -82,7 +79,6 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
     Circle Mapcircle;
     FirebaseFirestore db;
     ArrayList<LatLng> arrayList;
-    ArrayList<Integer> arrayList1;
     ArrayList<QRCode> qrDataList;
     SearchView searchView;
 
@@ -98,7 +94,6 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
 
         client = LocationServices.getFusedLocationProviderClient(this);
         arrayList = new ArrayList<>();
-        arrayList1 = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
         db.collection("QRCodeInstance").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -109,7 +104,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                     Log.d("list", queryDocumentSnapshots.getDocuments().toString());
                     for (DocumentSnapshot d : list){
-                        // gets data from firestore
+
                         QRCode qr = d.toObject(QRCode.class);
                         String qr_username = d.getString("Username");
                         Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
@@ -120,10 +115,10 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                         Log.i("location", String.valueOf(qr_Latitude));
                         Log.i("location", String.valueOf(qr_Longitude));
                         LatLng latLngfire = new LatLng(qr_Latitude, qr_Longitude);
-                        arrayList.add(latLngfire); // array is appended with lat/long
-                        arrayList1.add(qr_scoreLong); // array is appended with scores
+                        arrayList.add(latLngfire);
                         Log.d("firelocation", String.valueOf(arrayList));
-
+//                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+//                        qrDataList.add(qrCode);
                     }
 
                 }
@@ -180,8 +175,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
         /**
          * getCurrentLocation allows the user to check
          * QR Codes current location once the user grants the permission
-         * Once current location is set, search feature allows user to search for a  particular region
-         * and check for near by QR codes with a highlighted 50km circle
+         * Getting location of multiple QR Codes will be implemented in the next version
          */
     }
     public void getCurrentLocation() {
@@ -214,10 +208,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                     .title("CurrentLocation");
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             googleMap.addMarker(options7);
-                            // From: https://www.youtube.com
-                            // Link: https://www.youtube.com/watch?v=iWYsBDCGhGw
-                            // Author: https://www.youtube.com/channel/UCUIF5MImktJLDWDKe5oTdJQ
-                            // License: https://creativecommons.org/licenses/by-sa/3.0/
+
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String query) {
@@ -242,13 +233,10 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         MarkerOptions options = new MarkerOptions().position(latLng)
                                                 .title(searchlocation);
                                         //zoom map
-                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25));
                                         // Add marker on map
                                         marker = googleMap.addMarker(options);
-                                        // From: http://www.codeplayon.com/
-                                        // Link: https://codeplayon.medium.com/how-to-draw-a-circle-around-marker-on-google-map-in-android-d8122e434a93
-                                        // Author: http://www.codeplayon.com/
-                                        // License: https://www.gnu.org/licenses/gpl-3.0.en.html
+
                                         CircleOptions circleOptions = new CircleOptions();
                                         // Specifying the center of the circle
                                         circleOptions.center(latLng);
@@ -262,23 +250,26 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                                         circleOptions.strokeWidth(2);
                                         // Adding the circle to the GoogleMap
                                         Mapcircle = googleMap.addCircle(circleOptions);
-                                        // From: https://www.youtube.com
-                                        // Link: https://www.youtube.com/watch?v=kcFjBtEVikE
-                                        // Author: https://www.youtube.com/channel/UCBXE_skWN_eFn0eat7658rA
-                                        // License: https://creativecommons.org/licenses/by-sa/3.0/
                                         for ( int i = 0; i<arrayList.size(); i++){
 
-//                                              // icon color changed for nearby QR
-                                                // scores shown for each QR
-                                                BitmapDescriptor bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-                                                MarkerOptions options87 = new MarkerOptions().icon(bd).position(arrayList.get(i)).title(String.valueOf(arrayList1.get(i)));
-                                                // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
-                                                googleMap.addMarker(options87);
+                                            MarkerOptions options87 = new MarkerOptions().position(arrayList.get(i))
+                                                    .title("QR Code");
+                                            // googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(i), 10));
+                                            googleMap.addMarker(options87);
+
                                         }
 
+
+
+
                                     }
+
+
+
                                     return false;
+
                                 }
+
 
                                 @Override
                                 public boolean onQueryTextChange(String newText) {
@@ -297,7 +288,6 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
 
     /**
      * checks permission from the user considering their privacy
-     * once approved, user is taken to its current location on the map
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
