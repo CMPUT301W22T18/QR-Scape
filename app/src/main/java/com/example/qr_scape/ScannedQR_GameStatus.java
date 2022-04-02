@@ -1,8 +1,23 @@
+////Copyright 2022, Harsh Shah,  Dallin Dmytryk
+////
+////Licensed under the Apache License, Version 2.0 (the "License");
+////you may not use this file except in compliance with the License.
+////You may obtain a copy of the License at
+////
+////    http://www.apache.org/licenses/LICENSE-2.0
+////
+////Unless required by applicable law or agreed to in writing, software
+////distributed under the License is distributed on an "AS IS" BASIS,
+////WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+////See the License for the specific language governing permissions and
+////limitations under the License.
+
 package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +31,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
+/**
+ * ScannedQR_GameStatus Activity allows user to scan social code of any other users
+ * profile and it helps them to see that users game status
+ * which includes, high score, total scans, etc
+ * @author Harsh Shah
+ */
 public class ScannedQR_GameStatus extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     TextView usernameText;
@@ -31,6 +51,9 @@ public class ScannedQR_GameStatus extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanned_qr_game_status);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         // set bottom navigation view
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);

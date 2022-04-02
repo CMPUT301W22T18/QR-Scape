@@ -4,14 +4,21 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,21 +30,36 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Expanded_QR_View extends AppCompatActivity {
+    private FirebaseFirestore db;
+    SharedPreferences sharedPreferences;
+    private ArrayList<QRCode> qrHashList;
     BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expanded_qr_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
         TextView qr_user = findViewById(R.id.tv_username);
         TextView qr_hash = findViewById(R.id.tv_hash);
         TextView qr_score = findViewById(R.id.tv_score);
         TextView qr_longitude = findViewById(R.id.tv_longitude);
         TextView qr_latitude = findViewById(R.id.tv_latitude);
+        TextView qr_scannedBy = findViewById(R.id.tv_scannedBy);
+        ImageView qr_image = findViewById(R.id.iv_qr);
+
 
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
@@ -45,12 +67,55 @@ public class Expanded_QR_View extends AppCompatActivity {
         String hash = intent.getStringExtra("hash");
         String longitude = intent.getStringExtra("long");
         String latitude = intent.getStringExtra("lat");
+        String realHash = intent.getStringExtra("realHash");
+        downloadImage(intent.getStringExtra("hash"), qr_image);
 
         qr_user.setText(username);
         qr_hash.setText(hash);
         qr_score.setText(score);
         qr_longitude.setText(longitude);
         qr_latitude.setText(latitude);
+
+        qrHashList = new ArrayList<>();
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("QRCodeInstance")
+                .whereEqualTo("RealHash",realHash)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    Log.d("hash_list", queryDocumentSnapshots.getDocuments().toString());
+                    for (DocumentSnapshot d : list){
+                        QRCode qr = d.toObject(QRCode.class);
+                        String qr_username = d.getString("Username");
+                        Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                        String qr_realHash = d.getString("RealHash");
+                        Double qr_Longitude = d.getDouble("Longitude");
+                        Double qr_Latitude = d.getDouble("Latitude");
+                        QRCode qrCode = new QRCode(qr_realHash, qr_Latitude, qr_Longitude, qr_scoreLong,qr_username);
+                        qrHashList.add(qrCode);
+                        Log.d("size",String.valueOf(qrHashList.size()));
+                        String scannedBy = String.valueOf(qrHashList.size());
+                        qr_scannedBy.setText(scannedBy);
+                    }
+                }
+            }
+        });
+
+        Button deleteButton;
+        deleteButton = (Button) findViewById(R.id.owner_delete_qrcode);
+        deleteButton.setVisibility(View.GONE);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+        String isOwner = sharedPreferences.getString("Owner", null);
+        String currentUser = sharedPreferences.getString("Username",null);
+        if (isOwner.equals("True") || currentUser.equals(username)) {
+            deleteButton.setVisibility(View.VISIBLE);
+        }
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
@@ -84,6 +149,15 @@ public class Expanded_QR_View extends AppCompatActivity {
             }
         });
 
+        Button openComments = findViewById(R.id.seeCommentsButton);
+        openComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), CommentActivity.class);
+                intent.putExtra("saltedHash", hash);
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 
@@ -107,7 +181,7 @@ public class Expanded_QR_View extends AppCompatActivity {
         String isOwner = sharedPreferences.getString("Owner", null);
         if (isOwner.equals("True")) {
             Log.d("Can they delete the QR code? ", "Is an owner, can delete!");
-            startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
+
 
             // Access a Cloud Firestore instance from your Activity
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -119,24 +193,10 @@ public class Expanded_QR_View extends AppCompatActivity {
             // Delete every document from the Firestore QRCodeInstance Collection that has the realHash value
             // Get reference to Firestore collection
             CollectionReference itemsRef = db.collection("QRCodeInstance");
-            // Make query is realHash == qrcode.getQRHash()
-            Query query = itemsRef.whereEqualTo("RealHash", qrCode.getQRHash()).whereEqualTo("Username", qrCode.getUsername());
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot document : task.getResult()) {
-                            itemsRef.document(document.getId()).delete();
-                        }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                }
-            });
 
             // Delete the document from the Firestore QRCodes (real/physical) Collection
             // Get reference to Firestore collection and Document ID
-            db.collection("QRCodes").document(qrCode.getQRHash())
+            itemsRef.document(qrCode.getQRHash())
                     .delete() // delete document in the Firestore database
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -154,5 +214,41 @@ public class Expanded_QR_View extends AppCompatActivity {
             Log.d("Can they delete the QR code? ", "Not an owner, can't delete!");
         }
 
+        startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
     }//end ownerDeleteQRCode
+
+    /**
+     * dowloadImage
+     * Will download if possible an image for a qr code scan
+     * and apply it to the view
+     * @author Dallin Dmytryk
+     * @param hash String representing the qr instance hash
+     * @param view ImageView to apply image to
+     */
+    private void downloadImage(String hash, ImageView view) {
+        final long SIZE = 1024*64;
+        String imageUrl = hash + ".jpg";
+
+        // get storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathRef  = storageRef.child(imageUrl);
+
+        // get image
+        pathRef.getBytes(SIZE).
+                addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Log.d("Image Load", "Image loaded");
+                        Bitmap image = BitmapFactory.decodeByteArray(bytes,0, bytes.length);
+                        view.setImageBitmap(image);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Image Load", "Failed to load Image");
+                    }
+                });
+    }
 }
