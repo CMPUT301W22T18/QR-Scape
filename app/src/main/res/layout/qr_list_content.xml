@@ -69,15 +69,16 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/comment_timestamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/comment_user"
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/cHASH"
-            android:id="@+id/comment_timestamp"
             android:text="Hash"
-            android:textSize="25dp"
-            android:layout_below="@+id/comment_user"
-            android:textColor="#000"/>
+            android:maxLength="10"
+            android:textColor="#000"
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/cLONGITUDE"
