@@ -23,7 +23,7 @@
             android:background="@drawable/ic_search_bar"
             android:inputType="textPersonName"
             android:paddingLeft="30dp"
-            android:textColor="@color/textOnForeground">
+            android:textColor="@color/black">
 
         </EditText>
 

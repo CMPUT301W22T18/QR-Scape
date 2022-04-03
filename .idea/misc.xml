@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/drawable/colorgradient.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/drawable/spinner_item.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_expanded_qr_view.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_home.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_leaderboard.xml" value="0.14719202898550723" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/player_list_content.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/qr_collections_layout.xml" value="0.2796875" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/qr_list_content.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/spinner_item.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/toolbar_title_layout.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/menu/bottom_navigation.xml" value="0.2796875" />
       </map>

@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/person_photo"
-                android:textColor="@color/textOnForeground"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="normal|bold" />
 
@@ -39,7 +39,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/leaderboard_rank"
-                android:textColor="@color/textOnForeground"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="normal|bold" />
 
@@ -50,7 +50,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/leaderboard_username"
                 android:padding="3sp"
-                android:textColor="@color/textOnForeground"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
         </RelativeLayout>

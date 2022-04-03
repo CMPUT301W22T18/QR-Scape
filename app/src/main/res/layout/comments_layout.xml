@@ -43,7 +43,8 @@
             android:hint="Type Comment Here"
             android:inputType="textMultiLine"
             android:minHeight="48dp"
-            android:textColor="@color/textOnForeground" />
+            android:textColor="@color/textOnForeground"
+            android:textColorHint="@color/textOnBackground" />
 
     </LinearLayout>
 
