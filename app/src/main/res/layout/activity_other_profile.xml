@@ -14,7 +14,7 @@
         android:layout_height="200dp"
         android:layout_margin="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/edit_text_background"
+        android:background="@color/contactInfoPalette"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/otherprofile_username_text">
@@ -188,8 +188,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/buttonPalette"
         android:text="Delete Profile"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 

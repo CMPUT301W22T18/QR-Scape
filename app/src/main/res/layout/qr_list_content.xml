@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
     android:elevation="4dp"
+    app:cardBackgroundColor="@color/cardViewPalette"
+    app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -20,7 +21,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="Username: "
-            android:textColor="@color/black"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -32,9 +33,8 @@
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/cUSERNAME"
             android:text="Name"
-            android:textColor="#000"
-            android:textSize="25dp"
-            />
+            android:textColor="@color/textOnForeground"
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/cSCORE"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/cUSERNAME"
             android:text="Score: "
-            android:textColor="@color/black"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -50,13 +50,12 @@
             android:id="@+id/comment_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/cSCORE"
             android:layout_below="@+id/comment_text"
             android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/cSCORE"
             android:text="Score"
-            android:textSize="25dp"
-            android:textColor="@color/black"
-            />
+            android:textColor="@color/textOnForeground"
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/cHASH"
@@ -64,20 +63,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/cSCORE"
             android:text="Hash: "
-            android:textColor="@color/black"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/comment_timestamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/comment_user"
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/cHASH"
-            android:id="@+id/comment_timestamp"
             android:text="Hash"
-            android:textSize="25dp"
-            android:layout_below="@+id/comment_user"
-            android:textColor="#000"/>
+            android:textColor="@color/textOnForeground"
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/cLONGITUDE"
@@ -85,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_timestamp"
             android:text="Longitude: "
-            android:textColor="@color/black"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -97,6 +96,7 @@
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/cLONGITUDE"
             android:text="Longitude"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp" />
 
         <TextView
@@ -105,20 +105,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_DNE"
             android:text="Latitude: "
-            android:textColor="@color/black"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/comment_lat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/comment_DNE"
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/cLATITUDE"
-            android:id="@+id/comment_lat"
             android:text="Latitude"
-            android:textSize="25dp"
-            android:layout_below="@+id/comment_DNE"
-            />
+            android:textColor="@color/textOnForeground"
+            android:textSize="25dp" />
 
     </RelativeLayout>
 

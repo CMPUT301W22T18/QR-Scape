@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
     android:elevation="4dp"
+    app:cardBackgroundColor="@color/cardViewPalette"
+    app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -20,7 +21,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:text="Comment"
-            android:textColor="#000"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp" />
 
         <TextView
@@ -30,7 +31,7 @@
             android:layout_below="@+id/comment_text"
             android:layout_centerHorizontal="true"
             android:text="Author"
-            android:textColor="@color/black"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp" />
 
         <TextView
@@ -40,7 +41,7 @@
             android:layout_below="@+id/comment_user"
             android:layout_centerHorizontal="true"
             android:text="Timestamp"
-            android:textColor="#000"
+            android:textColor="@color/textOnForeground"
             android:textSize="25dp" />
 
     </RelativeLayout>
