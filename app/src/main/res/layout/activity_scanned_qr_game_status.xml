@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnBackground"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
+        android:background="@color/contactInfoPalette"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/otherprofile_username_text">
 
@@ -54,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Highest Score"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>
@@ -64,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>
@@ -82,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Lowest Score"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>
@@ -92,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>
@@ -109,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Total Scans"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>
@@ -119,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>
@@ -136,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Total Score"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>
@@ -146,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20dp">
 
             </TextView>

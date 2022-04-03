@@ -13,15 +13,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            >
+            android:backgroundTint="@color/leaderboardRankBox"
+            android:padding="16dp">
 
             <ImageView
+                android:id="@+id/person_photo"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/person_photo"
-                android:layout_alignParentStart="true"
-                />
+                android:layout_alignParentStart="true" />
 
             <TextView
                 android:id="@+id/leaderboard_rank"
@@ -29,32 +28,30 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/person_photo"
-                android:textColor="@color/black"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20sp"
                 android:textStyle="normal|bold" />
 
             <TextView
+                android:id="@+id/leaderboard_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/leaderboard_username"
-                android:textColor="@color/black"
-                android:layout_toRightOf="@+id/leaderboard_rank"
-                android:layout_centerVertical="true"
                 android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/leaderboard_rank"
+                android:textColor="@color/textOnForeground"
                 android:textSize="20sp"
-                android:textStyle="normal|bold"
-                />
+                android:textStyle="normal|bold" />
 
             <TextView
+                android:id="@+id/leaderboard_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:id="@+id/leaderboard_score"
-                android:layout_toRightOf="@+id/leaderboard_username"
                 android:layout_centerVertical="true"
-                android:textSize="16sp"
+                android:layout_toRightOf="@+id/leaderboard_username"
                 android:padding="3sp"
-                />
+                android:textColor="@color/textOnForeground"
+                android:textSize="16sp" />
 
         </RelativeLayout>
 

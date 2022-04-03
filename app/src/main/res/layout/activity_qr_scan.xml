@@ -15,8 +15,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/buttonPalette"
         android:text="Scan QRCode"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnButton"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,14 +52,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-
-        <TextView
-            android:id="@+id/code_hash"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:visibility="gone" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:text="HASH"
+                android:textColor="@color/textOnBackground"
+
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/code_hash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:maxLength="10"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/textOnBackground"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
 
         <LinearLayout
@@ -72,7 +92,7 @@
                 android:layout_gravity="left"
                 android:layout_weight="1"
                 android:text="SCORE"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnBackground"
                 android:textSize="20sp" />
 
             <TextView
@@ -83,7 +103,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="TEST"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnBackground"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -99,7 +119,7 @@
                 android:layout_gravity="left"
                 android:layout_weight="1"
                 android:text="LATITUDE"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnBackground"
                 android:textSize="20sp" />
 
             <TextView
@@ -109,7 +129,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnBackground"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -123,9 +143,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="LONGITUDE"
                 android:layout_weight="1"
-                android:textColor="@color/white"
+                android:text="LONGITUDE"
+                android:textColor="@color/textOnBackground"
                 android:textSize="20sp" />
 
             <TextView
@@ -135,7 +155,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="@color/white"
+                android:textColor="@color/textOnBackground"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -162,8 +182,9 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/buttonPalette"
             android:text="open camera"
-            android:textColor="@color/white"
+            android:textColor="@color/textOnButton"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="596dp" />
@@ -175,8 +196,9 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/buttonPalette"
             android:text="current location"
-            android:textColor="@color/white"
+            android:textColor="@color/textOnButton"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="557dp" />
@@ -200,8 +222,9 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/buttonPalette"
             android:text="CONFIRM"
-            android:textColor="@color/white"
+            android:textColor="@color/textOnButton"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="596dp" />
 
@@ -212,8 +235,9 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/buttonPalette"
             android:text="DENY"
-            android:textColor="@color/white"
+            android:textColor="@color/textOnButton"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="557dp" />
 

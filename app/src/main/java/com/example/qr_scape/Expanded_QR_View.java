@@ -72,7 +72,7 @@ public class Expanded_QR_View extends AppCompatActivity {
         downloadImage(intent.getStringExtra("hash"), qr_image);
 
         qr_user.setText(username);
-        qr_hash.setText(realHash);
+        qr_hash.setText(realHash.substring(0,10));
         qr_score.setText(score);
         qr_longitude.setText(longitude);
         qr_latitude.setText(latitude);
