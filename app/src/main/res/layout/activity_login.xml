@@ -21,22 +21,24 @@
         android:id="@+id/login_button_layout">
 
         <Button
+            android:id="@+id/login_create_profile_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/white"
+            android:backgroundTint="@color/buttonPalette"
             android:text="Create Profile"
-            android:id="@+id/login_create_profile_button">
+            android:textColor="@color/textOnButton">
 
         </Button>
 
         <Button
+            android:id="@+id/login_scan_profile_code_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/white"
+            android:backgroundTint="@color/buttonPalette"
             android:text="Scan Profile QR Code"
-            android:id="@+id/login_scan_profile_code_button">
+            android:textColor="@color/textOnButton">
 
         </Button>
     </LinearLayout>
