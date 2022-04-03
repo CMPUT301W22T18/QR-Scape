@@ -179,40 +179,36 @@ public class Expanded_QR_View extends AppCompatActivity {
         // Deletes a QRCode (real/physical) and EVERY user instances (scans) of that QR code
         SharedPreferences sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
         String isOwner = sharedPreferences.getString("Owner", null);
-        if (isOwner.equals("True")) {
-            Log.d("Can they delete the QR code? ", "Is an owner, can delete!");
+        Log.d("Can they delete the QR code? ", "Is an owner, can delete!");
 
 
-            // Access a Cloud Firestore instance from your Activity
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Access a Cloud Firestore instance from your Activity
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            // From: https://stackoverflow.com/
-            // Link: https://stackoverflow.com/a/49147139
-            // Author: https://stackoverflow.com/users/5246885/alex-mamo
-            // License: https://creativecommons.org/licenses/by-sa/3.0/
-            // Delete every document from the Firestore QRCodeInstance Collection that has the realHash value
-            // Get reference to Firestore collection
-            CollectionReference itemsRef = db.collection("QRCodeInstance");
+        // From: https://stackoverflow.com/
+        // Link: https://stackoverflow.com/a/49147139
+        // Author: https://stackoverflow.com/users/5246885/alex-mamo
+        // License: https://creativecommons.org/licenses/by-sa/3.0/
+        // Delete every document from the Firestore QRCodeInstance Collection that has the realHash value
+        // Get reference to Firestore collection
+        CollectionReference itemsRef = db.collection("QRCodeInstance");
 
-            // Delete the document from the Firestore QRCodes (real/physical) Collection
-            // Get reference to Firestore collection and Document ID
-            itemsRef.document(qrCode.getQRHash())
-                    .delete() // delete document in the Firestore database
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "Document has been deleted successfully!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "Error deleting the document!" + e.toString());
-                        }
-                    });
-        } else {
-            Log.d("Can they delete the QR code? ", "Not an owner, can't delete!");
-        }
+        // Delete the document from the Firestore QRCodes (real/physical) Collection
+        // Get reference to Firestore collection and Document ID
+        itemsRef.document(qrCode.getQRHash())
+                .delete() // delete document in the Firestore database
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Document has been deleted successfully!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                    }
+                });
 
         startActivity(new Intent(Expanded_QR_View.this, QRCollectionActivity.class));
     }//end ownerDeleteQRCode
