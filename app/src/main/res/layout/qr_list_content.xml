@@ -1,124 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
     android:elevation="4dp"
+    app:cardBackgroundColor="@color/cardViewPalette"
+    app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:padding="16dp">
 
-
-        <TextView
-            android:id="@+id/cUSERNAME"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Username: "
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            app:srcCompat="@drawable/ic_baseline_qr_code_scanner_24" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/comment_timestamp"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="126dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="561dp"
+            android:layout_toEndOf="@+id/imageView5"
+            app:srcCompat="@drawable/icons8_location_96" />
 
         <TextView
             android:id="@+id/comment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/cUSERNAME"
+            android:maxLines="1"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@+id/imageView5"
             android:text="Name"
             android:textColor="#000"
-            android:textSize="25dp"
-            />
+            android:textSize="30dp" />
 
         <TextView
             android:id="@+id/cSCORE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cUSERNAME"
-            android:text="Score: "
+            android:layout_alignBaseline="@+id/comment_timestamp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/comment_user"
+            android:layout_toEndOf="@+id/comment_timestamp"
+            android:text="Score:"
             android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:textSize="20dp"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/comment_user"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/cSCORE"
-            android:layout_below="@+id/comment_text"
-            android:layout_centerHorizontal="true"
+            android:layout_alignBaseline="@+id/cSCORE"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="4dp"
             android:text="Score"
-            android:textSize="25dp"
             android:textColor="@color/black"
-            />
+            android:textSize="30dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/cHASH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cSCORE"
+            android:layout_toEndOf="@+id/comment_timestamp"
             android:text="Hash: "
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="1dp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/cHASH"
             android:id="@+id/comment_timestamp"
-            android:text="Hash"
-            android:textSize="25dp"
-            android:layout_below="@+id/comment_user"
-            android:textColor="#000"/>
-
-        <TextView
-            android:id="@+id/cLONGITUDE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/comment_timestamp"
-            android:text="Longitude: "
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:layout_below="@+id/comment_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_toEndOf="@+id/imageView5"
+            android:text="Hash"
+            android:textColor="#000"
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/comment_DNE"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_timestamp"
             android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/cLONGITUDE"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@+id/comment_lat"
             android:text="Longitude"
-            android:textSize="25dp" />
+            android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/cLATITUDE"
+            android:id="@+id/comment_lat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/comment_DNE"
-            android:text="Latitude: "
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/cLATITUDE"
-            android:id="@+id/comment_lat"
+            android:layout_below="@+id/comment_timestamp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="22dp"
+            android:layout_toEndOf="@+id/imageView3"
             android:text="Latitude"
-            android:textSize="25dp"
-            android:layout_below="@+id/comment_DNE"
-            />
+            android:textSize="12dp" />
+
 
     </RelativeLayout>
 

@@ -273,6 +273,9 @@ public class QR_Scan extends AppCompatActivity  {
         table.setVisibility(View.GONE);
         detailView.setVisibility(View.GONE);
         confirmDenyView.setVisibility(View.GONE);
+        hashTextView.setText(null);
+        latTextView.setText(null);
+        longTextView.setText(null);
         qrCode = null;
         score = 0;
         latitude = 0;
