@@ -6,11 +6,14 @@ import static org.junit.Assert.assertTrue;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -21,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -30,11 +34,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class CommentTest {
     private Solo solo;
     private String testComment = "This is testing comment functionality.";
+    private String saltedHash = "THISi5AT3st5alTedHa5h";
     final private String USERNAME = "Username";
     final private  String PROFILES = "Profiles";
     SharedPreferences sharedPreferences;
@@ -50,25 +56,6 @@ public class CommentTest {
         sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name),context.MODE_PRIVATE);
     }
 
-    @Before
-    public void deleteAccount() {
-        SharedPreferences.Editor shEditor = sharedPreferences.edit();
-        shEditor.clear().commit();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(PROFILES).document(Username).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("deleting profile", "Deleted profile");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("deleting profile", "Failed to delete profile");
-                    }
-                });
-    }
 
     public void addComment() {
         solo.clickOnView((EditText) solo.getView(R.id.editTextComment));
@@ -88,46 +75,25 @@ public class CommentTest {
         assertTrue(solo.searchText(savedUsername));
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(PROFILES).document(Username).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-
-                        } else {
-                            assertTrue(false);
-                        }
+        db.collection("Comments")
+                .whereEqualTo("qrInstance", saltedHash)
+                .whereEqualTo("user", savedUsername)
+                .whereEqualTo("commentText", testComment)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                    for (DocumentSnapshot d : list){
+                        assertEquals(d.get("user").toString(), savedUsername);
+                        assertEquals(d.get("commentText").toString(), testComment);
+                        assertEquals(d.get("qrInstance").toString(), saltedHash);
                     }
-                });
-    }
-
-    @Test
-    public void scanProfileTest() throws Exception{
+                }
+            }
+        });
 
     }
-
-    @Test
-    public void profileAlreadyExistTest() throws Exception{
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        HashMap<String, String> data = new HashMap<>();
-        data.put("Contact info", "");
-        db.collection(PROFILES)
-                .document(Username)
-                .set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d(null, "Successfully created user");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(null,"Failed to create user");
-                    }
-                });
-        createProfile();
-        assertTrue(solo.waitForText("Username is taken"));
-    }
-
 }
