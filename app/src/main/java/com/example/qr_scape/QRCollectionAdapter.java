@@ -67,41 +67,6 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
                 });
     }
 
-    /**
-     * dowloadImage
-     * Will download if possible an image for a qr code scan
-     * and apply it to the view
-     * @author Dallin Dmytryk
-     * @param hash String representing the qr instance hash
-     * @param view ImageView to apply image to
-     */
-    private void downloadImage(String hash, ImageView view) {
-        final long SIZE = 1024*64;
-        String imageUrl = hash + ".jpg";
-
-        // get storage
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference pathRef  = storageRef.child(imageUrl);
-
-        // get image
-        pathRef.getBytes(SIZE).
-                addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Log.d("Image Load(QR collection)", "Image loaded");
-                        Bitmap image = BitmapFactory.decodeByteArray(bytes,0, bytes.length);
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Image Load(QR collection)", "Failed to load Image");
-                    }
-                });
-    }
-
     @Override
     public int getItemCount() {
         return qrDataList.size();
