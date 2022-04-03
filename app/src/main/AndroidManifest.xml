@@ -60,9 +60,6 @@
             android:name=".Search"
             android:exported="false" />
         <activity
-            android:name=".Profile"
-            android:exported="false" />
-        <activity
             android:name=".QR_Scan"
             android:exported="false" />
         <activity
