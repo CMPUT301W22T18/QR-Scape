@@ -59,8 +59,6 @@ public class NavBarTests {
 
     @Test
     public void openHome() {
-        // must enter another activity before testing home
-        solo.clickOnView(solo.getView(R.id.nav_profile));
         solo.clickOnView(solo.getView(R.id.nav_home));
         solo.assertCurrentActivity("Check that current activity is search", Home.class);
     }
