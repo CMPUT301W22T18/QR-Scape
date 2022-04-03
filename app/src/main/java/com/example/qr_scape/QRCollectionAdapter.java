@@ -1,14 +1,22 @@
 package com.example.qr_scape;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -30,10 +38,68 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
         holder.qr_user.setText(qrDataList.get(position).getUsername());
         holder.qr_score.setText(Integer.toString(qrDataList.get(position).getScore()));
-        holder.qr_hash.setText(qrDataList.get(position).getQRHash());
+        holder.qr_hash.setText(qrDataList.get(position).getQRHash().substring(0,10));
         holder.qr_lat.setText(String.valueOf(qrDataList.get(position).getLatitude()));
         holder.qr_long.setText(String.valueOf(qrDataList.get(position).getLongitude()));
+        final long SIZE = 1024*64;
+        String imageUrl = qrDataList.get(position).getQRHashSalted() + ".jpg";
 
+        // get storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathRef  = storageRef.child(imageUrl);
+
+        // get image
+        pathRef.getBytes(SIZE).
+                addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Log.d("Image Load", "Image loaded");
+                        Bitmap image = BitmapFactory.decodeByteArray(bytes,0, bytes.length);
+                        holder.qr_thumb.setImageBitmap(image);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Image Load", "Failed to load Image");
+                    }
+                });
+    }
+
+    /**
+     * dowloadImage
+     * Will download if possible an image for a qr code scan
+     * and apply it to the view
+     * @author Dallin Dmytryk
+     * @param hash String representing the qr instance hash
+     * @param view ImageView to apply image to
+     */
+    private void downloadImage(String hash, ImageView view) {
+        final long SIZE = 1024*64;
+        String imageUrl = hash + ".jpg";
+
+        // get storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathRef  = storageRef.child(imageUrl);
+
+        // get image
+        pathRef.getBytes(SIZE).
+                addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Log.d("Image Load(QR collection)", "Image loaded");
+                        Bitmap image = BitmapFactory.decodeByteArray(bytes,0, bytes.length);
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Image Load(QR collection)", "Failed to load Image");
+                    }
+                });
     }
 
     @Override
@@ -43,6 +109,7 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
 
     class myviewholder extends RecyclerView.ViewHolder {
         TextView qr_user, qr_score, qr_hash, qr_lat, qr_long;
+        ImageView qr_thumb;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
@@ -61,7 +128,7 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
                     view.getContext().startActivity(intent);
                 }
             });
-
+            qr_thumb = itemView.findViewById(R.id.imageView5);
             qr_user = itemView.findViewById(R.id.comment_text);
             qr_score = itemView.findViewById(R.id.comment_user);
             qr_hash = itemView.findViewById(R.id.comment_timestamp);
