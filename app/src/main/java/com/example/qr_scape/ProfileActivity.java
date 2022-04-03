@@ -77,8 +77,10 @@ public class ProfileActivity extends AppCompatActivity {
     TextView usernameText;
     EditText contactInfoText;
     TextView codeEditText;
+    TextView codeEditText1;
     Button confirmButton;
     Button codeButton;
+    Button codeButton1;
     BottomNavigationView bottomNavigationView;
     ImageView imageView;
     FirebaseFirestore db;
@@ -168,8 +170,28 @@ public class ProfileActivity extends AppCompatActivity {
         // it takes in username and generates the QR code with username!
         imageView = findViewById(R.id.profile_imageview);
         codeEditText= findViewById(R.id.profile_code_edittext);
+        codeEditText1= findViewById(R.id.profile_code_edittext1);
         codeEditText.setText("QR-Scape:" + savedUserName);
+        codeEditText1.setText("Status:" + savedUserName);
         codeButton = findViewById(R.id.profile_generate_button);
+        codeButton1 = findViewById(R.id.profile_generate_button1);
+        codeButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+                try{
+                    BitMatrix bitMatrix = multiFormatWriter.encode(codeEditText1.getText().toString(), BarcodeFormat.QR_CODE,500,500);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                    imageView.setImageBitmap(bitmap);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
         codeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
