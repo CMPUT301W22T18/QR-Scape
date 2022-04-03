@@ -24,8 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@drawable/edit_text_background"
-            android:textColor="@color/white"
+            android:background="@color/contactInfoPalette"
+            android:textColor="@color/textOnForeground"
             android:textSize="20dp">
 
         </TextView>

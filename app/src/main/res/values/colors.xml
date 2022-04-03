@@ -9,16 +9,16 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="top">#457B9D</color>
-    <color name="bottom">#A8DADC</color>
+    <color name="bottom">#457B9D</color>
     <color name="background">#1D3557</color>
-    <color name="buttonPalette">#E63946</color>
+    <color name="buttonPalette">#A8DADC</color>
     <color name="textOnBackground">#FFFFFFFF</color>
     <color name="textOnForeground">#FF000000</color>
     <color name="textOnButton">#FF000000</color>
-    <color name="contactInfoPalette">#A8DADC</color>
+    <color name="contactInfoPalette">#FFFFFFFF</color>
     <color name="searchBarPalette">#FFFFFFFF</color>
-    <color name="cardViewPalette">#A8DADC</color>
-    <color name="leaderboardRankBox">#A8DADC</color>
+    <color name="cardViewPalette">#FFFFFFFF</color>
+    <color name="leaderboardRankBox">#FFFFFFFF</color>
 
 
 

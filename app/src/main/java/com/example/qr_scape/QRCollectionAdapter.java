@@ -30,7 +30,7 @@ public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapte
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
         holder.qr_user.setText(qrDataList.get(position).getUsername());
         holder.qr_score.setText(Integer.toString(qrDataList.get(position).getScore()));
-        holder.qr_hash.setText(qrDataList.get(position).getQRHashSalted());
+        holder.qr_hash.setText(qrDataList.get(position).getQRHash().substring(0,10));
         holder.qr_lat.setText(String.valueOf(qrDataList.get(position).getLatitude()));
         holder.qr_long.setText(String.valueOf(qrDataList.get(position).getLongitude()));
 

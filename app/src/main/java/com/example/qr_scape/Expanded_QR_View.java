@@ -41,6 +41,7 @@ public class Expanded_QR_View extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     private ArrayList<QRCode> qrHashList;
     BottomNavigationView bottomNavigationView;
+    String saltedHash;
 
 
     @Override
@@ -64,14 +65,14 @@ public class Expanded_QR_View extends AppCompatActivity {
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
         String score = intent.getStringExtra("score");
-        String hash = intent.getStringExtra("hash");
+        saltedHash = intent.getStringExtra("hash");
         String longitude = intent.getStringExtra("long");
         String latitude = intent.getStringExtra("lat");
         String realHash = intent.getStringExtra("realHash");
         downloadImage(intent.getStringExtra("hash"), qr_image);
 
         qr_user.setText(username);
-        qr_hash.setText(hash);
+        qr_hash.setText(realHash.substring(0,10));
         qr_score.setText(score);
         qr_longitude.setText(longitude);
         qr_latitude.setText(latitude);
@@ -154,7 +155,7 @@ public class Expanded_QR_View extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), CommentActivity.class);
-                intent.putExtra("saltedHash", hash);
+                intent.putExtra("saltedHash", saltedHash);
                 view.getContext().startActivity(intent);
             }
         });
