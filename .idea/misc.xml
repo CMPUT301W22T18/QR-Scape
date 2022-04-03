@@ -3,14 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Dallin Dmytryk/Desktop/Git/QR-Scape/app/src/main/res/layout/activity_profile.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Dallin Dmytryk/Desktop/Git/QR-Scape/app/src/main/res/layout/activity_qr_scan.xml" value="0.203125" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/drawable/colorgradient.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_expanded_qr_view.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_home.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_leaderboard.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_location.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_login.xml" value="0.2796875" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_main.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_other_profile.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_personal_stats.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_profile.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_qr_scan.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_scan_view.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_scanned_qr_game_status.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_search.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/comment_list_content.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/comments_layout.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/leaderboard_item.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/player_list_content.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/qr_collections_layout.xml" value="0.2796875" />
-        <entry key="app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.2685" />
-        <entry key="app/src/main/res/drawable/leaderboard_logo.xml" value="0.3435" />
-        <entry key="app/src/main/res/layout/activity_expanded_qr_view.xml" value="0.23333333333333334" />
-        <entry key="app/src/main/res/layout/activity_location.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/comments_layout.xml" value="0.29259259259259257" />
-        <entry key="app/src/main/res/layout/qr_list_content.xml" value="0.33" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/qr_list_content.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/toolbar_title_layout.xml" value="0.14719202898550723" />
       </map>
     </option>
   </component>

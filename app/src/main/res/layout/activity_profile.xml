@@ -8,14 +8,13 @@
     tools:context=".Profile">
 
 
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/edit_text_background"
+        android:background="@color/contactInfoPalette"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_username_text">
@@ -25,12 +24,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@drawable/edit_text_background"
+            android:background="@color/contactInfoPalette"
             android:hint="Enter Contact Info Here"
             android:inputType="textMultiLine"
             android:maxLength="200"
             android:maxLines="10"
-            android:textColor="@color/white"
+            android:textColor="@color/textOnForeground"
             android:textSize="20dp">
 
         </EditText>
@@ -44,8 +43,9 @@
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="@color/buttonPalette"
         android:text="Confirm"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnButton"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2">
@@ -61,7 +61,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
         android:hint="Text"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnBackground"
         android:textColorHint="@color/white"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,11 +76,12 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="60dp"
         android:hint="Text"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnForeground"
         android:textColorHint="@color/white"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_confirm_button" />
+
 
     <Button
         android:id="@+id/profile_generate_button"
@@ -91,9 +92,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/buttonPalette"
         android:text="Login"
+        android:textColor="@color/textOnButton"
         android:textSize="13dp"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_confirm_button" />
 
@@ -106,11 +108,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="212dp"
+        android:backgroundTint="@color/buttonPalette"
         android:text="Status"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnButton"
         android:textSize="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_confirm_button" />
+
 
     <ImageView
         android:id="@+id/profile_imageview"
@@ -153,7 +157,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnBackground"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -164,9 +168,9 @@
         android:id="@+id/personal_stats_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="openStats"
+        android:backgroundTint="@color/buttonPalette"
         android:text="STATS"
-        android:textColor="@color/white"
+        android:textColor="@color/textOnButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"

@@ -27,9 +27,10 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="254dp"
+        android:backgroundTint="@color/buttonPalette"
         android:onClick="openLeaderboard"
         android:text="LEADERBOARD"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/textOnButton" />
 
     <Button
         android:id="@+id/openQRcodes_button"
@@ -38,9 +39,10 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="200dp"
+        android:backgroundTint="@color/buttonPalette"
         android:onClick="openQRCodes"
         android:text="QR Codes"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/textOnButton" />
 
     <ImageView
         android:id="@+id/imageView"
