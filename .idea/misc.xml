@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Dallin Dmytryk/Desktop/Git/QR-Scape/app/src/main/res/layout/activity_profile.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Dallin Dmytryk/Desktop/Git/QR-Scape/app/src/main/res/layout/activity_qr_scan.xml" value="0.203125" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/drawable/colorgradient.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_expanded_qr_view.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/QR-Scape/app/src/main/res/layout/activity_home.xml" value="0.14719202898550723" />
