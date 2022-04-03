@@ -151,7 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Object o) {
                                 Log.d(null, "Successfully updated contact info");
-                                confirmButton.setVisibility(view.INVISIBLE);
+                                confirmButton.setVisibility(View.INVISIBLE);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

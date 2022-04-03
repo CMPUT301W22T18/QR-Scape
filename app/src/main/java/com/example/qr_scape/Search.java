@@ -262,7 +262,7 @@ public class Search extends AppCompatActivity {
                                 String qr_username = document.getString("Username");
                                 Integer qr_scoreLong = Math.toIntExact(document.getLong("Score"));
                                 String qr_realHash = document.getString("RealHash");
-                                String qr_saltedHash = document.getId().toString();
+                                String qr_saltedHash = document.getId();
                                 //String qr_Photo = d.getString("Photo");
                                 Double qr_Longitude = document.getDouble("Longitude");
                                 Double qr_Latitude = document.getDouble("Latitude");

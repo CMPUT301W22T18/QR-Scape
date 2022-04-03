@@ -169,7 +169,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
                         overridePendingTransition(0,0);
                         return true;
 
-                    case R.id.nav_location: ;
+                    case R.id.nav_location:
                         return true;
                 }
                 return false;

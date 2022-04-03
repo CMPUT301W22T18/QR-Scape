@@ -236,7 +236,7 @@ public class QR_Scan extends AppCompatActivity  {
                         overridePendingTransition(0,0);
                         return true;
 
-                    case R.id.nav_location: ;
+                    case R.id.nav_location:
                         startActivity(new Intent(getApplicationContext(), Location.class));
                         overridePendingTransition(0,0);
                         return true;
@@ -417,7 +417,7 @@ public class QR_Scan extends AppCompatActivity  {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Data could not be added!" + e.toString());
+                        Log.d(TAG, "Data could not be added!" + e);
                     }
                 });
 
@@ -433,7 +433,7 @@ public class QR_Scan extends AppCompatActivity  {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Data could not be added!" + e.toString());
+                        Log.d(TAG, "Data could not be added!" + e);
                     }
                 });
 

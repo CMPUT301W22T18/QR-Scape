@@ -220,7 +220,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                        Log.d(TAG, "Error deleting the document!" + e);
                     }
                 });
     }//end deleteProfile

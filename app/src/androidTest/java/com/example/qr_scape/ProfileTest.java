@@ -34,7 +34,7 @@ public class ProfileTest {
     final private  String PROFILES = "Profiles";
     final private String USERNAME = "Username";
     final private String ContactInfo = "Test Contact info";
-    private String Username = "testingusername";
+    private final String Username = "testingusername";
     SharedPreferences sharedPreferences;
 
 
@@ -46,7 +46,7 @@ public class ProfileTest {
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name),context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name), Context.MODE_PRIVATE);
 
         solo.clickOnView(solo.getView(R.id.login_create_profile_button));
         solo.clickOnView((EditText) solo.getView(R.id.login_username_edittext));
