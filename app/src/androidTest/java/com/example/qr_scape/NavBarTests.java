@@ -17,12 +17,6 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class NavBarTests {
     private Solo solo;
-    final private  String PROFILES = "Profiles";
-    final private String USERNAME = "Username";
-    final private String ContactInfo = "Test Contact info";
-    private String Username = "testingusername";
-    SharedPreferences sharedPreferences;
-
 
     @Rule
     public ActivityTestRule<Home> rule =
