@@ -64,6 +64,7 @@
                 android:layout_weight="1"
                 android:text="HASH"
                 android:textColor="@color/textOnBackground"
+
                 android:textSize="20sp" />
 
             <TextView
@@ -78,7 +79,6 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
-
 
 
         <LinearLayout
