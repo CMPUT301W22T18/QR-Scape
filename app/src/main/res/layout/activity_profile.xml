@@ -53,13 +53,28 @@
     </Button>
 
     <TextView
-        android:id="@+id/profile_code_edittext"
-        android:layout_width="185dp"
-        android:layout_height="58dp"
+        android:id="@+id/profile_code_edittext1"
+        android:layout_width="106dp"
+        android:layout_height="52dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
+        android:hint="Text"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_confirm_button" />
+
+    <TextView
+        android:id="@+id/profile_code_edittext"
+        android:layout_width="104dp"
+        android:layout_height="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
         android:hint="Text"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
@@ -69,15 +84,31 @@
 
     <Button
         android:id="@+id/profile_generate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="145dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Generate"
+        android:text="Login"
+        android:textSize="13dp"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_confirm_button" />
+
+    <Button
+        android:id="@+id/profile_generate_button1"
+        android:layout_width="152dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="212dp"
+        android:text="Status"
+        android:textColor="@color/white"
+        android:textSize="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_confirm_button" />
 
@@ -97,8 +128,10 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personal_stats_button" />
+        app:layout_constraintTop_toBottomOf="@+id/personal_stats_button"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -126,18 +159,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
-    
+
     <Button
         android:id="@+id/personal_stats_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="STATS"
         android:onClick="openStats"
+        android:text="STATS"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.921"
+        app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_code_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_generate_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
