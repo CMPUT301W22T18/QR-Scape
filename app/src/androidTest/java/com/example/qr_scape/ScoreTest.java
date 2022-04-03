@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,6 +51,7 @@ public class ScoreTest {
     public void deleteAccount() {
         SharedPreferences.Editor shEditor = sharedPreferences.edit();
         shEditor.clear().commit();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(PROFILES).document(Username).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -68,7 +70,6 @@ public class ScoreTest {
 
 
     public void createProfile() {
-        solo.goBack();
         solo.clickOnView(solo.getView(R.id.login_create_profile_button));
         solo.clickOnView((EditText) solo.getView(R.id.login_username_edittext));
         solo.enterText((EditText) solo.getView(R.id.login_username_edittext), "william smith");
@@ -134,7 +135,7 @@ public class ScoreTest {
         solo.goBack();
 
         updateStats();
-        solo.sleep(6000);
+        solo.sleep(5000);
         solo.clickOnView(solo.getView(R.id.personal_stats_button));
 
         TextView highestScoreViewUpdated = (TextView) solo.getView((R.id.highest_score_value));
@@ -152,6 +153,11 @@ public class ScoreTest {
         TextView lowestScoreViewUpdated = (TextView) solo.getView((R.id.lowest_score_value));
         String lowScoreUpdated = lowestScoreViewUpdated.getText().toString();
         assertEquals("111", lowScoreUpdated);
+    }
+
+    @After
+    public void afterTest(){
+        deleteAccount();
     }
 
 }
