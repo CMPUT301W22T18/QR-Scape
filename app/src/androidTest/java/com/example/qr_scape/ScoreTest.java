@@ -135,7 +135,7 @@ public class ScoreTest {
         solo.goBack();
 
         updateStats();
-        solo.sleep(5000);
+        solo.sleep(6000);
         solo.clickOnView(solo.getView(R.id.personal_stats_button));
 
         TextView highestScoreViewUpdated = (TextView) solo.getView((R.id.highest_score_value));
