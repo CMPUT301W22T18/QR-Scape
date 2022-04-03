@@ -82,9 +82,9 @@ public class ScanView extends AppCompatActivity implements ZXingScannerView.Resu
     @Override
     public void handleResult(Result rawResult) {
         String QRText = rawResult.getText();
-        if (QRText.length() > 10 && QRText.startsWith("QR-Scape:")) {
+        if (QRText.startsWith("Status:")) {
             // user can scan other players profile QR to check game status
-            String username = QRText.substring(9);
+            String username = QRText.substring(7);
             db = FirebaseFirestore.getInstance();
             db.collection(PROFILES)
                     .orderBy(FieldPath.documentId())
