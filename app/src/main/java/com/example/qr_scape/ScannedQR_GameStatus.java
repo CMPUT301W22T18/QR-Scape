@@ -126,7 +126,7 @@ public class ScannedQR_GameStatus extends AppCompatActivity {
                     if (lowestScore[0]  == null) {
                         lowestText.setText(String.valueOf(0));
                     } else {
-                        lowestText.setText(String.valueOf(highestScore[0]));
+                        lowestText.setText(String.valueOf(lowestScore[0]));
                     }
 
                     if (totalScore[0]  == null) {
