@@ -20,6 +20,13 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+/**
+ * QRCollectionActivity
+ * This adapter class helps to display all the QR codes on a card view in QRCollections
+ * @author Kashish Sansanwal
+ * @version 1
+ */
+
 public class QRCollectionAdapter extends RecyclerView.Adapter<QRCollectionAdapter.myviewholder> {
     ArrayList<QRCode> qrDataList;
 

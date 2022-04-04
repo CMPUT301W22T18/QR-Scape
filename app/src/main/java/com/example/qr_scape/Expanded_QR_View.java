@@ -36,6 +36,14 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Expanded_QR_View Activity
+ * Open each QR code instance in a detailed view with all the information(hash,location,scanned by)
+ * This class also helps to see comments on the qr codes and delete the qr code.
+ * @author Kashish Sansanwal
+ * @version 2
+ */
+
 public class Expanded_QR_View extends AppCompatActivity {
     private FirebaseFirestore db;
     SharedPreferences sharedPreferences;
@@ -81,6 +89,7 @@ public class Expanded_QR_View extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        //Get the salted hashes stored inside an arraylist
         db.collection("QRCodeInstance")
                 .whereEqualTo("RealHash",realHash)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -118,6 +127,7 @@ public class Expanded_QR_View extends AppCompatActivity {
             deleteButton.setVisibility(View.VISIBLE);
         }
 
+        //Bottom Navigation bar
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
