@@ -2,4 +2,5 @@
     <string name="app_name">QR-Scape</string>
     <string name="invalid_username_warning">Username is invalid</string>
     <string name="username_taken_warning">Username is taken</string>
+    <string name="new_owner">Owner status active. Your account will have owner privileges.</string>
 </resources>

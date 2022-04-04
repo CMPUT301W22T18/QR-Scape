@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +52,9 @@ public class PersonalStats extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_stats);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference profilesRef = db.collection("Profiles");
         numScans = findViewById(R.id.num_codes);
@@ -71,6 +75,8 @@ public class PersonalStats extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.nav_home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
 
                     case R.id.nav_scan:
@@ -123,7 +129,7 @@ public class PersonalStats extends AppCompatActivity {
                         if (lowestScore[0]  == null) {
                             lowestScoreValue.setText(String.valueOf(0));
                         } else {
-                            lowestScoreValue.setText(String.valueOf(highestScore[0]));
+                            lowestScoreValue.setText(String.valueOf(lowestScore[0]));
                         }
 
                         if (totalScore[0]  == null) {

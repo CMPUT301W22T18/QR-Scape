@@ -7,9 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="top">#2273ED</color>
-    <color name="bottom">#DA55CD</color>
-    <color name="background">#272C5E</color>
+
+    <color name="top">#457B9D</color>
+    <color name="bottom">#457B9D</color>
+    <color name="background">#1D3557</color>
+    <color name="buttonPalette">#A8DADC</color>
+    <color name="textOnBackground">#FFFFFFFF</color>
+    <color name="textOnForeground">#FF000000</color>
+    <color name="textOnButton">#FF000000</color>
+    <color name="contactInfoPalette">#FFFFFFFF</color>
+    <color name="searchBarPalette">#FFFFFFFF</color>
+    <color name="cardViewPalette">#FFFFFFFF</color>
+    <color name="leaderboardRankBox">#FFFFFFFF</color>
 
 
 

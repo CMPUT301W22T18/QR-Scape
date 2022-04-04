@@ -21,6 +21,8 @@
  */
 package com.example.qr_scape;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -55,6 +57,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 /**
@@ -72,9 +76,11 @@ public class ProfileActivity extends AppCompatActivity {
     final String CONTACTINFO = "Contact info";
     TextView usernameText;
     EditText contactInfoText;
-    EditText codeEditText;
+    TextView codeEditText;
+    TextView codeEditText1;
     Button confirmButton;
     Button codeButton;
+    Button codeButton1;
     BottomNavigationView bottomNavigationView;
     ImageView imageView;
     FirebaseFirestore db;
@@ -145,7 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Object o) {
                                 Log.d(null, "Successfully updated contact info");
-                                confirmButton.setVisibility(view.INVISIBLE);
+                                confirmButton.setVisibility(View.INVISIBLE);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -161,9 +167,31 @@ public class ProfileActivity extends AppCompatActivity {
         // Author: https://www.youtube.com/channel/UCklYpZX_-QqHOeSUH4GVQpA
         // License: https://creativecommons.org/licenses/by-sa/3.0/
         // set create QR code functionality
+        // it takes in username and generates the QR code with username!
         imageView = findViewById(R.id.profile_imageview);
-        codeEditText = findViewById(R.id.profile_code_edittext);
+        codeEditText= findViewById(R.id.profile_code_edittext);
+        codeEditText1= findViewById(R.id.profile_code_edittext1);
+        codeEditText.setText("QR-Scape:" + savedUserName);
+        codeEditText1.setText("Status:" + savedUserName);
         codeButton = findViewById(R.id.profile_generate_button);
+        codeButton1 = findViewById(R.id.profile_generate_button1);
+        codeButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+                try{
+                    BitMatrix bitMatrix = multiFormatWriter.encode(codeEditText1.getText().toString(), BarcodeFormat.QR_CODE,500,500);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                    imageView.setImageBitmap(bitmap);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
         codeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,6 +202,7 @@ public class ProfileActivity extends AppCompatActivity {
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                     Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                     imageView.setImageBitmap(bitmap);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -224,5 +253,4 @@ public class ProfileActivity extends AppCompatActivity {
         openStatsIntent.putExtra("Profile", savedUserName);
         startActivity(openStatsIntent);
     }
-
 }

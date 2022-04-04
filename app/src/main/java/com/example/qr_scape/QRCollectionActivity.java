@@ -15,9 +15,13 @@ package com.example.qr_scape;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -25,17 +29,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,73 +56,132 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
+ * QRCollectionActivity
  * Handles the user's collection of QR codes (displaying, deleting, adding, etc.)
+ * @author Kashish Sansanwal
+ * @version 2
  */
 
 public class QRCollectionActivity extends AppCompatActivity {
-    ListView qrList;
-    ArrayAdapter<String> qrListAdapter;
-    ArrayList<String> qrDataList;
+
+    private RecyclerView recyclerView;
+    private ArrayList<QRCode> qrDataList;
+    private FirebaseFirestore db;
+    private QRCollectionAdapter qrCollectionAdapter;
+    SharedPreferences sharedPreferences;
+    BottomNavigationView bottomNavigationView;
+    //ListView qrList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_collections_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final CollectionReference QRRef = db.collection("QRCodeInstance");
-
-        //qrDataList = new ArrayList<String>();
-
-        qrList = findViewById(R.id.qrList);
-
-        // qrHashes: This will store all the hash codes of the QR codes which are added.
-        //String[] qrHashes = {"Hello", "You", "Are", "Amazing"};
-
+        recyclerView=(RecyclerView)findViewById(R.id.qr_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         qrDataList = new ArrayList<>();
-        //qrDataList.addAll(Arrays.asList(qrHashes));
+        qrCollectionAdapter = new QRCollectionAdapter(qrDataList);
+        recyclerView.setAdapter(qrCollectionAdapter);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        qrListAdapter = new ArrayAdapter<>(this, R.layout.qr_list_content, qrDataList);
-        qrList.setAdapter(qrListAdapter);
 
-        Task<QuerySnapshot> qrRef = db.collection("QRCodeInstance").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
-                        Map<String, Object> hash_obj = document.getData();
-                        String hash_value = (String) hash_obj.toString();
-                        qrDataList.add(hash_value);
-                        qrListAdapter.notifyDataSetChanged();
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
+        String savedUserName = sharedPreferences.getString("Username",null);
+        String isOwner = sharedPreferences.getString("Owner",null);
+        db = FirebaseFirestore.getInstance();
+        qrCollectionAdapter.notifyDataSetChanged();
+
+        if (isOwner.equals("True")){
+            db.collection("QRCodeInstance")
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                        for (DocumentSnapshot d : list){
+
+                            QRCode qr = d.toObject(QRCode.class);
+                            String qr_username = d.getString("Username");
+                            Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                            String qr_realHash = d.getString("RealHash");
+                            String qr_saltedHash = d.getId();
+                            //String qr_Photo = d.getString("Photo");
+                            Double qr_Longitude = d.getDouble("Longitude");
+                            Double qr_Latitude = d.getDouble("Latitude");
+                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash ,qr_username, qr_Latitude, qr_Longitude,null, qr_scoreLong);
+                            qrDataList.add(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
                     }
                 }
+            });
+        }
+
+        else{
+            db.collection("QRCodeInstance")
+                    .whereEqualTo("Username",savedUserName)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        Log.d("list", queryDocumentSnapshots.getDocuments().toString());
+                        for (DocumentSnapshot d : list){
+
+                            QRCode qr = d.toObject(QRCode.class);
+                            String qr_username = d.getString("Username");
+                            Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
+                            String qr_realHash = d.getString("RealHash");
+                            String qr_saltedHash = d.getId();
+                            //String qr_Photo = d.getString("Photo");
+                            Double qr_Longitude = d.getDouble("Longitude");
+                            Double qr_Latitude = d.getDouble("Latitude");
+                            QRCode qrCode = new QRCode(qr_realHash,qr_saltedHash ,qr_username, qr_Latitude, qr_Longitude,null, qr_scoreLong);
+                            qrDataList.add(qrCode);
+                        }
+                        qrCollectionAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_home:
+                        startActivity(new Intent(getApplicationContext(), Home.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.nav_scan:
+                        startActivity(new Intent(getApplicationContext(), QR_Scan.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.nav_search:
+                        startActivity(new Intent(getApplicationContext(), Search.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.nav_profile:
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.nav_location:
+                        startActivity(new Intent(getApplicationContext(), Location.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
             }
         });
-
-//        QRRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-//                    FirebaseFirestoreException error) {
-//                // Clear the old list
-//                qrDataList.clear();
-//                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-//                {
-//                    Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
-//                    String saltedHash = doc.getId();
-//                    String realHash = (String) doc.getData().get("realHash");
-//                    Bitmap photo = (Bitmap) doc.getData().get("Photo");
-//                    double latitude = (double) doc.getData().get("Latitude");
-//                    double longitude = (double) doc.getData().get("Longitude");
-//                    int score = (int) doc.getData().get("Score");
-//                    String username = (String) doc.getData().get("Username");
-//                    qrDataList.add(new QRCode(realHash, saltedHash, username, latitude, longitude, photo, score)); // Adding the cities and provinces from FireStore
-//                }
-//                qrListAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-//            }
-//        });
-////
-//
-//        deleteQRCode(qrDataList.get(1));
 
     }
 
@@ -136,12 +206,14 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
+                        qrDataList.remove(qrCode);
+                        qrCollectionAdapter.notifyDataSetChanged();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                        Log.d(TAG, "Error deleting the document!" + e);
                     }
                 });
     }//end deleteQRCode
@@ -174,6 +246,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         itemsRef.document(document.getId()).delete();
+                        qrDataList.remove(qrCode);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -189,13 +262,68 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
+                        qrDataList.remove(qrCode);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                        Log.d(TAG, "Error deleting the document!" + e);
                     }
                 });
     }//end ownerDeleteQRCode
+
+    /**
+     * Add comment on QR code to database
+     *
+     * @author Ty Greve
+     * @version 2
+     */
+    // Add QRCode Method (To be nest in the scanner class)
+    public void addComment(String comment, String QRHashSalted) {
+        final String USERNAME = "Username";
+
+        // Check shared preferences for username of the user that is making the comment
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+        String username = sharedPreferences.getString(USERNAME, null);
+
+        // Validate user input
+        if ((comment.equals(null)) || (username.equals(null))) {
+            Toast.makeText(QRCollectionActivity.this, "Must fill-in a comment.", Toast.LENGTH_SHORT).show();
+        }
+
+
+        if (comment.length() > 0 && username.length() > 0) {
+
+            // Access a Cloud Firestore instance from your Activity
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // Create HashMap for QRCodeInstance and put fields from the qrCode object into it
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("commentText", comment);
+            data.put("qrInstance", QRHashSalted);
+            data.put("user", username);
+            data.put("timestamp", "time_stamp");
+
+            // Store to Firestore the QRCodeInstance
+            // Get reference to Firestore collection and Document ID
+            db.collection("Comments").document()
+                    .set(data) // Set fields in the Firestore database
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "Data has been added successfully!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Data could not be added!" + e);
+                        }
+                    });
+        }
+
+    }
 }

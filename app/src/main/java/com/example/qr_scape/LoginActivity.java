@@ -5,7 +5,7 @@
  *
  * Feb 17 2022
  *
- * Copyright [yyyy] [name of copyright owner]
+ * Copyright 2022 Dallin Dmytryk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,14 +34,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * LoginActivity
@@ -56,15 +61,17 @@ import java.util.HashMap;
 public class LoginActivity extends AppCompatActivity {
     final String PROFILES = "Profiles";
     final String USERNAME = "Username";
+    final String OWNER = "Owner";
     LinearLayout buttonLayout;
     LinearLayout createProfileLayout;
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name),MODE_PRIVATE);
         getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
         buttonLayout = findViewById(R.id.login_button_layout);
@@ -102,8 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = usernameText.getText().toString();
-                // validate username
+                String username = usernameText.getText().toString().toLowerCase(Locale.ROOT);// validate username
                 if (username.length() == 0) {
                     // warn user that input is incorrect
                     Snackbar.make(usernameText,R.string.invalid_username_warning,Snackbar.LENGTH_SHORT)
@@ -142,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
         scanProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // to be implemented later
+                startActivity(new Intent(getApplicationContext(),ScanLogin.class));
             }
         });
     }
@@ -154,9 +160,11 @@ public class LoginActivity extends AppCompatActivity {
     private void checkDeviceCredentials(){
         String savedUserName = sharedPreferences.getString(USERNAME,null);
         if (savedUserName != null) {
+            checkOwnerStatus(savedUserName);
             nextActivity();
         }
     }
+
 
     /**
      * Creates a profile on the firestore database
@@ -203,4 +211,37 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Saves username's status as owner or not
+     * @param username string Profile username
+     */
+    private void checkOwnerStatus(String username) {
+        final Object[] ownerStatus = new Object[1];
+        Task<DocumentSnapshot> userRef = db.collection("Profiles").document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ownerStatus[0] = document.get("Owner");
+                        if (ownerStatus[0]  == null | String.valueOf(ownerStatus[0]).equals("False")) {
+                            SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                            shEditor.putString(OWNER, "False");
+                            shEditor.commit();
+                            Log.d("LoginActivity: Is owner?", "They are NOT owner on sharedprefs");
+                        } else {
+                            SharedPreferences.Editor shEditor = sharedPreferences.edit();
+                            shEditor.putString(OWNER, "True");
+                            shEditor.commit();
+                            Log.d("LoginActivity: Is owner?", "They are an owner on sharedprefs");
+                        }
+                    } else {
+                        Log.d("LoginActivity", "No such document");
+                    }
+                } else {
+                    Log.d("LoginActivity", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 }

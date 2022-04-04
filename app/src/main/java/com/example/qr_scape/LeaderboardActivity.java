@@ -15,6 +15,7 @@ package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,6 +62,9 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         db = FirebaseFirestore.getInstance();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -78,6 +82,8 @@ public class LeaderboardActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.nav_home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
 
                     case R.id.nav_scan:
@@ -128,9 +134,9 @@ public class LeaderboardActivity extends AppCompatActivity {
                                 currentRank += 1;
                                 Log.d("score detected is: ", score);
                                 if (!score.equals("null")) {
-                                    players.add(new LeaderboardItem(username, score, " #" + String.valueOf(currentRank), R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
+                                    players.add(new LeaderboardItem(username, score, " #" + currentRank, R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
                                 } else {
-                                    players.add(new LeaderboardItem(username, " 0", " #" + String.valueOf(currentRank), R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
+                                    players.add(new LeaderboardItem(username, " 0", " #" + currentRank, R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
 
                                 }
                             }
@@ -151,9 +157,9 @@ public class LeaderboardActivity extends AppCompatActivity {
                                 currentRank += 1;
                                 Log.d("score detected is: ", score);
                                 if (!score.equals("null")) {
-                                    players.add(new LeaderboardItem(username, score, " #" + String.valueOf(currentRank), R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
+                                    players.add(new LeaderboardItem(username, score, " #" + currentRank, R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
                                 } else {
-                                    players.add(new LeaderboardItem(username, " 0", " #" + String.valueOf(currentRank), R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
+                                    players.add(new LeaderboardItem(username, " 0", " #" + currentRank, R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
 
                                 }
                             }
@@ -174,9 +180,9 @@ public class LeaderboardActivity extends AppCompatActivity {
                                 currentRank += 1;
                                 Log.d("score detected is: ", score);
                                 if (!score.equals("null")) {
-                                    players.add(new LeaderboardItem(username, score, " #" + String.valueOf(currentRank), R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
+                                    players.add(new LeaderboardItem(username, score, " #" + currentRank, R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
                                 } else {
-                                    players.add(new LeaderboardItem(username, " 0", " #" + String.valueOf(currentRank), R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
+                                    players.add(new LeaderboardItem(username, " 0", " #" + currentRank, R.drawable.trophy_icon)); // Adding the cities and provinces from FireStore
 
                                 }
                             }

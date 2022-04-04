@@ -4,17 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#272C5E"
     tools:context=".Home">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"
-        android:textColor="@color/white"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -29,7 +19,7 @@
         app:itemRippleColor="@color/black"
         app:menu="@menu/bottom_navigation"
         android:layout_alignParentBottom="true"/>
-    
+
     <Button
         android:id="@+id/leaderboard_button"
         android:layout_width="wrap_content"
@@ -37,8 +27,29 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="254dp"
+        android:backgroundTint="@color/buttonPalette"
         android:onClick="openLeaderboard"
         android:text="LEADERBOARD"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/textOnButton" />
+
+    <Button
+        android:id="@+id/openQRcodes_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="200dp"
+        android:backgroundTint="@color/buttonPalette"
+        android:onClick="openQRCodes"
+        android:text="QR Codes"
+        android:textColor="@color/textOnButton" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="252dp"
+        android:layout_height="282dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ic_qr_scape_home_logo" />
 
 </RelativeLayout>

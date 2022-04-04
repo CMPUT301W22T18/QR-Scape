@@ -15,13 +15,25 @@ package com.example.qr_scape;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 /**
  * Home activity is the base activity
  * which brings the user to it, when successfully logged in
@@ -35,14 +47,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 // License: https://creativecommons.org/licenses/by-sa/3.0/
 public class Home extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+    FirebaseFirestore db;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.background));
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
-
+        notifyOwner();
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -77,5 +94,24 @@ public class Home extends AppCompatActivity {
      */
     public void openLeaderboard(View view) {
         startActivity(new Intent(Home.this, LeaderboardActivity.class));
+    }
+
+    public void openQRCodes(View view) {
+        startActivity(new Intent(Home.this, QRCollectionActivity.class));
+    }
+
+    /**
+     * Notifies user if they are now an owner
+     */
+    public void notifyOwner() {
+        sharedPreferences = getSharedPreferences(String.valueOf(R.string.app_name), MODE_PRIVATE);
+        String ownerBool = sharedPreferences.getString("Owner","null");
+        if (ownerBool.equals("True")) {
+            Log.d("Is owner?", "owner");
+            Snackbar.make(this.getWindow().getDecorView().findViewById(android.R.id.content), R.string.new_owner, Snackbar.LENGTH_LONG)
+                    .show();
+        } else {
+            Log.d("Is owner?", "not owner");
+        }
     }
 }
