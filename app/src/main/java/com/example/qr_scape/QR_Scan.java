@@ -68,8 +68,8 @@ import java.util.HashMap;
  * Photos captured are in progress as we cant update it in firestore for now
  * We have score being updated on scanned QR code into the player stats, which is on profile
  * (latest update on photos is, bitmap is encoded to base64-string and we saw an instance of string in firebase as image)
- * @author Harsh Shah,  Dallin Dmytrykgit status
- * 
+ * @author Harsh Shah,  Dallin Dmytryk
+ *
  *
  */
 public class QR_Scan extends AppCompatActivity  {
