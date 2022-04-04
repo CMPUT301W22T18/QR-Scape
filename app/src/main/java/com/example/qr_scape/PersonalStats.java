@@ -129,7 +129,7 @@ public class PersonalStats extends AppCompatActivity {
                         if (lowestScore[0]  == null) {
                             lowestScoreValue.setText(String.valueOf(0));
                         } else {
-                            lowestScoreValue.setText(String.valueOf(highestScore[0]));
+                            lowestScoreValue.setText(String.valueOf(lowestScore[0]));
                         }
 
                         if (totalScore[0]  == null) {
