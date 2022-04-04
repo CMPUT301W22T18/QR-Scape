@@ -107,7 +107,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                             String qr_username = d.getString("Username");
                             Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
                             String qr_realHash = d.getString("RealHash");
-                            String qr_saltedHash = d.getId().toString();
+                            String qr_saltedHash = d.getId();
                             //String qr_Photo = d.getString("Photo");
                             Double qr_Longitude = d.getDouble("Longitude");
                             Double qr_Latitude = d.getDouble("Latitude");
@@ -136,7 +136,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                             String qr_username = d.getString("Username");
                             Integer qr_scoreLong = Math.toIntExact(d.getLong("Score"));
                             String qr_realHash = d.getString("RealHash");
-                            String qr_saltedHash = d.getId().toString();
+                            String qr_saltedHash = d.getId();
                             //String qr_Photo = d.getString("Photo");
                             Double qr_Longitude = d.getDouble("Longitude");
                             Double qr_Latitude = d.getDouble("Latitude");
@@ -203,16 +203,14 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
-                        if (qrDataList.contains(qrCode)){
-                            qrDataList.remove(qrCode);
-                        }
+                        qrDataList.remove(qrCode);
                         qrCollectionAdapter.notifyDataSetChanged();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                        Log.d(TAG, "Error deleting the document!" + e);
                     }
                 });
     }//end deleteQRCode
@@ -245,9 +243,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         itemsRef.document(document.getId()).delete();
-                        if (qrDataList.contains(qrCode)){
-                            qrDataList.remove(qrCode);
-                        }
+                        qrDataList.remove(qrCode);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -263,16 +259,14 @@ public class QRCollectionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Document has been deleted successfully!");
-                        if (qrDataList.contains(qrCode)){
-                            qrDataList.remove(qrCode);
-                        }
+                        qrDataList.remove(qrCode);
 
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error deleting the document!" + e.toString());
+                        Log.d(TAG, "Error deleting the document!" + e);
                     }
                 });
     }//end ownerDeleteQRCode
@@ -323,7 +317,7 @@ public class QRCollectionActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "Data could not be added!" + e.toString());
+                            Log.d(TAG, "Data could not be added!" + e);
                         }
                     });
         }

@@ -16,7 +16,7 @@ package com.example.qr_scape;
  * @version 1
  */
 public class User {
-    private String name;
+    private final String name;
     private String contactInfo;
     private Boolean owner;
 

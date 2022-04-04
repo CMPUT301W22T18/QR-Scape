@@ -34,7 +34,7 @@ import java.util.HashMap;
 @RunWith(AndroidJUnit4.class)
 public class LoginTest {
     private Solo solo;
-    private String Username = "testingusername";
+    private final String Username = "testingusername";
     final private String USERNAME = "Username";
     final private  String PROFILES = "Profiles";
     SharedPreferences sharedPreferences;
@@ -47,7 +47,7 @@ public class LoginTest {
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name),context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name), Context.MODE_PRIVATE);
     }
 
     @Before
@@ -83,7 +83,7 @@ public class LoginTest {
         solo.sleep(1000);
 
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name),context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name), Context.MODE_PRIVATE);
         String savedUsername = sharedPreferences.getString(USERNAME, null);
         assertEquals(Username, savedUsername);
 

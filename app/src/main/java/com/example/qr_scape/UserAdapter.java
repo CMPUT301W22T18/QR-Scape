@@ -41,8 +41,8 @@ import java.util.ArrayList;
  */
 public class UserAdapter extends ArrayAdapter<User> {
 
-    private ArrayList<User> users;
-    private Context context;
+    private final ArrayList<User> users;
+    private final Context context;
 
     public UserAdapter(Context context, ArrayList<User> users) {
         super(context, 0, users);

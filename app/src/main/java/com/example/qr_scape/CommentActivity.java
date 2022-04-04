@@ -188,7 +188,7 @@ public class CommentActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "Data could not be added!" + e.toString());
+                            Log.d(TAG, "Data could not be added!" + e);
                         }
                     });
         }
