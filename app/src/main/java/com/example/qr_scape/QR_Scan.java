@@ -69,6 +69,7 @@ import java.util.HashMap;
  * on the app via collection list as well
  * @author Harsh Shah,  Dallin Dmytryk
  *
+ *
  */
 public class QR_Scan extends AppCompatActivity  {
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
