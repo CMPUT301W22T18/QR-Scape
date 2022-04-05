@@ -59,15 +59,14 @@ import java.util.HashMap;
 
 /**
  * QR Scan Activity is for scanning the QR code
- * allows user to get the score of the scanned QR code
+ * allows user to get the score and hash of the scanned QR code
  * Record the image of the object/location
  * Allows users to get the geo location as Latitude, Longitude and record it
  * Through the navigation bar, the user can browse different activities
  * such as, if on QR can activity, it can switch to home, profile etc.
  * While the user scans a QR code and gets the location, it gets updated to firestore real time
- * Photos captured are in progress as we cant update it in firestore for now
- * We have score being updated on scanned QR code into the player stats, which is on profile
- * (latest update on photos is, bitmap is encoded to base64-string and we saw an instance of string in firebase as image)
+ * Photos captured are stored in the storage and can be viewed
+ * on the app via collection list as well
  * @author Harsh Shah,  Dallin Dmytryk
  *
  *
