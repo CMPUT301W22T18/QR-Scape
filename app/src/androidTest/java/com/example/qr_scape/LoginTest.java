@@ -103,7 +103,7 @@ public class LoginTest {
 
     @Test
     public void scanProfileTest() throws Exception{
-
+            solo.clickOnView(solo.getView(R.id.login_scan_profile_code_button));
     }
 
     @Test

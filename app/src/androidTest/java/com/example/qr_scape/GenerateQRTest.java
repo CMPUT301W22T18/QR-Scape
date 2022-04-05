@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +37,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -61,26 +66,16 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 @RunWith(AndroidJUnit4.class)
-
-public class QR_ScanTest {
+public class GenerateQRTest {
     private Solo solo;
     SharedPreferences sharedPreferences;
-    private TextView latTextView;
-    private TextView longTextView;
-    private TextView hashTextView;
-    private String testlatitude = "53.467760";
-    private String testlongitude = "-113.396160";
-    private String testscore = "32";
-    private String testhash = "AFTGHDRGFG";
-
-    private TextView scoreTextView;
-    double latitude;
-    double longitude;
-    int score;
-
+    TextView codeEditText1;
+    final String USERNAME = "Username";
+    TextView usernameText;
+    ImageView imageView;
     @Rule
-    public ActivityTestRule<QR_Scan> rule =
-            new ActivityTestRule<>(QR_Scan.class,true,true);
+    public ActivityTestRule<LoginActivity> rule =
+            new ActivityTestRule<>(LoginActivity.class,true,true);
 
     @Before
     public void setUp() throws Exception {
@@ -91,11 +86,17 @@ public class QR_ScanTest {
 
 
     @Test
-    public void checkCurrentLocation() throws Exception{
-        solo.clickOnView(solo.getView(R.id.scanbtn));
-//        solo.clickOnView(solo.getView(R.id.buttonCurrentLocation));
-//        assertTrue(solo.searchText(testlatitude));
-//        assertTrue(solo.searchText(testlongitude));
+    public void checkGeneratedQR() throws Exception{
+
+        solo.clickOnView(solo.getView(R.id.login_create_profile_button));
+        solo.clickOnView((EditText) solo.getView(R.id.login_username_edittext));
+        solo.enterText((EditText) solo.getView(R.id.login_username_edittext), "Tony Robbi");
+        solo.clickOnView(solo.getView(R.id.login_confirm_button));
+        solo.clickOnView(solo.getView(R.id.nav_profile));
+        solo.clickOnView(solo.getView(R.id.profile_generate_button1));
+        solo.clickOnView(solo.getView(R.id.profile_generate_button));
 
     }
+
+
 }

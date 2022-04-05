@@ -62,6 +62,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -78,11 +79,15 @@ public class LocationTest {
     Marker marker;
     Marker marker1;
     Circle Mapcircle;
+    private String search = "Edmonton";
+    private String testlatitude = "53.467760";
+    private String testlongitude = "-113.396160";
     FirebaseFirestore db;
     ArrayList<LatLng> arrayList;
     ArrayList<Integer> arrayList1;
     ArrayList<QRCode> qrDataList;
     SearchView searchView;
+    SharedPreferences sharedPreferences;
 
 
     @Rule
@@ -92,17 +97,19 @@ public class LocationTest {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.app_name),context.MODE_PRIVATE);
     }
 
-    @Test
-    public void start() throws Exception{
-        Activity activity = rule.getActivity();
-    }
 
     @Test
     public void checkLocation() {
         solo.assertCurrentActivity("Wrong Activity", Location.class);
+        solo.searchButton(String.valueOf(solo.searchText(search)));
+        solo.clickOnView(solo.getView(R.id.sv_location), true);
 
     }
+
+
 
 }
